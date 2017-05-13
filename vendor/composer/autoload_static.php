@@ -19,6 +19,10 @@ class ComposerStaticInit0856d469165f1a5ad1b3ef1bc75945f9
         array (
             'Monolog\\' => 8,
         ),
+        'D' => 
+        array (
+            'DirkOlbrich\\YahooFinanceQuery\\' => 30,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -33,6 +37,10 @@ class ComposerStaticInit0856d469165f1a5ad1b3ef1bc75945f9
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'DirkOlbrich\\YahooFinanceQuery\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dirkolbrich/yahoo-finance-query/src',
         ),
     );
 
