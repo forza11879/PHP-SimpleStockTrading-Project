@@ -94,5 +94,36 @@ $app->get('/ajax/emailused/:email', function($email) {
 });
 
 
+$app->get('/login', function() use ($app) {
+    $app->render('login.html.twig');
+});
+
+
+$app->post('/login', function() use ($app) {
+    $email=$app->request()->post('email');
+    $pass=$app->request()->post('password');
+    
+    $error = false;
+    $user = DB::queryFirstRow("SELECT * FROM users WHERE email=%s", $email);
+    if (!$user) {
+        $error = true;
+    } else {
+        if ($user['password'] != $pass) {
+            $error = true;
+        }
+    }
+    
+        // decide what to render
+    if ($error) {
+        $app->render('login.html.twig', array("error" => true));
+    } else {
+        unset($user['password']);
+        $_SESSION['user'] = $user;
+        $app->render('login_success.html.twig');
+    }
+
+});
+
+
 
 $app->run();
