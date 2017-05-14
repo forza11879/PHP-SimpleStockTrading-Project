@@ -28,7 +28,44 @@ if (!isset($_SESSION['todouser'])) {
 $twig = $app->view()->getEnvironment();
 $twig->addGlobal('todouser', $_SESSION['todouser']);
 
+//quotes
+$client = new GuzzleHttp\Client();
 
+$symbols_count_result = $db->query("SELECT COUNT(id) FROM symbols");
+$symbol_row = $symbols_count_result->fetch_row();
+$symbol_count = $symbol_row[0];
+
+$api_limit = 200;
+
+$loop_times = $symbol_count / $api_limit;
+$loop_times = floor($loop_times) + 1;
+
+$file = 'uploads/csv/stocks.csv';
+file_put_contents($file, '');
+
+$format = 'sabo';
+
+for($x = 0; $x < $loop_times; $x++){
+
+    $from = $x * $api_limit;
+    $symbols_result = $db->query("SELECT * FROM symbols LIMIT '$api_limit' OFFSET '$from'");
+
+    if($symbols_result->num_rows > 0){
+
+        $symbols = array();
+        while($row = $symbols_result->fetch_object()){
+            symbols[] = $row->symbol;
+        }
+
+        $symbols_str = implode(',', $symbols);
+        $stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s={$symbols_str}&f={$format}");
+
+        file_put_contents($file, $stocks->getBody(), FILE_APPEND);
+    }
+}
+
+
+//register
 $app->get('/register', function() use ($app) {
     $app->render('register.html.twig');
 });
