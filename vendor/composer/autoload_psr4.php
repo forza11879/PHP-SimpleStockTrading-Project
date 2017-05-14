@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Slim\\Views\\' => array($vendorDir . '/slim/views'),
+    'Scheb\\YahooFinanceApi\\' => array($vendorDir . '/scheb/yahoo-finance-api'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'DirkOlbrich\\YahooFinanceQuery\\' => array($vendorDir . '/dirkolbrich/yahoo-finance-query/src'),

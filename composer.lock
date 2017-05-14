@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ee17c35524fa85a491fe02237b0cffe6",
+    "content-hash": "037ec19143c53301a5c03c4c57caf758",
     "packages": [
         {
             "name": "dirkolbrich/yahoo-finance-query",
@@ -170,6 +170,49 @@
                 "psr-3"
             ],
             "time": "2016-10-10T12:19:37+00:00"
+        },
+        {
+            "name": "scheb/yahoo-finance-api",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/scheb/yahoo-finance-api.git",
+                "reference": "de2d5aa15f06912c75d63d997af03306c5efb6d6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/scheb/yahoo-finance-api/zipball/de2d5aa15f06912c75d63d997af03306c5efb6d6",
+                "reference": "de2d5aa15f06912c75d63d997af03306c5efb6d6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Scheb\\YahooFinanceApi\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Scheb",
+                    "email": "me@christianscheb.de"
+                }
+            ],
+            "description": "PHP library for accessing Yahoo Finance data",
+            "homepage": "https://github.com/scheb/yahoo-finance-api",
+            "keywords": [
+                "api",
+                "finance",
+                "stock",
+                "yahoo"
+            ],
+            "time": "2017-03-15 19:13:09"
         },
         {
             "name": "sergeytsalkov/meekrodb",
@@ -380,7 +423,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "scheb/yahoo-finance-api": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

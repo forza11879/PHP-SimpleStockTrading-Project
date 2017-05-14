@@ -29,4 +29,9 @@ $twig = $app->view()->getEnvironment();
 $twig->addGlobal('todouser', $_SESSION['todouser']);
 
 
+$app->get('/register', function() use ($app) {
+    $app->render('register.html.twig');
+});
+
+
 $app->run();

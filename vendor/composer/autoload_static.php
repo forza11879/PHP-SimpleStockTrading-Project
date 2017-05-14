@@ -10,6 +10,7 @@ class ComposerStaticInit0856d469165f1a5ad1b3ef1bc75945f9
         'S' => 
         array (
             'Slim\\Views\\' => 11,
+            'Scheb\\YahooFinanceApi\\' => 22,
         ),
         'P' => 
         array (
@@ -29,6 +30,10 @@ class ComposerStaticInit0856d469165f1a5ad1b3ef1bc75945f9
         'Slim\\Views\\' => 
         array (
             0 => __DIR__ . '/..' . '/slim/views',
+        ),
+        'Scheb\\YahooFinanceApi\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/scheb/yahoo-finance-api',
         ),
         'Psr\\Log\\' => 
         array (
