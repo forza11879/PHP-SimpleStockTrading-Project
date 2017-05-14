@@ -6,11 +6,19 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit0856d469165f1a5ad1b3ef1bc75945f9
 {
+    public static $files = array (
+        'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         'S' => 
         array (
             'Slim\\Views\\' => 11,
             'Scheb\\YahooFinanceApi\\' => 22,
+        ),
+        'R' => 
+        array (
+            'React\\Promise\\' => 14,
         ),
         'P' => 
         array (
@@ -19,6 +27,12 @@ class ComposerStaticInit0856d469165f1a5ad1b3ef1bc75945f9
         'M' => 
         array (
             'Monolog\\' => 8,
+        ),
+        'G' => 
+        array (
+            'GuzzleHttp\\Stream\\' => 18,
+            'GuzzleHttp\\Ring\\' => 16,
+            'GuzzleHttp\\' => 11,
         ),
         'D' => 
         array (
@@ -35,6 +49,10 @@ class ComposerStaticInit0856d469165f1a5ad1b3ef1bc75945f9
         array (
             0 => __DIR__ . '/..' . '/scheb/yahoo-finance-api',
         ),
+        'React\\Promise\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/react/promise/src',
+        ),
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
@@ -42,6 +60,18 @@ class ComposerStaticInit0856d469165f1a5ad1b3ef1bc75945f9
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'GuzzleHttp\\Stream\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/streams/src',
+        ),
+        'GuzzleHttp\\Ring\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/ringphp/src',
+        ),
+        'GuzzleHttp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
         'DirkOlbrich\\YahooFinanceQuery\\' => 
         array (

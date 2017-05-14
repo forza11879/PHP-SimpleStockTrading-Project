@@ -14,6 +14,7 @@
         "monolog/monolog": "1.22.1",
         "sergeytsalkov/meekrodb": "v2.3",
         "dirkolbrich/yahoo-finance-query": "v1.0.5",
-        "scheb/yahoo-finance-api": "dev-master"
+        "scheb/yahoo-finance-api": "dev-master",
+        "guzzlehttp/guzzle": "5.0.0"
     }
 }
