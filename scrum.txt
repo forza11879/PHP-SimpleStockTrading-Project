@@ -1,0 +1,16 @@
+12/05/2017-14/05/2017
+
+Gregory:
+todo:
+
+1) Setup Project at home
+2) Creat login
+3) Create Register
+4) add additional libraries
+
+
+John
+1)Setup Project at home
+2)add additional libraries
+3)Get list of stocks from yahoo using additional libraries
+4)show list of stocks
