@@ -54,9 +54,8 @@ for($x = 0; $x < $loop_times; $x++){
 
         $symbols = array();
         while($row = $symbols_result->fetch_object()){
-            symbols[] = $row->symbol;
+            $symbols[] = $row->symbol;
         }
-
         $symbols_str = implode(',', $symbols);
         $stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s={$symbols_str}&f={$format}");
 
