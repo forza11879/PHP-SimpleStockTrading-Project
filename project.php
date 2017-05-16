@@ -9,6 +9,10 @@ DB::$dbName = 'stocksimulator';
 DB::$encoding = 'utf8';
 DB::$port = 3333;
 
+//tradeapp
+
+//cp4776_tradingapp
+
 // Slim creation and setup
 $app = new \Slim\Slim(array(
     'view' => new \Slim\Views\Twig()
@@ -28,6 +32,8 @@ if (!isset($_SESSION['todouser'])) {
 $twig = $app->view()->getEnvironment();
 $twig->addGlobal('todouser', $_SESSION['todouser']);
 
+
+/*
 //quotes
 $client = new GuzzleHttp\Client();
 
@@ -63,7 +69,7 @@ for($x = 0; $x < $loop_times; $x++){
     }
 }
 
-
+*/
 //register
 $app->get('/register', function() use ($app) {
     $app->render('register.html.twig');
