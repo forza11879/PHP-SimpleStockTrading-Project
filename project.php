@@ -1,7 +1,9 @@
 <?php
 
 //y1hkj2pyxx4xgls1
-require 'vendor/autoload.php';
+require_once 'vendor/autoload.php';
+require_once 'local.php';
+
 DB::$host = 'localhost';
 DB::$user = 'stocksimulator';
 DB::$password = 'bUz0FlWwASZEnDgZ';
