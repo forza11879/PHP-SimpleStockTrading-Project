@@ -182,13 +182,5 @@ $stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD
 
 
 
-
-
-
-
-
-
-
-
 $app->run();
 
