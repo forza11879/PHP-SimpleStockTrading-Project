@@ -1,8 +1,8 @@
 <?php
 
 //y1hkj2pyxx4xgls1
-require_once 'vendor/autoload.php';
-DB::$host = '127.0.0.1';
+require 'vendor/autoload.php';
+DB::$host = 'localhost';
 DB::$user = 'stocksimulator';
 DB::$password = 'bUz0FlWwASZEnDgZ';
 DB::$dbName = 'stocksimulator';
@@ -33,43 +33,9 @@ $twig = $app->view()->getEnvironment();
 $twig->addGlobal('todouser', $_SESSION['todouser']);
 
 
-/*
-//quotes
-$client = new GuzzleHttp\Client();
 
-$symbols_count_result = $db->query("SELECT COUNT(id) FROM symbols");
-$symbol_row = $symbols_count_result->fetch_row();
-$symbol_count = $symbol_row[0];
 
-$api_limit = 200;
 
-$loop_times = $symbol_count / $api_limit;
-$loop_times = floor($loop_times) + 1;
-
-$file = 'uploads/csv/stocks.csv';
-file_put_contents($file, '');
-
-$format = 'sabo';
-
-for($x = 0; $x < $loop_times; $x++){
-
-    $from = $x * $api_limit;
-    $symbols_result = $db->query("SELECT * FROM symbols LIMIT '$api_limit' OFFSET '$from'");
-
-    if($symbols_result->num_rows > 0){
-
-        $symbols = array();
-        while($row = $symbols_result->fetch_object()){
-            $symbols[] = $row->symbol;
-        }
-        $symbols_str = implode(',', $symbols);
-        $stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s={$symbols_str}&f={$format}");
-
-        file_put_contents($file, $stocks->getBody(), FILE_APPEND);
-    }
-}
-
-*/
 //register
 $app->get('/register', function() use ($app) {
     $app->render('register.html.twig');
@@ -169,3 +135,38 @@ $app->post('/login', function() use ($app) {
 
 
 $app->run();
+
+$client = new GuzzleHttp\Client();
+
+//Yahoo Finance
+
+//Declare the file path of the csv file in which will save all the results from the API
+$file = 'uploads/csv/stocks.csv';
+//Initialize csv file by setting its value to an empty string.
+file_put_contents($file, '');
+// format for web api output
+$format = 'sabo';
+//get data from web api link - {$symbols_str}
+$stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC&f={$format}");
+//add data into csv file
+file_put_contents($file, $stocks->getBody(), FILE_APPEND);
+//getting data from csv file into database
+
+//reading csv file
+    $fp = fopen($file, 'r');
+    $datas = array();
+    while (($data = fgetcsv($fp)) !== FALSE) {
+
+        $data['symbol'] = trim($data[0]);
+        $data['ask'] = trim($data[1]);
+        $data['bid'] = trim($data[2]);
+        $data['open'] = trim($data[3]);
+        $datas[] = $data;
+// insert or update the database
+        DB::insertUpdate('symbols', array(
+            'symbol' => $data[0],
+            'ask' => $data[1],
+            'bid' => $data[2],
+            'open' => $data[3],
+        ));
+    }
