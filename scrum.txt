@@ -1,3 +1,5 @@
+
+/////////////////////////////////////////////////////////
 12/05/2017-14/05/2017
 
 Gregory:
@@ -14,3 +16,103 @@ John
 2)add additional libraries
 3)Get list of stocks from yahoo using additional libraries
 4)show list of stocks
+
+////////////////////////////////////////////////////
+15/05/2017
+gregory:
+1) setup is done
+2)loginn created
+3) register created
+4) design added
+
+todo:
+1)add bootstrap
+2)create landing page
+3) cretae master template for pages
+
+Ion
+1) setup is done
+2)Gitting stock list from yahoo is partially done
+3)Additional libraries were installed
+
+
+todo:
+1) show stocks in a list
+2) find how to update database properly
+
+///////////////////////////////////////////////////
+16/05/2017
+
+gregory:
+1)bootstrap added
+2)landing page is created
+2)templates created
+
+
+todo:
+1)Prepare for the quiz
+2)Read more about twig/slim
+3) work on design
+
+
+john
+1)i was able to display stocks in a list
+2)new libraries were added
+3)list of stocks was inserted into database
+
+todo:
+1)Prepare for the quiz
+2)Test how lists work
+3)test login and register
+
+
+
+
+////////////////////////////////////////////////
+17/05/2017
+
+John:
+1) quiz-done
+2)lists were tested
+
+
+todo:
+1)Implement web api for historical data
+2) add historical data
+
+Gregory
+1)quiz-done
+2)I read info about slim/twig
+
+todo:
+
+1)fix small problems with login and register
+2)Create good bootstrap look for landing page
+
+
+///////////////////////////////////////////////
+18/05/2017
+John
+done:
+1)Hstorical data were inserted into database
+2)Web api for historical datda was implemented
+3)
+
+todo:
+1)Finish historical data
+2)create sidebar
+3)implement all api into project
+
+
+Gregory:
+
+done:
+1)More design work was done
+2)i Read multiple artciles about twig/slim
+
+
+todo:
+1)add design for register and login pages
+2)Create template for the main inteface
+
+
