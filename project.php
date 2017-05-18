@@ -36,6 +36,18 @@ $twig->addGlobal('todouser', $_SESSION['todouser']);
 
 
 
+<<<<<<< HEAD
+=======
+*/
+
+$app->get('/landing', function() use ($app) {
+    $app->render('landing.html.twig');
+});
+
+
+
+
+>>>>>>> 90d6e89e4669c37b10f0488ac5cdd11c9cf38b0a
 //register
 $app->get('/register', function() use ($app) {
     $app->render('register.html.twig');
