@@ -152,7 +152,7 @@ file_put_contents($file, '');
 // format for web api output
 $format = 'sabo';
 //get data from web api link - {$symbols_str}
-$stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC&f={$format}");
+$stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F&f={$format}");
 //add data into csv file
 file_put_contents($file, $stocks->getBody(), FILE_APPEND);
 //getting data from csv file into database
