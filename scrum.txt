@@ -88,5 +88,31 @@ todo:
 
 1)fix small problems with login and register
 2)Create good bootstrap look for landing page
+
+
+///////////////////////////////////////////////
+18/05/2017
+John
+done:
+1)Hstorical data were inserted into database
+2)Web api for historical datda was implemented
 3)
+
+todo:
+1)Finish historical data
+2)create sidebar
+3)implement all api into project
+
+
+Gregory:
+
+done:
+1)More design work was done
+2)i Read multiple artciles about twig/slim
+
+
+todo:
+1)add design for register and login pages
+2)Create template for the main inteface
+
 
