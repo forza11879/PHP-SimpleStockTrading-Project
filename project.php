@@ -2,6 +2,15 @@
 
 //y1hkj2pyxx4xgls1
 require_once 'vendor/autoload.php';
+
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
+// create a log channel
+$log = new Logger('main');
+$log->pushHandler(new StreamHandler('logs/everything.log', Logger::DEBUG));
+$log->pushHandler(new StreamHandler('logs/errors.log', Logger::ERROR));
+
 require_once 'local.php';
 
 DB::$host = 'localhost';
@@ -142,10 +151,10 @@ $app->post('/login', function() use ($app) {
 
 $app->run();
 
+//Yahoo Finance
+
 // calling GuzzleHttp Library
 $client = new GuzzleHttp\Client();
-
-//Yahoo Finance
 
 //Declare the file path of the csv file in which will save all the results from the API
 $file = 'uploads/csv/stocks.csv';
@@ -154,7 +163,7 @@ file_put_contents($file, '');
 // format for web api output
 $format = 'sabo';
 //get data from web api link - {$symbols_str}
-$stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F&f={$format}");
+$stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY&f={$format}");
 //add data into csv file
 file_put_contents($file, $stocks->getBody(), FILE_APPEND);
 //getting data from csv file into database
