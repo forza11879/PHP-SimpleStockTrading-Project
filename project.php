@@ -70,6 +70,14 @@ for($x = 0; $x < $loop_times; $x++){
 }
 
 */
+
+$app->get('/landing', function() use ($app) {
+    $app->render('landing.html.twig');
+});
+
+
+
+
 //register
 $app->get('/register', function() use ($app) {
     $app->render('register.html.twig');
