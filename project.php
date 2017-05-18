@@ -141,36 +141,24 @@ $app->post('/login', function() use ($app) {
     }
 });
 
-<<<<<<< HEAD
+
 $app->get('/refresh', function() {
     // calling GuzzleHttp Library
     $client = new GuzzleHttp\Client();
-
-//Yahoo Finance
-=======
-
-$app->run();
-
-//Yahoo Finance
-
-// calling GuzzleHttp Library
-$client = new GuzzleHttp\Client();
-
->>>>>>> 23e0a0f3fef8b12a8410a1866e445cbba1bcdd1d
-//Declare the file path of the csv file in which will save all the results from the API
+    
+    //Declare the file path of the csv file in which will save all the results from the API
     $file = 'uploads/csv/stocks.csv';
 //Initialize csv file by setting its value to an empty string.
     file_put_contents($file, '');
 // format for web api output
     $format = 'sabo';
 //get data from web api link - {$symbols_str}
-<<<<<<< HEAD
-    $stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F&f={$format}");
-=======
-$stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY&f={$format}");
->>>>>>> 23e0a0f3fef8b12a8410a1866e445cbba1bcdd1d
+
+$stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY,JPM&f={$format}");
+
 //add data into csv file
     file_put_contents($file, $stocks->getBody(), FILE_APPEND);
+
 //getting data from csv file into database
 //reading csv file
     $fp = fopen($file, 'r');
@@ -191,6 +179,15 @@ $stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD
         ));
     }
 });
+
+
+
+
+
+
+
+
+
 
 
 $app->run();
