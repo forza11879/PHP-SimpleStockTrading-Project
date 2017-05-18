@@ -34,12 +34,6 @@ $twig->addGlobal('todouser', $_SESSION['todouser']);
 
 
 
-
-
-<<<<<<< HEAD
-=======
-*/
-
 $app->get('/landing', function() use ($app) {
     $app->render('landing.html.twig');
 });
@@ -47,7 +41,6 @@ $app->get('/landing', function() use ($app) {
 
 
 
->>>>>>> 90d6e89e4669c37b10f0488ac5cdd11c9cf38b0a
 //register
 $app->get('/register', function() use ($app) {
     $app->render('register.html.twig');
@@ -145,9 +138,9 @@ $app->post('/login', function() use ($app) {
 });
 
 
-
 $app->run();
 
+// calling GuzzleHttp Library
 $client = new GuzzleHttp\Client();
 
 //Yahoo Finance
@@ -182,3 +175,5 @@ file_put_contents($file, $stocks->getBody(), FILE_APPEND);
             'open' => $data[3],
         ));
     }
+
+
