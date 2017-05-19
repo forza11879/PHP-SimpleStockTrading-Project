@@ -206,8 +206,36 @@ $stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD
     $app->render("list.html.twig", ["symbols" => $getquotes]);
 });
 
-$app->get('/chart', function() use ($app) {
+$app->get('/search', function() use ($app) {
+    $app->render('search.html.twig');
+});
+
+$app->post('/search', function() use ($app) {
+    //$stockList = $_POST['symbol'];
+    $stockList = $app->request()->post('symbol');
     
+//$stockFormat = "snbaopl1vhgkj";
+$stockFormat = "snab";
+
+$requestUrl = "http://quote.yahoo.com/d/quotes.csv?s=".$stockList."&amp;amp;amp;amp;f=".$stockFormat."&amp;amp;amp;amp;e=.csv";
+
+// Pull data (download CSV as file)
+$filesize=2000;
+$handle = fopen($requestUrl, "r");
+$raw = fread($handle, $filesize);
+fclose($handle);
+ 
+// Split results, trim way the extra line break at the end
+$quotes = explode("\n",trim($raw));
+ 
+foreach($quotes as $quoteraw) {
+$quoteraw = str_replace(", I", " I", $quoteraw);
+$quote = explode(",", $quoteraw);
+
+echo     $quote[0] ."". $quote[1] ."". $quote[2] ." - ". $quote[3]; 
+
+}
+ 
     
 });
 
