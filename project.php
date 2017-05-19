@@ -47,9 +47,6 @@ $app->get('/landing', function() use ($app) {
     $app->render('landing.html.twig');
 });
 
-
-
-
 //register
 $app->get('/register', function() use ($app) {
     $app->render('register.html.twig');
@@ -149,7 +146,7 @@ $app->get('/master', function() use ($app) {
 $app->get('/list', function() use ($app) {
     // calling GuzzleHttp Library
     $client = new GuzzleHttp\Client();
-    
+
     //Declare the file path of the csv file in which will save all the results from the API
     $file = 'uploads/csv/stocks.csv';
 //Initialize csv file by setting its value to an empty string.
@@ -158,7 +155,7 @@ $app->get('/list', function() use ($app) {
     $format = 'snbac1p2opl1vhgkj';
 //get data from web api link - {$symbols_str}
 
-$stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY,JPM&f={$format}");
+    $stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY,JPM,GOOG&f={$format}");
 
 //add data into csv file
     file_put_contents($file, $stocks->getBody(), FILE_APPEND);
@@ -182,8 +179,8 @@ $stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD
         $data['high52'] = trim($data[10]);
         $data['low52'] = trim($data[11]);
         $datas[] = $data;
-        
-        
+
+
 // insert or update the database
         DB::insertUpdate('symbols', array(
             'symbol' => $data[0],
@@ -200,46 +197,67 @@ $stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD
             'low52' => $data[11],
         ));
     }
-    
+
     $getquotes = DB::query("SELECT * FROM symbols");
-   // print_r($getquotes);
+    // print_r($getquotes);
     $app->render("list.html.twig", ["symbols" => $getquotes]);
 });
 
-$app->get('/search', function() use ($app) {
-    $app->render('search.html.twig');
+$app->get('/history', function() use ($app) {
+    $app->render('history.html.twig');
 });
 
-$app->post('/search', function() use ($app) {
+$app->post('/history', function() use ($app) {
     //$stockList = $_POST['symbol'];
     $stockList = $app->request()->post('symbol');
-    
-//$stockFormat = "snbaopl1vhgkj";
-$stockFormat = "snab";
 
-$requestUrl = "http://quote.yahoo.com/d/quotes.csv?s=".$stockList."&amp;amp;amp;amp;f=".$stockFormat."&amp;amp;amp;amp;e=.csv";
+    //$stockFormat = "snbaopl1vhgkj";
+//$stockFormat = "snab";
+
+    $requestUrl = "https://www.google.com/finance/historical?output=csv&q=" . $stockList;
 
 // Pull data (download CSV as file)
-$filesize=2000;
-$handle = fopen($requestUrl, "r");
-$raw = fread($handle, $filesize);
-fclose($handle);
- 
+    $filesize = 2000;
+    $handle = fopen($requestUrl, "r");
+    $raw = fread($handle, $filesize);
+    fclose($handle);
+
 // Split results, trim way the extra line break at the end
-$quotes = explode("\n",trim($raw));
- 
-foreach($quotes as $quoteraw) {
-$quoteraw = str_replace(", I", " I", $quoteraw);
-$quote = explode(",", $quoteraw);
+    $quotes = explode("\n", trim($raw));
 
-echo     $quote[0] ."". $quote[1] ."". $quote[2] ." - ". $quote[3]; 
+    foreach ($quotes as $quoteraw) {
+        $quoteraw = str_replace(", I", " I", $quoteraw);
+        $data = explode(",", $quoteraw);
 
-}
- 
-    
+print_r ($data[0] ."". $data[1] ."". $data[2] ." - ". $data[3]." - ". $data[4]." - ". $data[5]);  //  $data[0] ."". $data[1] ."". $data[2] ." - ". $data[3]." - ". $data[4]." - ". $data[5]; 
+
+
+        $datas = array();
+        for ($i = 1; $i < $data.Length; $i++){
+            $data['date'] = trim($data[0]);
+            $data['openPrice'] = trim($data[1]);
+            $data['high'] = trim($data[2]);
+            $data['low'] = trim($data[3]);
+            $data['closePrice'] = trim($data[4]);
+            $data['volume'] = trim($data[5]);
+
+            $datas[] = $data;
+
+
+// insert or update the database
+            DB::insertUpdate('symbols', array(
+                'date' => $data[0],
+                'openPrice' => $data[1],
+                'high' => $data[2],
+                'low' => $data[3],
+                'closePrice' => $data[4],
+                'volume' => $data[5]
+            ));
+            
+        }
+        
+    }
 });
-
-
 
 $app->run();
 
