@@ -206,6 +206,11 @@ $stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD
     $app->render("list.html.twig", ["symbols" => $getquotes]);
 });
 
+$app->get('/chart', function() use ($app) {
+    
+    
+});
+
 
 
 $app->run();
