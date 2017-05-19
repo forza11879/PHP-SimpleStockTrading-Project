@@ -417,7 +417,7 @@
                 "stock",
                 "yahoo"
             ],
-            "time": "2017-03-15T19:13:09+00:00"
+            "time": "2017-03-15 19:13:09"
         },
         {
             "name": "sergeytsalkov/meekrodb",
