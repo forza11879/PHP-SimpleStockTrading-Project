@@ -146,7 +146,7 @@ $app->get('/master', function() use ($app) {
 });
 
 
-$app->get('/list', function() {
+$app->get('/list', function() use ($app) {
     // calling GuzzleHttp Library
     $client = new GuzzleHttp\Client();
     
@@ -155,7 +155,7 @@ $app->get('/list', function() {
 //Initialize csv file by setting its value to an empty string.
     file_put_contents($file, '');
 // format for web api output
-    $format = 'sabo';
+    $format = 'snbac1p2opl1vhgkj';
 //get data from web api link - {$symbols_str}
 
 $stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY,JPM&f={$format}");
@@ -170,21 +170,39 @@ $stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD
     while (($data = fgetcsv($fp)) !== FALSE) {
 
         $data['symbol'] = trim($data[0]);
-        $data['ask'] = trim($data[1]);
+        $data['name'] = trim($data[1]);
         $data['bid'] = trim($data[2]);
-        $data['open'] = trim($data[3]);
+        $data['ask'] = trim($data[3]);
+        $data['open'] = trim($data[4]);
+        $data['previousClose'] = trim($data[5]);
+        $data['lastTrade'] = trim($data[6]);
+        $data['high'] = trim($data[7]);
+        $data['low'] = trim($data[8]);
+        $data['volume'] = trim($data[9]);
+        $data['high52'] = trim($data[10]);
+        $data['low52'] = trim($data[11]);
         $datas[] = $data;
+        
+        
 // insert or update the database
         DB::insertUpdate('symbols', array(
             'symbol' => $data[0],
-            'ask' => $data[1],
+            'name' => $data[1],
             'bid' => $data[2],
-            'open' => $data[3],
+            'ask' => $data[3],
+            'open' => $data[4],
+            'previousClose' => $data[5],
+            'lastTrade' => $data[6],
+            'high' => $data[7],
+            'low' => $data[8],
+            'volume' => $data[9],
+            'high52' => $data[10],
+            'low52' => $data[11],
         ));
     }
     
     $getquotes = DB::query("SELECT * FROM symbols");
-//    print_r($todos);
+    print_r($getquotes);
     $app->render("list.html.twig", ["symbols" => $getquotes]);
 });
 

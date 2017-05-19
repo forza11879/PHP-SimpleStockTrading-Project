@@ -1,7 +1,5 @@
 {% extends "master.html.twig" %}
 
-
-
 {% block content %}
     <div class="list-task">
         <h2 class="list-task-heading">
@@ -9,16 +7,34 @@
         </h2>
         <form method="post" >
             <table>
-                <th width = 100px>Symbol</th>
-                <th width = 200px>Ask</th>
-                <th width = 200px>Bid</th>
-                <th width = 200px>Open</th>
+                <th width = 60px>Symbol</th>
+                <th width = 250px>Name</th>
+                <th width = 50px>Bid</th>
+                <th width = 50px>Ask</th>
+                <th width = 50px>Open</th>
+                <th width = 50px>Prev Close</th>
+                <th width = 50px>Last Trade</th>
+                <th width = 50px>High</th>
+                <th width = 50px>Low</th>
+                <th width = 80px>Volume</th>
+                <th width = 50px>High 52</th>
+                <th width = 50px>Low 52</th>
                     {% for t in symbols %}
                     <tr>
                         <td>{{ t.symbol }}</td>
-                        <td>{{ t.ask }}</td>
+                        <td>{{ t.name }}</td>
                         <td>{{ t.bid }}</td>
+                        <td>{{ t.ask }}</td>
                         <td>{{ t.open }}</td>
+                        <td>{{ t.previousClose }}</td>
+                        <td>{{ t.lastTrade }}</td>
+                        <td>{{ t.high }}</td>
+                        <td>{{ t.low }}</td>
+                        <td>{{ t.volume }}</td>
+                        <td>{{ t.high52 }}</td>
+                        <td>{{ t.low52 }}</td>
+                        
+                        
                         <td><a href="/buysell/{{t.id}}">buy/sell </a>
                         
                     </tr>
