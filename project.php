@@ -11,7 +11,10 @@ $log = new Logger('main');
 $log->pushHandler(new StreamHandler('logs/everything.log', Logger::DEBUG));
 $log->pushHandler(new StreamHandler('logs/errors.log', Logger::ERROR));
 
+<<<<<<< HEAD
 //require_once 'local.php';
+=======
+>>>>>>> 2fda4b7021573ad348e0c53733fed74fd4458dd8
 
 DB::$host = 'localhost';
 DB::$user = 'stocksimulator';
@@ -139,6 +142,10 @@ $app->post('/login', function() use ($app) {
         $_SESSION['user'] = $user;
         $app->render('login_success.html.twig');
     }
+});
+
+$app->get('/master', function() use ($app) {
+    $app->render('master.html.twig');
 });
 
 
