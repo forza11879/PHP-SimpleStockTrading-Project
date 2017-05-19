@@ -11,7 +11,7 @@ $log = new Logger('main');
 $log->pushHandler(new StreamHandler('logs/everything.log', Logger::DEBUG));
 $log->pushHandler(new StreamHandler('logs/errors.log', Logger::ERROR));
 
-require_once 'local.php';
+//require_once 'local.php';
 
 DB::$host = 'localhost';
 DB::$user = 'stocksimulator';
@@ -142,7 +142,7 @@ $app->post('/login', function() use ($app) {
 });
 
 
-$app->get('/refresh', function() {
+$app->get('/list', function() {
     // calling GuzzleHttp Library
     $client = new GuzzleHttp\Client();
     
@@ -178,6 +178,10 @@ $stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD
             'open' => $data[3],
         ));
     }
+    
+    $getquotes = DB::query("SELECT * FROM symbols");
+//    print_r($todos);
+    $app->render("list.html.twig", ["symbols" => $getquotes]);
 });
 
 

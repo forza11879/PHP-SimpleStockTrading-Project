@@ -1,0 +1,36 @@
+{% extends "master.html.twig" %}
+
+{% block title %}Task list{% endblock %}
+
+{% block content %}
+    <div class="list-task">
+        <h2 class="list-task-heading">
+            <strong>Task List</strong>
+        </h2>
+        <form method="post" >
+            <table>
+                <th width = 100px>Symbol</th>
+                <th width = 200px>Ask</th>
+                <th width = 200px>Bid</th>
+                <th width = 200px>Open</th>
+                    {% for t in symbols %}
+                    <tr>
+                        <td>{{ t.symbol }}</td>
+                        <td>{{ t.ask }}</td>
+                        <td>{{ t.bid }}</td>
+                        <td>{{ t.open }}</td>
+                        <td><a href="/buysell/{{t.id}}">buy/sell </a>
+                        
+                    </tr>
+                {% endfor %}
+            </table>
+            <div class="list-task-footer">
+                <div class ="error-message">
+                    
+                </div>
+                <button type="submit" class="btn btn--right"><a href="/add" class='btn--no--underline'>Add Task</a></button>
+            </div>
+        </form>    
+    </div>
+
+{% endblock %}
