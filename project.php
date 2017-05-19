@@ -202,7 +202,7 @@ $stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD
     }
     
     $getquotes = DB::query("SELECT * FROM symbols");
-    print_r($getquotes);
+   // print_r($getquotes);
     $app->render("list.html.twig", ["symbols" => $getquotes]);
 });
 
