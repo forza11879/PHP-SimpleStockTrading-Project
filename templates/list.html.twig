@@ -25,6 +25,21 @@
                         <th>Low 52</th>
                         <th>Action</th>
                         </thead>
+                        <tfoot>
+                        <th>Symbol</th>
+                        <th>Name</th>
+                        <th>Bid</th>
+                        <th>Ask</th>
+                        <th>Open</th>
+                        <th>Prev Close</th>
+                        <th>Last Trade</th>
+                        <th>High</th>
+                        <th>Low</th>
+                        <th>Volume</th>
+                        <th>High 52</th>
+                        <th>Low 52</th>
+                        <th>Action</th>
+                        </tfoot>
                         {% for t in symbols %}
                             <tbody>
                                 <tr>
@@ -40,13 +55,9 @@
                                     <td>{{ t.volume }}</td>
                                     <td>{{ t.high52 }}</td>
                                     <td>{{ t.low52 }}</td>
-
-
                                     <td><a href="/buysell/{{t.id}}">buy/sell </a>
-
                                 </tr>
                             </tbody>
-
                         {% endfor %}
                     </table>
                 </div>
