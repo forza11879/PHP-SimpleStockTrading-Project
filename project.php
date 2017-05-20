@@ -47,9 +47,6 @@ $app->get('/landing', function() use ($app) {
     $app->render('landing.html.twig');
 });
 
-
-
-
 //register
 $app->get('/register', function() use ($app) {
     $app->render('register.html.twig');
@@ -147,44 +144,19 @@ $app->get('/master', function() use ($app) {
 
 
 $app->get('/list', function() use ($app) {
-    // calling GuzzleHttp Library
-    $client = new GuzzleHttp\Client();
-    
-    //Declare the file path of the csv file in which will save all the results from the API
-    $file = 'uploads/csv/stocks.csv';
-//Initialize csv file by setting its value to an empty string.
-    file_put_contents($file, '');
+
 // format for web api output
     $format = 'snbac1p2opl1vhgkj';
-//get data from web api link - {$symbols_str}
-
-$stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY,JPM&f={$format}");
-
-//add data into csv file
-    file_put_contents($file, $stocks->getBody(), FILE_APPEND);
+// 
+    $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY,JPM,GOOG,FAS&f={$format}";
 
 //getting data from csv file into database
+//opening csv file
+    $handle = fopen($stocks, 'r');
 //reading csv file
-    $fp = fopen($file, 'r');
-    $datas = array();
-    while (($data = fgetcsv($fp)) !== FALSE) {
+    while (($data = fgetcsv($handle)) !== FALSE) {
 
-        $data['symbol'] = trim($data[0]);
-        $data['name'] = trim($data[1]);
-        $data['bid'] = trim($data[2]);
-        $data['ask'] = trim($data[3]);
-        $data['open'] = trim($data[4]);
-        $data['previousClose'] = trim($data[5]);
-        $data['lastTrade'] = trim($data[6]);
-        $data['high'] = trim($data[7]);
-        $data['low'] = trim($data[8]);
-        $data['volume'] = trim($data[9]);
-        $data['high52'] = trim($data[10]);
-        $data['low52'] = trim($data[11]);
-        $datas[] = $data;
-        
-        
-// insert or update the database
+// insert or update the database using associative array
         DB::insertUpdate('symbols', array(
             'symbol' => $data[0],
             'name' => $data[1],
@@ -200,18 +172,102 @@ $stocks = $client->get("http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD
             'low52' => $data[11],
         ));
     }
-    
-    $getquotes = DB::query("SELECT * FROM symbols");
-   // print_r($getquotes);
+//closing cvs file
+    fclose($handle);
+//getting data from database
+    $getquotes = DB::query("SELECT * FROM symbols GROUP BY id DESC");
+    // print_r($getquotes);
     $app->render("list.html.twig", ["symbols" => $getquotes]);
 });
 
-$app->get('/chart', function() use ($app) {
-    
-    
+$app->post('/list', function() use ($app) {
+
+    //inputing symbol from UI
+    $stockList = $app->request()->post('symbol');
+
+    // format for web api output
+    $format = 'snbac1p2opl1vhgkj';
+// 
+    $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s={$stockList}&f={$format}";
+
+//getting data from csv file into database
+//opening csv file
+    $handle = fopen($stocks, 'r');
+//reading csv file
+    while (($data = fgetcsv($handle)) !== FALSE) {
+
+// insert or update the database using associative array
+        DB::insertUpdate('symbols', array(
+            'symbol' => $data[0],
+            'name' => $data[1],
+            'bid' => $data[2],
+            'ask' => $data[3],
+            'open' => $data[4],
+            'previousClose' => $data[5],
+            'lastTrade' => $data[6],
+            'high' => $data[7],
+            'low' => $data[8],
+            'volume' => $data[9],
+            'high52' => $data[10],
+            'low52' => $data[11],
+        ));
+    }
+//closing cvs file
+    fclose($handle);
+
+    //getting data from database
+    $getquotes = DB::query("SELECT * FROM symbols GROUP BY id DESC");
+    // print_r($getquotes);
+    $app->render("list.html.twig", ["symbols" => $getquotes]);
 });
 
+$app->get('/history', function() use ($app) {
+    $app->render('history.html.twig');
+});
 
+$app->post('/history', function() use ($app) {
+//$stockList = $_POST['symbol'];
+    $stockList = $app->request()->post('symbol');
+
+    //set time zone
+    //date_default_timezone_set('America/New_York');
+    // $time = date('j-M-y',time());
+    //$i=0 allows to skip the first row 
+    $i = 0;
+
+    // https://www.google.com/finance/historical?output=csv&q=aapl
+    $requestUrl = "https://app.quotemedia.com/quotetools/getHistoryDownload.csv?&webmasterId=501&startDay=02&startMonth=03&startYear=2017&endDay=10&endMonth=05&endYear=2017&isRanged=false&symbol=" . $stockList;
+
+
+
+    $handle = fopen($requestUrl, "r");
+
+
+    while (($data = fgetcsv($handle, 2000, ",")) !== FALSE) {
+        if ($i > 0) {
+
+            DB::insertUpdate('history', array(
+                'date' => $data[0],
+                'openPrice' => $data[1],
+                'high' => $data[2],
+                'low' => $data[3],
+                'closePrice' => $data[4],
+                'volume' => $data[5]
+            ));
+        }
+        $i++;
+    }
+
+    fclose($handle);
+});
+
+$app->get('/chart', function() use ($app) {
+
+  
+
+
+    $app->render("chart.html.twig");
+});
 
 $app->run();
 
