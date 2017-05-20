@@ -176,7 +176,7 @@ $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,W
 //closing cvs file
     fclose($handle);
 //getting data from database
-    $getquotes = DB::query("SELECT * FROM symbols");
+    $getquotes = DB::query("SELECT * FROM symbols GROUP BY id DESC");
     // print_r($getquotes);
     $app->render("list.html.twig", ["symbols" => $getquotes]);
 });
@@ -218,7 +218,7 @@ $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s={$stockList}&f={$for
     fclose($handle);
     
  //getting data from database
-    $getquotes = DB::query("SELECT * FROM symbols");
+    $getquotes = DB::query("SELECT * FROM symbols GROUP BY id DESC");
     // print_r($getquotes);
     $app->render("list.html.twig", ["symbols" => $getquotes]);
     
