@@ -144,14 +144,13 @@ $app->get('/master', function() use ($app) {
 
 
 $app->get('/list', function() use ($app) {
-   
+
 // format for web api output
     $format = 'snbac1p2opl1vhgkj';
 // 
-$stocks = "http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY,JPM,GOOG,FAS&f={$format}";
+    $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY,JPM,GOOG,FAS&f={$format}";
 
 //getting data from csv file into database
-
 //opening csv file
     $handle = fopen($stocks, 'r');
 //reading csv file
@@ -182,17 +181,16 @@ $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,W
 });
 
 $app->post('/list', function() use ($app) {
-    
+
     //inputing symbol from UI
     $stockList = $app->request()->post('symbol');
-   
+
     // format for web api output
     $format = 'snbac1p2opl1vhgkj';
 // 
-$stocks = "http://download.finance.yahoo.com/d/quotes.csv?s={$stockList}&f={$format}";
+    $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s={$stockList}&f={$format}";
 
 //getting data from csv file into database
-
 //opening csv file
     $handle = fopen($stocks, 'r');
 //reading csv file
@@ -216,12 +214,11 @@ $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s={$stockList}&f={$for
     }
 //closing cvs file
     fclose($handle);
-    
- //getting data from database
+
+    //getting data from database
     $getquotes = DB::query("SELECT * FROM symbols GROUP BY id DESC");
     // print_r($getquotes);
     $app->render("list.html.twig", ["symbols" => $getquotes]);
-    
 });
 
 $app->get('/history', function() use ($app) {
@@ -235,7 +232,6 @@ $app->post('/history', function() use ($app) {
     //set time zone
     //date_default_timezone_set('America/New_York');
     // $time = date('j-M-y',time());
-
     //$i=0 allows to skip the first row 
     $i = 0;
 
@@ -263,6 +259,14 @@ $app->post('/history', function() use ($app) {
     }
 
     fclose($handle);
+});
+
+$app->get('/chart', function() use ($app) {
+
+  
+
+
+    $app->render("chart.html.twig");
 });
 
 $app->run();
