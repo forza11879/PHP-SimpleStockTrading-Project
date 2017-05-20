@@ -1,14 +1,20 @@
 {% extends "master.html.twig" %}
 
 {% block content %}
-    <div class="card mb-3">
+    <form method="post">
+    Symbol: <input type="text" name="symbol" placeholder="Symbol">
+    <input type="submit" value="Get Quote">
+</form>
+    <div class="card mb-3" padding-left="10%">
+                        <div class="card-header">
+                    <i class="fa fa-table"></i> Stock List
+                </div>
         <div class="list-task">
-            <h2 class="list-task-heading">
-                <strong>Stock List</strong>
-            </h2>
             <form method="post" >
+                <div class="card-block">
                 <div class="table-responsive">
                     <table class="table table-bordered"  width="100%" id="dataTable" cellspacing="0">
+                        <thead>
                         <th>Symbol</th>
                         <th>Name</th>
                         <th>Bid</th>
@@ -22,7 +28,7 @@
                         <th>High 52</th>
                         <th>Low 52</th>
                         <th>Action</th>
-
+                        </thead>
                         {% for t in symbols %}
                             <tbody>
                                 <tr>
@@ -48,6 +54,7 @@
                         {% endfor %}
                     </table>
                 </div>
+                    </div>
                 <div class="list-task-footer">
                     <div class ="error-message">
 
