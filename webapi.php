@@ -16,8 +16,8 @@ $i = 0;
         if ($i > 0) {
             
 
-            $data[0] = date('d-m-Y', strtotime($data[0]));
-            
+            //$data[0] = date('d-m-Y', strtotime($data[0]));
+            $data[0] = date('M j, Y', strtotime($data[0]));
             $data[1] = floatval($data[1]);
             $data[2] = floatval($data[2]);
             $data[3] = floatval($data[3]);
@@ -37,7 +37,7 @@ $i = 0;
     //Convert PHP Array to reverse JSON String
    
     print (json_encode(array_reverse($chartArray)));
-  
+    
 
 
 ?>

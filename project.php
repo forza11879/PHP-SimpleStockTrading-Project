@@ -239,17 +239,11 @@ $app->get('/history', function() use ($app) {
 $app->post('/history', function() use ($app) {
 //$stockList = $_POST['symbol'];
     $stockList = $app->request()->post('symbol');
-
-    //set time zone
-    //date_default_timezone_set('America/New_York');
-    // $time = date('j-M-y',time());
-    //$i=0 allows to skip the first row 
+  
     $i = 0;
 
     // https://www.google.com/finance/historical?output=csv&q=aapl
     $requestUrl = "https://app.quotemedia.com/quotetools/getHistoryDownload.csv?&webmasterId=501&startDay=02&startMonth=03&startYear=2017&endDay=10&endMonth=05&endYear=2017&isRanged=false&symbol=" . $stockList;
-
-
 
     $handle = fopen($requestUrl, "r");
 
