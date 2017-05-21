@@ -17,11 +17,12 @@ $i = 0;
             
 
             $data[0] = date('d-m-Y', strtotime($data[0]));
+            
             $data[1] = floatval($data[1]);
             $data[2] = floatval($data[2]);
             $data[3] = floatval($data[3]);
             $data[4] = floatval($data[4]);
-            $data[5] = intval($data[5]);
+            //$data[5] = intval($data[5]);
             
 
          //Create an array 
