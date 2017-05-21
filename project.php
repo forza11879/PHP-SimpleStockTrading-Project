@@ -280,22 +280,64 @@ $app->get('/chart', function() use ($app) {
 $app->get('/buysellstcok/:id', function($id) use ($app) {
     $stock = DB::queryFirstRow('SELECT * FROM symbols WHERE id=%i', $id);
     $app->render('buysellstcok.html.twig', array(
-        't' => $stock
+        't' => $stock            
     ));
+    print_r($stock);
 });
 
 
 $app->post('/buysellstcok/:id', function($id) use ($app) {
     $stock = DB::queryFirstRow('SELECT * FROM symbols WHERE id=%i', $id);
     $qty = $app->request()->post('qty');
+    $date = date('Y-m-d H:i:s');
+    $userinuse= DB::queryFirstRow('SELECT * FROM users WHERE id=%i', $_SESSION['user']['id']);
+    $transactiontotal=$qty*$stock['ask'];
+    $stcokownedbyuser=DB::queryFirstRow('SELECT * FROM portfolios WHERE userId=%i AND symbol=%s', $_SESSION['user']['id'], $stock['symbol']);
+    $usernewcash=$userinuse['cash']-$transactiontotal;
     
-    DB::insert('portfolios', array(
+    
+    //////cheking if user alreadybought elected stock
+    if($stcokownedbyuser){
+        
+        $newqty=$qty+$stcokownedbyuser['qty'];
+        $newavg=(($stcokownedbyuser['qty']*$stcokownedbyuser['avgprice'])+($qty*$stock['ask']))/$newqty;
+        
+        DB::update('portfolios', array(
+                "qty" => $newqty,
+                "avgprice" => $newavg
+                    ), "userId=%i AND symbol=%s", $_SESSION['user']['id'], $stock['symbol']);
+        
+        
+    }else{
+          DB::insert('portfolios', array(
                 "userId" => $_SESSION['user']['id'],
                 "symbol" => $stock['symbol'],
                 "avgprice" => $stock['ask'],
                 "qty"=>$qty
-            ));
+            ));  
+ 
+    }
+    ////// end cheking if user alreadybought elected stock
     
+    
+               //////// //adding record to trasactions table/////
+              DB::insert('transactions', array(
+                "userId" => $_SESSION['user']['id'],
+                "symbol" => $stock['symbol'],
+                "price" => $stock['ask'],
+                "qty"=>$qty,
+                "type"=>'bought',
+                "date"=> $date
+            ));  
+              /////////////////////end adding record to transactions table///
+             
+              
+              
+              ///////////////////////updating user cash///////////////
+                 DB::update('users', array(
+                "cash" => $usernewcash
+                 ), "id=%i", $_SESSION['user']['id']);
+              //////////////////////end updating usercash//////////////
     
 })
 
