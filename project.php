@@ -157,9 +157,9 @@ $app->get('/master', function() use ($app) {
 $app->get('/list', function() use ($app) {
 
 // format for web api output
-    $format = 'snbac1p2opl1vhgkj';
+    $format = 'snbaopl1hgvkj';
 // 
-    $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY,JPM,GOOG,FAS&f={$format}";
+    $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY,JPM,GOOG,FAS,XLF,ADSK,QQQ,FAZ&f={$format}";
 
 //getting data from csv file into database
 //opening csv file
@@ -197,9 +197,9 @@ $app->post('/list', function() use ($app) {
     $stockList = $app->request()->post('symbol');
 
     // format for web api output
-    $format = 'snbac1p2opl1vhgkj';
+    $format = 'snbaopl1hgvkj';
 // 
-    $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s={$stockList}&f={$format}";
+    $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY,JPM,GOOG,FAS,XLF,ADSK,QQQ,FAZ,{$stockList}&f={$format}";
 
 //getting data from csv file into database
 //opening csv file
@@ -267,9 +267,6 @@ $app->post('/history', function() use ($app) {
 });
 
 $app->get('/chart', function() use ($app) {
-
-  
-
 
     $app->render("chart.html.twig");
 });
