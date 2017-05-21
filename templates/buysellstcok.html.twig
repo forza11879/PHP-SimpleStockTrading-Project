@@ -1,0 +1,15 @@
+{% extends "master.html.twig" %}
+
+{% block content %}
+
+ <div class="card mb-3" padding-left="10%">
+ <p>{{t.id}} : {{t.name}} priced at {{t.ask}}</p>
+ </div>
+ 
+ 
+<form method="post">
+    Qty: <input type="number" step=0.0000000001 name="qty"><br>
+    <input type="submit" value="buy">
+</form>
+
+{% endblock %}
