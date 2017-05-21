@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 //y1hkj2pyxx4xgls1
 require_once 'vendor/autoload.php';
 
@@ -34,12 +35,12 @@ $view->parserOptions = array(
 );
 $view->setTemplatesDirectory(dirname(__FILE__) . '/templates');
 
-if (!isset($_SESSION['todouser'])) {
-    $_SESSION['todouser'] = array();
+if (!isset($_SESSION['user'])) {
+    $_SESSION['user'] = array();
 }
 
 $twig = $app->view()->getEnvironment();
-$twig->addGlobal('todouser', $_SESSION['todouser']);
+$twig->addGlobal('user', $_SESSION['user']);
 
 
 
@@ -109,6 +110,8 @@ $app->get('/ajax/emailused/:email', function($email) {
 });
 
 
+
+
 $app->get('/login', function() use ($app) {
     $app->render('login.html.twig');
 });
@@ -129,6 +132,7 @@ $app->post('/login', function() use ($app) {
     }
 
     // decide what to render
+    // generating
     if ($error) {
         $app->render('login.html.twig', array("error" => true));
     } else {
@@ -136,6 +140,13 @@ $app->post('/login', function() use ($app) {
         $_SESSION['user'] = $user;
         $app->render('login_success.html.twig');
     }
+});
+
+
+$app->get('/login_success', function() use ($app) {
+   
+    $app->render('login_success.html.twig');
+     print_r(_SESSION['user']);
 });
 
 $app->get('/master', function() use ($app) {
@@ -268,6 +279,40 @@ $app->get('/chart', function() use ($app) {
 
     $app->render("chart.html.twig");
 });
+
+
+
+//buying stock and showing all info
+$app->get('/buysellstcok/:id', function($id) use ($app) {
+    $stock = DB::queryFirstRow('SELECT * FROM symbols WHERE id=%i', $id);
+    $app->render('buysellstcok.html.twig', array(
+        't' => $stock
+    ));
+});
+
+
+$app->post('/buysellstcok/:id', function($id) use ($app) {
+    $stock = DB::queryFirstRow('SELECT * FROM symbols WHERE id=%i', $id);
+    $qty = $app->request()->post('qty');
+    
+    DB::insert('portfolios', array(
+                "userId" => $_SESSION['user']['id'],
+                "symbol" => $stock['symbol'],
+                "avgprice" => $stock['ask'],
+                "qty"=>$qty
+            ));
+    
+    
+})
+
+;
+
+
+
+
+
+
+
 
 $app->run();
 
