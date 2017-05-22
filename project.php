@@ -274,16 +274,17 @@ $app->get('/chart', function() use ($app) {
 
 
 //buying stock and showing all info
-$app->get('/buysellstcok/:id', function($id) use ($app) {
+$app->get('/buysell/:id', function($id) use ($app) {
     $stock = DB::queryFirstRow('SELECT * FROM symbols WHERE id=%i', $id);
-    $app->render('buysellstcok.html.twig', array(
+    $app->render('buysell.html.twig', array(
         't' => $stock            
     ));
     print_r($stock);
+    
 });
 
 
-$app->post('/buysellstcok/:id', function($id) use ($app) {
+$app->post('/buysell/:id', function($id) use ($app) {
     $stock = DB::queryFirstRow('SELECT * FROM symbols WHERE id=%i', $id);
     $qty = $app->request()->post('qty');
     $date = date('Y-m-d H:i:s');
