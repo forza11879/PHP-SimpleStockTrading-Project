@@ -1,9 +1,9 @@
 {% extends "master.html.twig" %}
 
 {% block content %}
-    <form method="post">
-    Symbol: <input type="text" name="symbol" placeholder="Symbol">
-    <input type="submit" value="Get Quote">
+    <form method="post" id="searchBox" padding-bottom="10px">
+    Symbol: <input type="text"  name="symbol" placeholder="Symbol">
+    <input type="submit"  class="btn" value="Get Quote">
 </form>
     <div class="card mb-3" padding-left="10%">
                         <div class="card-header">
@@ -13,8 +13,9 @@
             <form method="post" >
                 <div class="card-block">
                 <div class="table-responsive">
-                    <table class="table table-bordered"  width="100%" id="dataTable" cellspacing="0">
-                        <thead>
+                    <table class="table table-striped thead-default"  width="100%" id="dataTable" cellspacing="0">
+                        <thead class="thead-inverse" >
+                            <tr>
                         <th>Symbol</th>
                         <th>Name</th>
                         <th>Bid</th>
@@ -28,8 +29,10 @@
                         <th>High 52</th>
                         <th>Low 52</th>
                         <th>Action</th>
+                        </tr>
                         </thead>
-                        <tfoot>
+                        <tfoot class="thead-inverse">
+                            <tr>
                         <th>Symbol</th>
                         <th>Name</th>
                         <th>Bid</th>
@@ -43,11 +46,13 @@
                         <th>High 52</th>
                         <th>Low 52</th>
                         <th>Action</th>
+                        </tr>
                         </tfoot>
-                        {% for t in symbols %}
+                        
                             <tbody>
+                                {% for t in symbols %}
                                 <tr>
-                                    <td>{{ t.symbol }}</td>
+                                    <td >{{ t.symbol }}</td>
                                     <td>{{ t.name }}</td>
                                     <td>{{ t.bid }}</td>
                                     <td>{{ t.ask }}</td>
@@ -61,8 +66,9 @@
                                     <td>{{ t.low52 }}</td>
                                     <td><a href="/buysellstcok/{{t.id}}">buy/sell </a>
                                 </tr>
+                                {% endfor %}
                             </tbody>
-                        {% endfor %}
+                        
                     </table>
                 </div>
                     </div>
