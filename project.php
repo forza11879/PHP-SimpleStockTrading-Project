@@ -294,7 +294,8 @@ $app->post('/buysell/:id', function($id) use ($app) {
     $usernewcash=$userinuse['cash']-$transactiontotal;
     
     
-    //////cheking if user alreadybought elected stock
+    
+    //////cheking if user already bought elected stock
     if($stcokownedbyuser){
         
         $newqty=$qty+$stcokownedbyuser['qty'];
