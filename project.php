@@ -339,7 +339,7 @@ $app->post('/buysell/:id', function($id) use ($app) {
                  DB::update('users', array(
                 "cash" => $usernewcash
                  ), "id=%i", $_SESSION['user']['id']);
-              //////////////////////end updating usercash//////////////
+              //////////////////////end updating user cash//////////////
     
 })
 

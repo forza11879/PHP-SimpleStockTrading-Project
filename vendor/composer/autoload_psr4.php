@@ -7,12 +7,10 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Slim\\Views\\' => array($vendorDir . '/slim/views'),
-    'Scheb\\YahooFinanceApi\\' => array($vendorDir . '/scheb/yahoo-finance-api'),
     'React\\Promise\\' => array($vendorDir . '/react/promise/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'GuzzleHttp\\Stream\\' => array($vendorDir . '/guzzlehttp/streams/src'),
     'GuzzleHttp\\Ring\\' => array($vendorDir . '/guzzlehttp/ringphp/src'),
     'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),
-    'DirkOlbrich\\YahooFinanceQuery\\' => array($vendorDir . '/dirkolbrich/yahoo-finance-query/src'),
 );
