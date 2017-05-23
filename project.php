@@ -285,6 +285,9 @@ $app->get('/buysell/:id', function($id) use ($app) {
 
 
 $app->post('/buysell/:id', function($id) use ($app) {
+    
+    date_default_timezone_set('America/New_York');
+    
     $stock = DB::queryFirstRow('SELECT * FROM symbols WHERE id=%i', $id);
     $qty = $app->request()->post('qty');
     $date = date('Y-m-d H:i:s');
