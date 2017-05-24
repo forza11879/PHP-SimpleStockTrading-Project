@@ -5,6 +5,7 @@
 {% block content %}
 
     
+<!--SELECT s.symbol, s.qty, p.bid FROM portfolios p, symbols s WHERE p.symbol = s.symbol AND p.userId= ???-->
 
 
 
@@ -17,6 +18,7 @@
                         <br>
                         <form method="post">
                             Qty: <input type="number" min="0" value="100" step="1" name="qty"><br>
+                            <input type="hidden" name="type" value="buy">
                             <br>
                             <button type="submit" class="btn btn-primary btn-md">Buy</button>
                         </form>
@@ -44,6 +46,7 @@
                         <form method="post">
                             Qty: <input type="number" min="0" value="100" step="1" name="qty"><br>
                             <br>
+                            <input type="hidden" name="type" value="sell">
                             <button type="submit" class="btn btn-primary btn-md">Sell</button>
                         </form>
 
