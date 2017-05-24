@@ -32,6 +32,8 @@ $i = 0;
         $i++;
     }
     
+    //print_r($chartArray);
+    
     fclose($handle);
 
     //Convert PHP Array to reverse JSON String

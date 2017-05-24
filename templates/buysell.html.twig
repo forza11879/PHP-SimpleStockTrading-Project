@@ -4,12 +4,7 @@
 
 {% block content %}
 
-    {% if sessionUser %}
-        <p>Hello {{sessionUser.name}} ({{sessionUser.email}}).
-            You may <a href="/logout">logout</a>.</p>
-        {% else %}
-        <p>You may <a href="/login">login</a> or <a href="/register">register</a>.</p>
-    {% endif %}
+    
 
 
 
@@ -68,7 +63,7 @@
 
     <div class="panel-body">
 
-        <div id="container" style="height: 250px; min-width: 310px"></div>
+        <div id="container" style="height: 500px; min-width: 310px"></div>
     </div>
 
 
