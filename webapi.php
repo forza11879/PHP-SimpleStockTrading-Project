@@ -17,7 +17,9 @@ $i = 0;
             
 
             //$data[0] = date('d-m-Y', strtotime($data[0]));
-            $data[0] = date('M j, Y', strtotime($data[0]));
+            //$data[0] = date('M j, Y', Date.parse($data[0]));
+            //$data[0] = date('M j, Y', strtotime($data[0]));
+            $data[0] = strtotime($data[0])*1000;
             $data[1] = floatval($data[1]);
             $data[2] = floatval($data[2]);
             $data[3] = floatval($data[3]);
