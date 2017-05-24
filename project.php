@@ -286,7 +286,6 @@ $app->get('/buysell/:id', function($id) use ($app) {
     $app->render('buysell.html.twig', array(
         't' => $stock            
     ));
-    print_r($stock);
     
 });
 
