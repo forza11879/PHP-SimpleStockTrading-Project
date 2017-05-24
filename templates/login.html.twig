@@ -1,24 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Login</title>
+{% extends "master.html.twig" %}
+{% block title %}Login{% endblock %}
 
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+{% block content %}
     
-
-  </head>
-  <body>
-    <div class="container">
-  
-  
-  <div class="container" style="max-width: 500px">
-  <h2>Login</h2>  
-    <br>  
+    <div class="panel-heading">
+                                <h3 class="panel-title">Log-in: <i class="glyphicon glyphicon-log-in"></i></h3>
+                                
+                            </div>
+    <div class="panel-body">
+          
+      
   <form method="post">
     <div class="form-group">
       <label for="email">Email:</label>
@@ -34,25 +25,22 @@
     </div>
     <button type="submit" class="btn btn-default">Submit</button>
   </form>
-</div>
-   
-</form>
-
-
-{% if errorList %}
+    
+        
+        </div>
+    <div>
+    
+    {% if errorList %}
     <ul class="errorList">
         {% for error in errorList %}
             <li>{{ error }}</li>
         {% endfor %}
     </ul>
+        
+        </div>
 {% endif %}
-
-</div>
+ 
     
+{% endblock %}
     
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
-  </body>
-</html>
+   

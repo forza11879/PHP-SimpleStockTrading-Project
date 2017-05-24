@@ -2,6 +2,13 @@
 
 
 {% block content %}
+    
+    {% if sessionUser %}
+        <p>Hello {{sessionUser.name}} ({{sessionUser.email}}).
+            You may <a href="/logout">logout</a>.</p>
+        {% else %}
+        <p>You may <a href="/login">login</a> or <a href="/register">register</a>.</p>
+    {% endif %}
 
  <div class="card mb-3" padding-left="10%">
  <p>{{t.id}} : {{t.name}} priced at {{t.ask}}</p>
