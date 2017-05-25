@@ -4,10 +4,12 @@
 
 {% block content %}
 
+
+    <!--SELECT s.symbol, s.qty, p.bid FROM portfolios p, symbols s WHERE p.symbol = s.symbol AND p.userId= ???-->
     
-<!--SELECT s.symbol, s.qty, p.bid FROM portfolios p, symbols s WHERE p.symbol = s.symbol AND p.userId= ???-->
-
-
+<div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-table fa-fw"></i> Buy/Sell Ticket</h3>
+    </div>
 
     <div class="panel-body">
         <div class="row">
@@ -56,23 +58,28 @@
             </div>
         </div>
     </div>
+{% endblock %}
 
+{% block chart %}
 
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="https://code.highcharts.com/stock/highstock.js"></script>
     <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
 
-
+    <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Charts</h3>
+    </div>
     <div class="panel-body">
+        
 
-        <div id="container" style="height: 500px; min-width: 310px"></div>
+    <div id="container" style="height: 580px; min-width: 310px"></div>
     </div>
 
 
 
     <script>
-        $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?a=e&filename=aapl-ohlc.json&callback=?', function (data) {
+        $.getJSON('webapi.php', function (data) {
 
             // create the chart
             Highcharts.stockChart('container', {
