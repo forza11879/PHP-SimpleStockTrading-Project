@@ -144,9 +144,9 @@ $app->post('/login', function() use ($app) {
 
 
 $app->get('/login_success', function() use ($app) {
-   
+
     $app->render('login_success.html.twig');
-     print_r(_SESSION['user']);
+    print_r(_SESSION['user']);
 });
 
 $app->get('/master', function() use ($app) {
@@ -206,7 +206,7 @@ $app->post('/list', function() use ($app) {
     // format for web api output
     $format = 'snbaopl1hgvkj';
 // 
-    $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY,JPM,GOOG,FAS,XLF,ADSK,QQQ,FAZ,{$stockList}&f={$format}";
+    $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY,JPM,GOOG,FAS,XLF,ADSK,QQQ,FAZ,AMZN{$stockList}&f={$format}";
 
 //getting data from csv file into database
 //opening csv file
@@ -246,7 +246,7 @@ $app->get('/history', function() use ($app) {
 $app->post('/history', function() use ($app) {
 //$stockList = $_POST['symbol'];
     $stockList = $app->request()->post('symbol');
-  
+
     $i = 0;
 
     // https://www.google.com/finance/historical?output=csv&q=aapl
@@ -278,75 +278,114 @@ $app->get('/chart', function() use ($app) {
     $app->render("chart.html.twig");
 });
 
+//$app->response()->headers()->set("content-type", "application/json");
+
+
+
+$app->get('/chart2', function() use ($app) {
+
+    //$stockList = $app->request()->post('symbol');
+
+    $i = 0;
+
+
+    //$stocks = "https://app.quotemedia.com/quotetools/getHistoryDownload.csv?&webmasterId=501&startDay=02&startMonth=03&startYear=2017&endDay=10&endMonth=05&endYear=2017&isRanged=false&symbol=aapl";
+    //$stocks = "https://www.google.com/finance/historical?output=csv&q=". $stockList;
+    $stocks = "https://www.google.com/finance/historical?output=csv&q=aapl";
+//getting data from csv file into database
+//reading csv file
+    $handle = fopen($stocks, 'r');
+    
+//looping through CSV file
+    while (($data = fgetcsv($handle, 2000, ",")) !== FALSE) {
+
+        if ($i > 0) {
+
+
+            //$data[0] = date('d-m-Y', strtotime($data[0]));
+            //$data[0] = date('M j, Y', Date.parse($data[0]));
+            //$data[0] = date('M j, Y', strtotime($data[0]));
+            $data[0] = strtotime($data[0]) * 1000;
+            $data[1] = floatval($data[1]);
+            $data[2] = floatval($data[2]);
+            $data[3] = floatval($data[3]);
+            $data[4] = floatval($data[4]);
+           
+            //Create an array 
+            $chartArray[] = $data;
+        }
+        $i++;
+    }
+
+    //print_r($chartArray);
+
+    fclose($handle);
+
+    //Convert PHP Array to reverse JSON String
+
+    print (json_encode(array_reverse($chartArray)));
+    //echo json_encode($chartArray, JSON_PRETTY_PRINT);
+});
+
 
 
 //buying stock and showing all info
 $app->get('/buysell/:id', function($id) use ($app) {
     $stock = DB::queryFirstRow('SELECT * FROM symbols WHERE id=%i', $id);
     $app->render('buysell.html.twig', array(
-        't' => $stock            
+        't' => $stock
     ));
-    
 });
 
 
 $app->post('/buysell/:id', function($id) use ($app) {
-    
+
     date_default_timezone_set('America/New_York');
-    
+
     $stock = DB::queryFirstRow('SELECT * FROM symbols WHERE id=%i', $id);
     $qty = $app->request()->post('qty');
     $date = date('Y-m-d H:i:s');
-    $userinuse= DB::queryFirstRow('SELECT * FROM users WHERE id=%i', $_SESSION['user']['id']);
-    $transactiontotal=$qty*$stock['ask'];
-    $stcokownedbyuser=DB::queryFirstRow('SELECT * FROM portfolios WHERE userId=%i AND symbol=%s', $_SESSION['user']['id'], $stock['symbol']);
-    $usernewcash=$userinuse['cash']-$transactiontotal;
-    
-    
-    
+    $userinuse = DB::queryFirstRow('SELECT * FROM users WHERE id=%i', $_SESSION['user']['id']);
+    $transactiontotal = $qty * $stock['ask'];
+    $stcokownedbyuser = DB::queryFirstRow('SELECT * FROM portfolios WHERE userId=%i AND symbol=%s', $_SESSION['user']['id'], $stock['symbol']);
+    $usernewcash = $userinuse['cash'] - $transactiontotal;
+
+
+
     //////cheking if user already bought elected stock
-    if($stcokownedbyuser){
-        
-        $newqty=$qty+$stcokownedbyuser['qty'];
-        $newavg=(($stcokownedbyuser['qty']*$stcokownedbyuser['avgprice'])+($qty*$stock['ask']))/$newqty;
-        
+    if ($stcokownedbyuser) {
+
+        $newqty = $qty + $stcokownedbyuser['qty'];
+        $newavg = (($stcokownedbyuser['qty'] * $stcokownedbyuser['avgprice']) + ($qty * $stock['ask'])) / $newqty;
+
         DB::update('portfolios', array(
-                "qty" => $newqty,
-                "avgprice" => $newavg
-                    ), "userId=%i AND symbol=%s", $_SESSION['user']['id'], $stock['symbol']);
-        
-        
-    }else{
-          DB::insert('portfolios', array(
-                "userId" => $_SESSION['user']['id'],
-                "symbol" => $stock['symbol'],
-                "avgprice" => $stock['ask'],
-                "qty"=>$qty
-            ));  
- 
+            "qty" => $newqty,
+            "avgprice" => $newavg
+                ), "userId=%i AND symbol=%s", $_SESSION['user']['id'], $stock['symbol']);
+    } else {
+        DB::insert('portfolios', array(
+            "userId" => $_SESSION['user']['id'],
+            "symbol" => $stock['symbol'],
+            "avgprice" => $stock['ask'],
+            "qty" => $qty
+        ));
     }
     ////// end cheking if user alreadybought elected stock
-    
-    
-               //////// //adding record to trasactions table/////
-              DB::insert('transactions', array(
-                "userId" => $_SESSION['user']['id'],
-                "symbol" => $stock['symbol'],
-                "price" => $stock['ask'],
-                "qty"=>$qty,
-                "type"=>'bought',
-                "date"=> $date
-            ));  
-              /////////////////////end adding record to transactions table///
-             
-              
-              
-              ///////////////////////updating user cash///////////////
-                 DB::update('users', array(
-                "cash" => $usernewcash
-                 ), "id=%i", $_SESSION['user']['id']);
-              //////////////////////end updating user cash//////////////
-    
+    //////// //adding record to trasactions table/////
+    DB::insert('transactions', array(
+        "userId" => $_SESSION['user']['id'],
+        "symbol" => $stock['symbol'],
+        "price" => $stock['ask'],
+        "qty" => $qty,
+        "type" => 'bought',
+        "date" => $date
+    ));
+    /////////////////////end adding record to transactions table///
+    ///////////////////////updating user cash///////////////
+    DB::update('users', array(
+        "cash" => $usernewcash
+            ), "id=%i", $_SESSION['user']['id']);
+    //////////////////////end updating user cash//////////////
 });
 
 // PASSWOR RESET
@@ -363,7 +402,7 @@ function generateRandomString($length = 10) {
 
 $app->map('/passreset', function () use ($app, $log) {
     // Alternative to cron-scheduled cleanup
-    if (rand(1,1000) == 111) {
+    if (rand(1, 1000) == 111) {
         // TODO: do the cleanup 1 in 1000 accessed to /passreset URL
     }
     if ($app->request()->isGet()) {
@@ -395,9 +434,9 @@ $app->map('/passreset', function () use ($app, $log) {
                 'url' => $url
             ));
             $headers = "MIME-Version: 1.0\r\n";
-            $headers.= "Content-Type: text/html; charset=UTF-8\r\n";
-            $headers.= "From: Noreply <noreply@ipd8.info>\r\n";
-            $headers.= "To: " . htmlentities($user['name']) . " <" . $email . ">\r\n";
+            $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+            $headers .= "From: Noreply <noreply@ipd8.info>\r\n";
+            $headers .= "To: " . htmlentities($user['name']) . " <" . $email . ">\r\n";
 
             mail($email, "Password reset from SlimShop", $html, $headers);
             $log->info("Password reset for $email email sent");
@@ -441,9 +480,9 @@ $app->map('/passreset/:secretToken', function($secretToken) use ($app) {
             DB::update('users', array(
                 'password' => password_hash($pass1, CRYPT_BLOWFISH)
                     ), "ID=%d", $row['userID']);
-            DB::delete('passresets','secretToken=%s', $secretToken);
+            DB::delete('passresets', 'secretToken=%s', $secretToken);
             $app->render('passreset_form_success.html.twig');
-            $log->info("Password reset completed for " . $row['email'] . " uid=". $row['userID']);
+            $log->info("Password reset completed for " . $row['email'] . " uid=" . $row['userID']);
         }
     }
 })->via('GET', 'POST');
@@ -452,26 +491,26 @@ $app->map('/passreset/:secretToken', function($secretToken) use ($app) {
 $app->get('/scheduled/daily', function() use ($app, $log) {
     DB::$error_handler = FALSE;
     DB::$throw_exception_on_error = TRUE;
-            // PLACE THE ORDER
+    // PLACE THE ORDER
     $log->debug("Daily scheduler run started");
     // 1. clean up old password reset requests
     try {
-        DB::delete('passresets', "expiryDateTime < NOW()");    
+        DB::delete('passresets', "expiryDateTime < NOW()");
         $log->debug("Password resets clean up, removed " . DB::affectedRows());
     } catch (MeekroDBException $e) {
         sql_error_handler(array(
-                    'error' => $e->getMessage(),
-                    'query' => $e->getQuery()
-                ));
+            'error' => $e->getMessage(),
+            'query' => $e->getQuery()
+        ));
     }
     // 2. clean up old cart items (normally we never do!)
     try {
         DB::delete('cartitems', "createdTS < DATE(DATE_ADD(NOW(), INTERVAL -1 DAY))");
     } catch (MeekroDBException $e) {
         sql_error_handler(array(
-                    'error' => $e->getMessage(),
-                    'query' => $e->getQuery()
-                ));
+            'error' => $e->getMessage(),
+            'query' => $e->getQuery()
+        ));
     }
     $log->debug("Cart items clean up, removed " . DB::affectedRows());
     $log->debug("Daily scheduler run completed");
