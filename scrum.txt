@@ -115,4 +115,85 @@ todo:
 1)add design for register and login pages
 2)Create template for the main inteface
 
+//////////////////////////////////////////
+19-22/05/2017
 
+Gregory:
+
+done:
+1)buy was implemented.
+2)Tryed to fixed bootsrap problem with design
+3)Tryed to calculate total equity
+4)tryed to calculate avg buy price
+5)fixed multiple problems with css
+
+
+
+todo:
+1)finish calculating avg price
+2)test buy
+3)write query for total eqyity
+
+
+
+
+JOhn:
+1)fixed multple problems with api
+2)new stocks added
+3)source of stocks was changed
+
+todo:
+
+
+
+/////////////////////////////////////////////
+
+23/04/2017
+
+gregory
+
+done:
+
+1)buy tested, few things were fixed, john must test it
+2)avg price is beign calculated
+3)started implementing sell function
+
+
+todo:
+1)finish avg price. test how it works
+2)finish sell function
+3)add hidden fields in order to buy or sell on the same page
+
+
+john:
+1) tryed to fix some problems with graph
+2) password reset is partially implemented
+
+
+todo:
+1) fnish password reset
+2) ask teacher about graphs
+3) fix time problem with candlestick graph
+
+25/04/2017
+
+gregory
+
+
+done:
+1) total equity is beign calculated
+2) sell is implemented
+
+
+todo:
+1) add max and min price for buy and sell
+2) Add styles to register and login
+3) 
+
+
+
+
+
+
+
+ 
