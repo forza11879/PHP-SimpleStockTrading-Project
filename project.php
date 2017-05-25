@@ -14,12 +14,9 @@ $log->pushHandler(new StreamHandler('logs/errors.log', Logger::ERROR));
 
 
 
-DB::$host = 'localhost';
-DB::$user = 'stocksimulator';
-DB::$password = 'bUz0FlWwASZEnDgZ';
-DB::$dbName = 'stocksimulator';
-DB::$encoding = 'utf8';
-DB::$port = 3333;
+require_once 'local.php';
+
+
 
 //tradeapp
 //cp4776_tradingapp
@@ -332,8 +329,30 @@ $app->get('/chart2', function() use ($app) {
 //buying stock and showing all info
 $app->get('/buysell/:id', function($id) use ($app) {
     $stock = DB::queryFirstRow('SELECT * FROM symbols WHERE id=%i', $id);
-    $app->render('buysell.html.twig', array(
-        't' => $stock
+
+
+    $stcokownedbyuser = DB::queryFirstRow('SELECT * FROM portfolios WHERE userId=%i AND symbol=%s', $_SESSION['user']['id'], $stock['symbol']);
+
+    $userinuse = DB::queryFirstRow('SELECT * FROM users WHERE id=%i', $_SESSION['user']['id']);
+
+    if ($stock['ask'] != 0) {
+        
+    } else {
+        $maxbuy = $userinuse['cash'] / $stock['ask'];
+    }
+
+
+
+    if ($stcokownedbyuser) {
+
+        $maxsell = $stcokownedbyuser['qty'];
+    } else {
+        $maxsell = 0;
+    }
+    
+    
+        $app->render('buysell.html.twig', array(
+            't' => $stock, 'maxbuy' => $maxbuy, 'maxsell' => $maxsell 
     ));
 });
 
@@ -417,12 +436,6 @@ $app->post('/buysell/:id', function($id) use ($app) {
             ), "id=%i", $_SESSION['user']['id']);
 //////////////////////end updating user cash//////////////
 });
-
-
-
-
-
-
 
 // PASSWOR RESET
 

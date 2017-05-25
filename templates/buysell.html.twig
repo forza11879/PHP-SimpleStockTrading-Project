@@ -19,7 +19,7 @@
                         <h2>Ask: {{t.ask}}</h2>
                         <br>
                         <form method="post">
-                            Qty: <input type="number" min="0" value="100" step="1" name="qty"><br>
+                            Qty: <input type="number" min="1" max="{{maxbuy}}"  value="1" step="1" name="qty"><br>
                             <input type="hidden" name="type" value="buy">
                             <br>
                             <button type="submit" class="btn btn-primary btn-md">Buy</button>
@@ -46,7 +46,7 @@
                         <h2>Bid: {{t.bid}}</h2>
                         <br>
                         <form method="post">
-                            Qty: <input type="number" min="0" value="100" step="1" name="qty"><br>
+                            Qty: <input type="number" min="0" max="{{maxsell}}"  value="100" step="1" name="qty"><br>
                             <br>
                             <input type="hidden" name="type" value="sell">
                             <button type="submit" class="btn btn-primary btn-md">Sell</button>
