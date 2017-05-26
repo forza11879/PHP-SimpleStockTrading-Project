@@ -143,7 +143,7 @@ $app->post('/login', function() use ($app) {
     } else {
         unset($user['password']);
         $_SESSION['user'] = $user;
-        $app->render('login_success.html.twig');
+        $app->render('list.html.twig');
     }
 });
 

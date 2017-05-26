@@ -1,46 +1,55 @@
-{% extends "master.html.twig" %}
-{% block title %}Login{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>Bootstrap 101 Template</title>
 
-{% block content %}
-    
-    <div class="panel-heading">
-                                <h3 class="panel-title">Log-in: <i class="glyphicon glyphicon-log-in"></i></h3>
-                                
+        <!-- Bootstrap -->
+        <link href="css/full.css" rel="stylesheet">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+
+
+    </head>
+
+
+
+    <body id="register">
+        <div class="row centered-form">
+            <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Register</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form method="post">
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
                             </div>
-    <div class="panel-body">
-          
-      
-  <form method="post">
-    <div class="form-group">
-      <label for="email">Email:</label>
-      <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
-    </div>
-    <div class="form-group">
-      <label for="pass">Password:</label>
-      <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="password">
-    </div>
-    <div>
-      <label><a href="/register">Register</a></label>
-      <br>
-    </div>
-    <button type="submit" class="btn btn-default">Submit</button>
-  </form>
-    
-        
+                            <div class="form-group">
+                                <label for="pass">Password:</label>
+                                <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="password">
+                            </div>
+                            <div>
+                                <label><a href="/register">Register</a></label>
+                                <br>
+                            </div>
+                            <button type="submit" class="btn btn-default">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% if errorList %}
+                <ul class="errorList">
+                    {% for error in errorList %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                </ul>
+
+            {% endif %}
         </div>
-    <div>
-    
-    {% if errorList %}
-    <ul class="errorList">
-        {% for error in errorList %}
-            <li>{{ error }}</li>
-        {% endfor %}
-    </ul>
-        
-        </div>
-{% endif %}
- 
-    
-{% endblock %}
-    
-   
+    </body>
+</html>
