@@ -447,7 +447,12 @@ $app->post('/buysell/:id', function($id) use ($app) {
 });
 
 $app->get('/orders', function() use ($app) {
-    $app->render('orders.html.twig');
+    
+    //getting data from database
+    $getOrderDetails = DB::query("SELECT * FROM transactions GROUP BY id DESC");
+// print_r($getquotes);
+    $app->render("orders.html.twig", ["transactions" => $getOrderDetails]);
+   
 });
 
 // PASSWOR RESET
