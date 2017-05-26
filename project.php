@@ -211,7 +211,7 @@ $app->post('/list', function() use ($app) {
 // format for web api output
     $format = 'snbaopl1hgvkj';
 // 
-    $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY,JPM,GOOG,FAS,XLF,ADSK,QQQ,FAZ,AMZN{$stockList}&f={$format}";
+    $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY,JPM,GOOG,FAS,XLF,ADSK,QQQ,FAZ,AMZN,{$stockList}&f={$format}";
 
 //getting data from csv file into database
 //opening csv file
