@@ -4,6 +4,14 @@ session_start();
 //y1hkj2pyxx4xgls1
 require_once 'vendor/autoload.php';
 
+DB::$host = 'localhost';
+DB::$user = 'stocksimulator';
+DB::$password = 'bUz0FlWwASZEnDgZ';
+DB::$dbName = 'stocksimulator';
+DB::$encoding = 'utf8';
+DB::$port = 3333;
+
+
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
@@ -14,7 +22,7 @@ $log->pushHandler(new StreamHandler('logs/errors.log', Logger::ERROR));
 
 
 
-require_once 'local.php';
+//require_once 'local.php';
 
 
 
