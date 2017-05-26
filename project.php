@@ -336,16 +336,17 @@ $app->get('/buysell/:id', function($id) use ($app) {
     $userinuse = DB::queryFirstRow('SELECT * FROM users WHERE id=%i', $_SESSION['user']['id']);
 
     if ($stock['ask'] != 0) {
-        
+       $maxbuy = floor($userinuse['cash'] / $stock['ask']);
     } else {
-        $maxbuy = $userinuse['cash'] / $stock['ask'];
+        
+         $maxbuy=0;
     }
 
 
 
     if ($stcokownedbyuser) {
 
-        $maxsell = $stcokownedbyuser['qty'];
+        $maxsell = floor($stcokownedbyuser['qty']);
     } else {
         $maxsell = 0;
     }
