@@ -446,6 +446,10 @@ $app->post('/buysell/:id', function($id) use ($app) {
 //////////////////////end updating user cash//////////////
 });
 
+$app->get('/orders', function() use ($app) {
+    $app->render('orders.html.twig');
+});
+
 // PASSWOR RESET
 
 function generateRandomString($length = 10) {
