@@ -11,7 +11,6 @@ DB::$dbName = 'stocksimulator';
 DB::$encoding = 'utf8';
 DB::$port = 3333;
 
-
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
@@ -23,9 +22,6 @@ $log->pushHandler(new StreamHandler('logs/errors.log', Logger::ERROR));
 
 
 //require_once 'local.php';
-
-
-
 //tradeapp
 //cp4776_tradingapp
 // Slim creation and setup
@@ -171,7 +167,7 @@ $app->get('/list', function() use ($app) {
 // format for web api output
     $format = 'snbaopl1hgvkj';
 // 
-    $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY,JPM,GOOG,FAS,XLF,ADSK,QQQ,FAZ&f={$format}";
+    $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY,GOOG,FAS,XLF,ADSK,QQQ,FAZ&f={$format}";
 
 //getting data from csv file into database
 //opening csv file
@@ -211,7 +207,7 @@ $app->post('/list', function() use ($app) {
 // format for web api output
     $format = 'snbaopl1hgvkj';
 // 
-    $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY,JPM,GOOG,FAS,XLF,ADSK,QQQ,FAZ,AMZN,{$stockList}&f={$format}";
+    $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s={$stockList}&f={$format}";
 
 //getting data from csv file into database
 //opening csv file
@@ -278,25 +274,68 @@ $app->post('/history', function() use ($app) {
     fclose($handle);
 });
 
-$app->get('/chart', function() use ($app) {
 
-    $app->render("chart.html.twig");
+$app->get('/fetch/:symbol', function($symbol) use ($app) {
+
+    $i = 0;
+//$stocks = "https://app.quotemedia.com/quotetools/getHistoryDownload.csv?&webmasterId=501&startDay=02&startMonth=03&startYear=2017&endDay=10&endMonth=05&endYear=2017&isRanged=false&symbol=aapl";
+    $stocks = "https://www.google.com/finance/historical?output=csv&q=" . $symbol;
+
+//getting data from csv file into database
+//reading csv file
+    $handle = fopen($stocks, 'r');
+//creating an array
+//$chartArray = array();
+//looping through CSV file
+    while (($data = fgetcsv($handle, 2000, ",")) !== FALSE) {
+
+        if ($i > 0) {
+
+
+            //$data[0] = date('d-m-Y', strtotime($data[0]));
+            //$data[0] = date('M j, Y', Date.parse($data[0]));
+            //$data[0] = date('M j, Y', strtotime($data[0]));
+            $data[0] = strtotime($data[0]) * 1000;
+            $data[1] = floatval($data[1]);
+            $data[2] = floatval($data[2]);
+            $data[3] = floatval($data[3]);
+            $data[4] = floatval($data[4]);
+            //$data[5] = intval($data[5]);
+            //Create an array 
+            $chartArray[] = $data;
+        }
+        $i++;
+    }
+
+//print_r($chartArray);
+
+    fclose($handle);
+
+//Convert PHP Array to reverse JSON String
+
+    print (json_encode(array_reverse($chartArray)));
 });
 
-//$app->response()->headers()->set("content-type", "application/json");
+$app->get('/chart/:symbol', function($symbol) use ($app) {
+    $app->render("chart.html.twig", array('symbol' => $symbol));
+});
 
-
+//chart2
 
 $app->get('/chart2', function() use ($app) {
 
-//$stockList = $app->request()->post('symbol');
+    $app->render("chart2.html.twig");
+});
+
+$app->post('/chart2', function() use ($app) {
+    $stockList = $app->request()->post('symbol');
 
     $i = 0;
 
 
 //$stocks = "https://app.quotemedia.com/quotetools/getHistoryDownload.csv?&webmasterId=501&startDay=02&startMonth=03&startYear=2017&endDay=10&endMonth=05&endYear=2017&isRanged=false&symbol=aapl";
 //$stocks = "https://www.google.com/finance/historical?output=csv&q=". $stockList;
-    $stocks = "https://www.google.com/finance/historical?output=csv&q=aapl";
+    $stocks = "https://www.google.com/finance/historical?output=csv&q=" . $stockList;
 //getting data from csv file into database
 //reading csv file
     $handle = fopen($stocks, 'r');
@@ -333,7 +372,6 @@ $app->get('/chart2', function() use ($app) {
 });
 
 
-
 //buying stock and showing all info
 $app->get('/buysell/:id', function($id) use ($app) {
     $stock = DB::queryFirstRow('SELECT * FROM symbols WHERE id=%i', $id);
@@ -344,10 +382,10 @@ $app->get('/buysell/:id', function($id) use ($app) {
     $userinuse = DB::queryFirstRow('SELECT * FROM users WHERE id=%i', $_SESSION['user']['id']);
 
     if ($stock['ask'] != 0) {
-       $maxbuy = floor($userinuse['cash'] / $stock['ask']);
+        $maxbuy = floor($userinuse['cash'] / $stock['ask']);
     } else {
-        
-         $maxbuy=0;
+
+        $maxbuy = 0;
     }
 
 
@@ -358,18 +396,18 @@ $app->get('/buysell/:id', function($id) use ($app) {
     } else {
         $maxsell = 0;
     }
-    
-    
-        $app->render('buysell.html.twig', array(
-            't' => $stock, 'maxbuy' => $maxbuy, 'maxsell' => $maxsell 
+
+
+    $app->render('buysell.html.twig', array(
+        't' => $stock, 'maxbuy' => $maxbuy, 'maxsell' => $maxsell
     ));
-        
-        
 });
 
 
 $app->post('/buysell/:id', function($id) use ($app) {
 
+    echo ("<script>window.alert('Transaction Proccesed')</script>");
+    
     date_default_timezone_set('America/New_York');
 
     $stock = DB::queryFirstRow('SELECT * FROM symbols WHERE id=%i', $id);
@@ -449,12 +487,11 @@ $app->post('/buysell/:id', function($id) use ($app) {
 });
 
 $app->get('/orders', function() use ($app) {
-    
+
     //getting data from database
     $getOrderDetails = DB::query("SELECT * FROM transactions GROUP BY id DESC");
 // print_r($getquotes);
     $app->render("orders.html.twig", ["transactions" => $getOrderDetails]);
-   
 });
 
 // PASSWOR RESET

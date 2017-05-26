@@ -78,7 +78,7 @@
 
 
     <script>
-        $.getJSON('webapi.php', function (data) {
+        $.getJSON('/fetch/{{t.symbol}}', function (data) {
 
             // create the chart
             Highcharts.stockChart('container', {
@@ -88,7 +88,7 @@
                 },
 
                 title: {
-                    text: ''
+                    text: '{{t.name}}'
                 },
 
                 series: [{

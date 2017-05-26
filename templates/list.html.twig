@@ -56,7 +56,8 @@
                             <tbody>
                                 {% for t in symbols %}
                                 <tr>
-                                    <td >{{ t.symbol }}</td>
+                                    
+                                    <td ><strong><a href="/chart/{{t.symbol}}">{{t.symbol}}</strong></td>
                                     <td>{{ t.name }}</td>
                                     <td>{{ t.bid }}</td>
                                     <td>{{ t.ask }}</td>
