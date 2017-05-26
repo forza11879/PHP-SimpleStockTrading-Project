@@ -1,4 +1,4 @@
 #allows you to create vertual url://
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ project.php [QSA,L]
+RewriteRule ^ index.php [QSA,L]

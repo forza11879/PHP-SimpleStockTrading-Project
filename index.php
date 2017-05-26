@@ -406,7 +406,7 @@ $app->get('/buysell/:id', function($id) use ($app) {
 
 $app->post('/buysell/:id', function($id) use ($app) {
 
-    echo ("<script>window.alert('Transaction Proccesed')</script>");
+    //echo ("<script>window.alert('Transaction Proccesed')</script>");
     
     date_default_timezone_set('America/New_York');
 
@@ -419,7 +419,7 @@ $app->post('/buysell/:id', function($id) use ($app) {
     $stcokownedbyuser = DB::queryFirstRow('SELECT * FROM portfolios WHERE userId=%i AND symbol=%s', $_SESSION['user']['id'], $stock['symbol']);
 
     $type = $app->request()->post('type');
-    print_r($type);
+    //print_r($type);
 
 
     if ($type == 'buy') {
@@ -470,7 +470,7 @@ $app->post('/buysell/:id', function($id) use ($app) {
 /////////////////////end adding record to transactions table///
 /////calculating equity////////////
     $listofstockstocalculateequity = DB::query('SELECT s.symbol, p.qty, s.bid FROM portfolios p, symbols s WHERE p.symbol = s.symbol AND p.userId=%i', $_SESSION['user']['id']);
-    print_r($listofstockstocalculateequity);
+    //print_r($listofstockstocalculateequity);
     $total = 0;
     foreach ($listofstockstocalculateequity as $stockownedbyuser) {
         $total = $stockownedbyuser['qty'] * $stockownedbyuser['bid'] + $total;
