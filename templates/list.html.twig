@@ -3,89 +3,97 @@
 
 
 {% block content %}
+
+
     <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-fw fa-binoculars"></i> Watch List</h3>
-                            </div>
+        <h3 class="panel-title"><i class="fa fa-fw fa-binoculars"></i> Watch List</h3>
+    </div>
     <div class="panel-body">
-    <form method="post" id="searchBox" padding-bottom="10px">
-    Symbol: <input type="text"  name="symbol" placeholder="Symbol">
-    <input type="submit"  class="btn" value="Get Quote">
-</form>
-    <div class="card mb-3" padding-left="10%">
-                        
-        <div class="list-task">
-            <form method="post" >
-                <div class="card-block">
-                <div class="table-responsive">
-                    <table class="table table-striped"  width="100%" id="dataTable" cellspacing="0">
-                        <thead class="thead-inverse">
-                            <tr>
-                        <th>Symbol</th>
-                        <th>Name</th>
-                        <th>Bid</th>
-                        <th>Ask</th>
-                        <th>Open</th>
-                        <th>Prev Close</th>
-                        <th>Last Trade</th>
-                        <th>High</th>
-                        <th>Low</th>
-                        <th>Volume</th>
-                        <th>High 52</th>
-                        <th>Low 52</th>
-                        <th>Action</th>
-                        </tr>
-                        </thead>
-                        <tfoot class="thead-inverse">
-                            <tr>
-                        <th>Symbol</th>
-                        <th>Name</th>
-                        <th>Bid</th>
-                        <th>Ask</th>
-                        <th>Open</th>
-                        <th>Prev Close</th>
-                        <th>Last Trade</th>
-                        <th>High</th>
-                        <th>Low</th>
-                        <th>Volume</th>
-                        <th>High 52</th>
-                        <th>Low 52</th>
-                        <th>Action</th>
-                        </tr>
-                        </tfoot>
-                        
-                            <tbody>
-                                {% for t in symbols %}
-                                <tr>
-                                    
-                                    <td ><strong><a href="/chart/{{t.symbol}}">{{t.symbol}}</strong></td>
-                                    <td>{{ t.name }}</td>
-                                    <td>{{ t.bid }}</td>
-                                    <td>{{ t.ask }}</td>
-                                    <td>{{ t.open }}</td>
-                                    <td>{{ t.previousClose }}</td>
-                                    <td>{{ t.lastTrade }}</td>
-                                    <td>{{ t.high }}</td>
-                                    <td>{{ t.low }}</td>
-                                    <td>{{ t.volume }}</td>
-                                    <td>{{ t.high52 }}</td>
-                                    <td>{{ t.low52 }}</td>
-                                    <td><a href="/buysell/{{t.id}}">buy/sell </a>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        
-                    </table>
-                </div>
+
+        <form method="post" id="searchBox" class="form-inline" padding-bottom="10px">
+            <div class="form-group mx-sm-3">
+
+                <label class="sr-only"  for="ex1">Symbol:</label>
+                <input type="text" class="form-control" id="ex1"  name="symbol" placeholder="Symbol">
+            </div>
+            <button type="submit" class="btn btn-primary">Get Quote</button>
+        </form>
+        
+        <div class="card mb-3" padding-left="10%">
+
+            <div class="list-task">
+                <form method="post" >
+                    <div class="card-block">
+                        <div class="table-responsive">
+                            <table class="table table-striped"  width="100%" id="dataTable" cellspacing="0">
+                                <thead class="thead-inverse">
+                                    <tr>
+                                        <th>Symbol</th>
+                                        <th>Name</th>
+                                        <th>Bid</th>
+                                        <th>Ask</th>
+                                        <th>Open</th>
+                                        <th>Prev Close</th>
+                                        <th>Last Trade</th>
+                                        <th>High</th>
+                                        <th>Low</th>
+                                        <th>Volume</th>
+                                        <th>High 52</th>
+                                        <th>Low 52</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tfoot class="thead-inverse">
+                                    <tr>
+                                        <th>Symbol</th>
+                                        <th>Name</th>
+                                        <th>Bid</th>
+                                        <th>Ask</th>
+                                        <th>Open</th>
+                                        <th>Prev Close</th>
+                                        <th>Last Trade</th>
+                                        <th>High</th>
+                                        <th>Low</th>
+                                        <th>Volume</th>
+                                        <th>High 52</th>
+                                        <th>Low 52</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </tfoot>
+
+                                <tbody>
+                                    {% for t in symbols %}
+                                        <tr>
+
+                                            <td ><strong><a href="/chart/{{t.symbol}}">{{t.symbol}}</strong></td>
+                                            <td>{{ t.name }}</td>
+                                            <td>{{ t.bid }}</td>
+                                            <td>{{ t.ask }}</td>
+                                            <td>{{ t.open }}</td>
+                                            <td>{{ t.previousClose }}</td>
+                                            <td>{{ t.lastTrade }}</td>
+                                            <td>{{ t.high }}</td>
+                                            <td>{{ t.low }}</td>
+                                            <td>{{ t.volume }}</td>
+                                            <td>{{ t.high52 }}</td>
+                                            <td>{{ t.low52 }}</td>
+                                            <td><a href="/buysell/{{t.id}}">buy/sell </a>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+
+                            </table>
+                        </div>
                     </div>
-                <div class="list-task-footer">
-                    <div class ="error-message">
+                    <div class="list-task-footer">
+                        <div class ="error-message">
+
+                        </div>
 
                     </div>
-                    
-                </div>
-            </form>    
+                </form>    
+            </div>
         </div>
     </div>
-                            </div>
 
 {% endblock %}
