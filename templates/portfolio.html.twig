@@ -1,0 +1,63 @@
+{% extends "master.html.twig" %}
+
+
+
+{% block content %}
+    <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-fw fa-briefcase"></i> Portfolio</h3>
+    </div>
+
+    <div class="panel-body">
+        <div class="card mb-3" padding-left="10%">
+
+            <div class="list-task">
+                <form method="post" >
+                    <div class="card-block">
+                        <div class="table-responsive">
+                            <table class="table table-striped"  width="100%" id="dataTable" cellspacing="0">
+                                <thead class="thead-inverse">
+                                    <tr>
+                                        <th>Symbol</th>
+                                        <th>Average Price</th>
+                                        <th>Quantity</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tfoot class="thead-inverse">
+                                    <tr>
+                                        <th>Symbol</th>
+                                        <th>Average Price</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                                </tfoot>
+
+                                <tbody>
+                                    {% for t in portfolios %}
+                                        <tr>
+                                            <td >{{ t.symbol }}</td>
+                                            <td>{{ t.avgprice }}</td>
+                                            <td>{{ t.qty }}</td>
+                                            
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                    <div class="list-task-footer">
+                        <div class ="error-message">
+
+                        </div>
+
+                    </div>
+                </form>    
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+{% endblock %}

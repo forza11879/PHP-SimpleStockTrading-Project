@@ -27,7 +27,7 @@
 
 
     <script>
-        $.getJSON('project.php/chart2', function (data) {
+        $.getJSON('/fetch/{{symbol}}', function (data) {
 
             // create the chart
             Highcharts.stockChart('container', {

@@ -322,54 +322,12 @@ $app->get('/chart/:symbol', function($symbol) use ($app) {
 
 //chart2
 
-$app->get('/chart2', function() use ($app) {
+$app->get('/chart2/:symbol', function($symbol) use ($app) {
 
-    $app->render("chart2.html.twig");
+    $app->render("chart2.html.twig", array('symbol' => $symbol));
 });
 
-$app->post('/chart2', function() use ($app) {
-    $stockList = $app->request()->post('symbol');
 
-    $i = 0;
-
-
-//$stocks = "https://app.quotemedia.com/quotetools/getHistoryDownload.csv?&webmasterId=501&startDay=02&startMonth=03&startYear=2017&endDay=10&endMonth=05&endYear=2017&isRanged=false&symbol=aapl";
-//$stocks = "https://www.google.com/finance/historical?output=csv&q=". $stockList;
-    $stocks = "https://www.google.com/finance/historical?output=csv&q=" . $stockList;
-//getting data from csv file into database
-//reading csv file
-    $handle = fopen($stocks, 'r');
-
-//looping through CSV file
-    while (($data = fgetcsv($handle, 2000, ",")) !== FALSE) {
-
-        if ($i > 0) {
-
-
-//$data[0] = date('d-m-Y', strtotime($data[0]));
-//$data[0] = date('M j, Y', Date.parse($data[0]));
-//$data[0] = date('M j, Y', strtotime($data[0]));
-            $data[0] = strtotime($data[0]) * 1000;
-            $data[1] = floatval($data[1]);
-            $data[2] = floatval($data[2]);
-            $data[3] = floatval($data[3]);
-            $data[4] = floatval($data[4]);
-
-//Create an array 
-            $chartArray[] = $data;
-        }
-        $i++;
-    }
-
-//print_r($chartArray);
-
-    fclose($handle);
-
-//Convert PHP Array to reverse JSON String
-
-    print (json_encode(array_reverse($chartArray)));
-//echo json_encode($chartArray, JSON_PRETTY_PRINT);
-});
 
 
 //buying stock and showing all info
@@ -486,12 +444,24 @@ $app->post('/buysell/:id', function($id) use ($app) {
 //////////////////////end updating user cash//////////////
 });
 
+//Order Details
+
 $app->get('/orders', function() use ($app) {
 
     //getting data from database
     $getOrderDetails = DB::query("SELECT * FROM transactions GROUP BY id DESC");
 // print_r($getquotes);
     $app->render("orders.html.twig", ["transactions" => $getOrderDetails]);
+});
+
+//Portfolio
+
+$app->get('/portfolio', function() use ($app) {
+
+    //getting data from database
+    $getPortfolio = DB::query("SELECT * FROM portfolios GROUP BY symbol");
+// print_r($getquotes);
+    $app->render("portfolio.html.twig", ["portfolios" => $getPortfolio]);
 });
 
 // PASSWOR RESET
