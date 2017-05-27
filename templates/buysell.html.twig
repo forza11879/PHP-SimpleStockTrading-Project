@@ -30,6 +30,21 @@
 
                     </div>
                 </div>
+                      <div class="thumbnail">
+                    <div class="caption">
+                        <h2>Bid: {{t.bid}}</h2>
+                        <br>
+                        <form method="post">
+                            Qty: <input type="number" min="0" max="{{maxsell}}"  value="100" step="1" name="qty"><br>
+                            <br>
+                            <input type="hidden" name="type" value="sell">
+                            <button type="submit" class="btn btn-primary btn-md">Sell</button>
+                        </form>
+
+                    </div>
+
+                </div>       
+                            
             </div>
                             
                             
@@ -45,8 +60,12 @@
                 <div class="thumbnail">
                     <div class="caption">
                         <h1>{{t.name}}</h1>
-                        <h3>High: {{t.high}}</h3>
+                        <h3>High: {{t.high}}  High52:{{t.high}} </h3>
                         <h3>Low: {{t.low}}</h3>
+                        <h3>High52: {{t.high52}}</h3>
+                        <h3>Low52: {{t.low52}}</h3>
+                        <h3>Open: {{t.open}}</h3>
+                        <h3>Close: {{t.close}}</h3>
                     </div>
                 </div>
             </div>  
@@ -55,15 +74,15 @@
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
                     <div class="caption">
-                        <h2>Bid: {{t.bid}}</h2>
+                        <h2>User: {{u.name}}</h2>
                         <br>
-                        <form method="post">
-                            Qty: <input type="number" min="0" max="{{maxsell}}"  value="100" step="1" name="qty"><br>
-                            <br>
-                            <input type="hidden" name="type" value="sell">
-                            <button type="submit" class="btn btn-primary btn-md">Sell</button>
-                        </form>
-
+                        <h3>Cash: ${{u.cash}}</h3>
+                        <br>
+                        <h3>Equity: ${{u.equity}}</h3>
+                        <br>
+                        <h3>Balance: ${{u.equity - 50000}}</h3>
+                        <br>
+                        <a href="/portfolio"><button type="button" class="btn btn-primary btn-md">Portfolio</button></a>
                     </div>
 
                 </div>
