@@ -52,39 +52,39 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/master">Trading Simulator</a>
+                    <a class="navbar-brand" href="/landing">Trading Simulator</a>
                 </div>
                 <!-- Top Menu Items -->
                 <ul class="nav navbar-right top-nav">
                     
-                    
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
-                            {% block username %} {% if sessionUser %}
-                                Welcome {{sessionUser.name}}!
-                            {% endif %}{% endblock %}
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
+             {% if sessionUser %}
+                    Welcome {{sessionUser.name}}!
+            {% endif %}
 
-                            <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="/login"><i class="fa fa-fw fa-user"></i> Log-in</a>
-                                
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="#"><i class="fa fa-fw fa-power-off"></i>
-                                    {% block logout %}{% if sessionUser %}
-                                    <a href="/logout">Log Out</a>
-                            {% endif %}{% endblock %}</a>
-                            </li>
-                        </ul>
-                    </li>
+            <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li>
+                <a href="/login"><i class="fa fa-fw fa-user"></i> Log-in</a>
+
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a href="#"><i class="fa fa-fw fa-power-off"></i>
+                    {% block logout %}{% if sessionUser %}
+                            <a href="/logout">Log Out</a>
+                    {% endif %}{% endblock %}</a>
+            </li>
+        </ul>
+    </li>
+                    
                 </ul>
                 <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">

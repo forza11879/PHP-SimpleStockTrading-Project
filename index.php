@@ -109,7 +109,12 @@ $app->get('/ajax/emailused/:email', function($email) {
 //login
 
 $app->get('/login', function() use ($app) {
-    $app->render('login.html.twig');
+    if (!$_SESSION['user']) {
+        $app->render('login.html.twig');
+        return;
+    }else{$app->render('portfolio.html.twig');}
+    
+    //$app->render('login.html.twig');
 });
 
 
@@ -146,6 +151,11 @@ $app->get('/login_success', function() use ($app) {
 });
 
 $app->get('/master', function() use ($app) {
+    if (!$_SESSION['user']) {
+        $app->render('login.html.twig');
+        return;
+    }
+    
     $app->render('master.html.twig');
 });
 
@@ -153,11 +163,16 @@ $app->get('/master', function() use ($app) {
 
 $app->get('/logout', function() use ($app, $log) {
     $_SESSION['user'] = array();
-    $app->render('logout_success.html.twig');
+    $app->render('landing.html.twig');
 });
 
 //list
 $app->get('/list', function() use ($app) {
+    
+    if (!$_SESSION['user']) {
+        $app->render('login.html.twig');
+        return;
+    }
 
 // format for web api output
     $format = 'snbaopl1hgvkj';
@@ -442,6 +457,11 @@ $app->post('/buysell/:id', function($id) use ($app) {
 //Order Details
 
 $app->get('/orders', function() use ($app) {
+    
+    if (!$_SESSION['user']) {
+        $app->render('login.html.twig');
+        return;
+    }
 
     //getting data from database
     $getOrderDetails = DB::query("SELECT * FROM transactions GROUP BY id DESC");
@@ -452,6 +472,11 @@ $app->get('/orders', function() use ($app) {
 //Portfolio
 
 $app->get('/portfolio', function() use ($app) {
+    
+    if (!$_SESSION['user']) {
+        $app->render('login.html.twig');
+        return;
+    }
 
     //getting data from database
     $getPortfolio = DB::query("SELECT * FROM portfolios GROUP BY symbol");
