@@ -4,12 +4,7 @@ session_start();
 //y1hkj2pyxx4xgls1
 require_once 'vendor/autoload.php';
 
-DB::$host = 'localhost';
-DB::$user = 'stocksimulator';
-DB::$password = 'bUz0FlWwASZEnDgZ';
-DB::$dbName = 'stocksimulator';
-DB::$encoding = 'utf8';
-DB::$port = 3333;
+require 'local.php';
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
