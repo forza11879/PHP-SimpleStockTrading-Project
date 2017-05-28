@@ -482,6 +482,8 @@ $app->post('/buysell/:id', function($id) use ($app) {
             ), "id=%i", $_SESSION['user']['id']);
 //////////////////////end updating user cash//////////////
     
+    DB::delete('portfolios', "qty=0");
+    
   //  $app->render('list.html.twig');
 });
 
