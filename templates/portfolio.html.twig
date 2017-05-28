@@ -36,14 +36,14 @@
                                 </tfoot>
 
                                 <tbody>
-                                    {% for t in portfolios %}
+                                    {% for p in portfolios %}
 
                                         <tr>
-                                            <td >{{ t.symbol }}</td>
-                                            <td>{{ t.avgprice }}</td>
-                                            <td>{{s.bid }}</td>
-                                            <td>{{ t.qty }}</td>
-                                            <td>{{(t.avgprice - s.bid) * t.qty}}</td>
+                                            <td >{{ p.symbol }}</td>
+                                            <td>{{ p.avgprice }}</td>
+                                            <td>{{p.bid }}</td>
+                                            <td>{{ p.qty }}</td>
+                                            <td>{{(p.avgprice - p.bid) * p.qty}}</td>
 
 
 
