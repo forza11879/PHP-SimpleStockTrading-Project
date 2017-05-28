@@ -484,7 +484,7 @@ $app->post('/buysell/:id', function($id) use ($app) {
     
     DB::delete('portfolios', "qty=0");
     
-  //  $app->render('list.html.twig');
+    $app->render('buysell_success.html.twig');
 });
 
 //Order Details
