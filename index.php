@@ -362,7 +362,7 @@ $app->get('/buysell/:id', function($id) use ($app) {
 
 
     $app->render('buysell.html.twig', array(
-        't' => $stock, 'maxbuy' => $maxbuy, 'maxsell' => $maxsell
+        't' => $stock, 'maxbuy' => $maxbuy, 'maxsell' => $maxsell, 'u'=>$userinuse
     ));
 });
 
