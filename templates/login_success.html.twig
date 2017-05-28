@@ -1,18 +1,14 @@
 {# empty Twig template #}
 {% extends "master.html.twig" %}
 
-{% block title %}Logout successful{% endblock %}
-
-{% block username %}
-
-{% endblock %}
+{% block title %}Login successful{% endblock %}
 
 {% block content %}
 
 
 
     {% if sessionUser %}
-        <p><strong>Welcome {{sessionUser.name}} !!!</strong>  You have successfully logged in !!! 
+        <p> You have successfully logged in !!! 
         {% endif %}
 
 
