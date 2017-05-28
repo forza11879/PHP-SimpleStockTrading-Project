@@ -6,15 +6,15 @@
 
 
     <!--SELECT s.symbol, s.qty, p.bid FROM portfolios p, symbols s WHERE p.symbol = s.symbol AND p.userId= ???-->
-    
-<div class="panel-heading">
+
+    <div class="panel-heading">
         <h3 class="panel-title"><i class="fa fa-table fa-fw"></i> Buy/Sell Ticket</h3>
     </div>
 
     <div class="panel-body">
         <div class="row">
-            
-            
+
+
             <!--BUY Ticket-->
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
@@ -30,7 +30,7 @@
 
                     </div>
                 </div>
-                      <div class="thumbnail">
+                <div class="thumbnail">
                     <div class="caption">
                         <h2>Bid: {{t.bid}}</h2>
                         <br>
@@ -44,14 +44,11 @@
                     </div>
 
                 </div>       
-                            
+
             </div>
-                            
-                            
 
 
-
-                       
+            <!--Sell Ticket-->
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
                     <div class="caption">
@@ -85,15 +82,11 @@
             </div>
         </div>
     </div>
-                            
-                          
-                            
-                            
-                            
-                            <!--Chart-->
-                            
-                            
-                            <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+    <!--Chart-->
+
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="https://code.highcharts.com/stock/highstock.js"></script>
     <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
 
@@ -101,9 +94,9 @@
         <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Charts</h3>
     </div>
     <div class="panel-body">
-        
 
-    <div id="container" style="height: 580px; min-width: 310px"></div>
+
+        <div id="container" style="height: 580px; min-width: 310px"></div>
     </div>
 
 
@@ -142,48 +135,8 @@
         });
 
     </script>
-    
-    <!--BUY Model-->
- <!-- Trigger/Open The Modal -->
-    
-      <!-- The Modal -->
-<div id="myModal" class="modal">
 
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <p>Some text in the Modal..</p>
-  </div>
-    
-    
-  
-  <script>
-// Get the modal
-var modal = document.getElementById('myModal');
 
-// Get the button that opens the modal
-var btn = document.getElementById("myBtn");
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks the button, open the modal 
-btn.onclick = function() {
-    modal.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-</script>
-                            
 {% endblock %}
 

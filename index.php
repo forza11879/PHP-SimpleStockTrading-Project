@@ -41,6 +41,19 @@ $twig->addGlobal('sessionUser', $_SESSION['user']);
 
 
 $app->get('/landing', function() use ($app) {
+   
+   
+    
+    $app->render('landing.html.twig');
+});
+
+$app->post('/landing', function() use ($app) {
+   
+    if (!$_SESSION['user']) {
+        $app->render('login.html.twig');
+        return;
+    }
+    
     $app->render('landing.html.twig');
 });
 
@@ -134,35 +147,51 @@ $app->post('/login', function() use ($app) {
     } else {
         unset($user['password']);
         $_SESSION['user'] = $user;
-        $app->render('list.html.twig');
+        $app->render('login_success.html.twig');
     }
 });
-
 
 $app->get('/login_success', function() use ($app) {
 
     $app->render('login_success.html.twig');
-    print_r(_SESSION['user']);
+   //print_r(_SESSION['user']);
 });
 
+
+
+
 $app->get('/master', function() use ($app) {
+    
+    if (!$_SESSION['user']) {
+        $app->render('login.html.twig');
+        return;
+    }
+    
     $app->render('master.html.twig');
 });
 
 //logout
 
-$app->get('/logout', function() use ($app, $log) {
-    $_SESSION['user'] = array();
-    $app->render('logout_success.html.twig');
+$app->get('/logout', function() use ($app) {
+    unset($_SESSION['user']);
+    $app->render("logout_success.html.twig");
 });
 
 //list
 $app->get('/list', function() use ($app) {
+   
+     if (!$_SESSION['user']) {
+        $app->render('login.html.twig');
+        return;
+    }
+    
+    
 
 // format for web api output
     $format = 'snbaopl1hgvkj';
 // 
-    $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY,GOOG,FAS,XLF,ADSK,QQQ,FAZ&f={$format}";
+    //$stocks = "http://download.finance.yahoo.com/d/quotes.csv?s=AAPL,TD,BAC,C,TSLA,WFC,F,EBAY,GOOG,FAS,XLF,ADSK,QQQ,FAZ&f={$format}";
+    $stocks = "http://download.finance.yahoo.com/d/quotes.csv?s=AAPL&f={$format}";
 
 //getting data from csv file into database
 //opening csv file
@@ -195,6 +224,8 @@ $app->get('/list', function() use ($app) {
 });
 
 $app->post('/list', function() use ($app) {
+    
+   
 
 //inputing symbol from UI
     $stockList = $app->request()->post('symbol');
@@ -327,6 +358,10 @@ $app->get('/chart2/:symbol', function($symbol) use ($app) {
 
 //buying stock and showing all info
 $app->get('/buysell/:id', function($id) use ($app) {
+    
+    
+    
+    
     $stock = DB::queryFirstRow('SELECT * FROM symbols WHERE id=%i', $id);
 
 
@@ -353,13 +388,18 @@ $app->get('/buysell/:id', function($id) use ($app) {
 
     $app->render('buysell.html.twig', array(
         't' => $stock, 'maxbuy' => $maxbuy, 'maxsell' => $maxsell, 'u'=>$userinuse
+            
+            
     ));
+    
 });
 
 
 $app->post('/buysell/:id', function($id) use ($app) {
 
     //echo ("<script>window.alert('Transaction Proccesed')</script>");
+    
+  
     
     date_default_timezone_set('America/New_York');
 
@@ -437,25 +477,46 @@ $app->post('/buysell/:id', function($id) use ($app) {
         "equity" => $newequity
             ), "id=%i", $_SESSION['user']['id']);
 //////////////////////end updating user cash//////////////
+    
+    $app->render('buysell_success.html.twig');
 });
 
 //Order Details
 
 $app->get('/orders', function() use ($app) {
+    
+    if (!$_SESSION['user']) {
+        $app->render('login.html.twig');
+        return;
+    }
 
     //getting data from database
-    $getOrderDetails = DB::query("SELECT * FROM transactions GROUP BY id DESC");
+    $getOrderDetails = DB::query("SELECT * FROM transactions WHERE userId = %i GROUP BY date DESC", $_SESSION['user']['id']);
 // print_r($getquotes);
+    
+
+    
+    
+    
+    
     $app->render("orders.html.twig", ["transactions" => $getOrderDetails]);
 });
 
 //Portfolio
 
 $app->get('/portfolio', function() use ($app) {
+    
+    if (!$_SESSION['user']) {
+        $app->render('login.html.twig');
+        return;
+    }
 
     //getting data from database
-    $getPortfolio = DB::query("SELECT * FROM portfolios GROUP BY symbol");
+    $getPortfolio = DB::query("SELECT * FROM portfolios WHERE userId = %i GROUP BY symbol", $_SESSION['user']['id']);
 // print_r($getquotes);
+    //$todos = DB::query("SELECT * FROM todos where ownerId = %i", $_SESSION['todouser']['id']);
+    //$getOrderDetails = DB::query("SELECT * FROM transactions WHERE userId = %i GROUP BY date DESC", $_SESSION['user']['id']);
+    
     $app->render("portfolio.html.twig", ["portfolios" => $getPortfolio]);
 });
 
