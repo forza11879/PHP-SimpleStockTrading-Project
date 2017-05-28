@@ -512,7 +512,7 @@ $app->get('/portfolio', function() use ($app) {
     }
 
     //getting data from database
-    //$getPortfolio = DB::query("SELECT * FROM portfolios WHERE userId = %i GROUP BY symbol", $_SESSION['user']['id']);
+    
     $getPortfolio = DB::query('SELECT s.symbol, p.avgprice, s.bid, p.qty  FROM portfolios p, symbols s WHERE p.symbol = s.symbol AND p.userId=%i', $_SESSION['user']['id']);
 
     
