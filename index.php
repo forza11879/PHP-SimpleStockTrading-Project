@@ -491,6 +491,8 @@ $app->post('/buysell/:id', function($id) use ($app) {
 
 $app->get('/orders', function() use ($app) {
     
+    $userinuse = DB::queryFirstRow('SELECT * FROM users WHERE id=%i', $_SESSION['user']['id']);
+    
     if (!$_SESSION['user']) {
         $app->render('login.html.twig');
         return;
@@ -501,12 +503,14 @@ $app->get('/orders', function() use ($app) {
 // print_r($getquotes);
   
     
-    $app->render("orders.html.twig", ["transactions" => $getOrderDetails]);
+    $app->render("orders.html.twig", array("transactions" => $getOrderDetails, "u"=>$userinuse ));
 });
 
 //Portfolio
 
 $app->get('/portfolio', function() use ($app) {
+    
+    $userinuse = DB::queryFirstRow('SELECT * FROM users WHERE id=%i', $_SESSION['user']['id']);
     
     if (!$_SESSION['user']) {
         $app->render('login.html.twig');
@@ -518,7 +522,7 @@ $app->get('/portfolio', function() use ($app) {
     $getPortfolio = DB::query('SELECT s.symbol, p.avgprice, s.bid, p.qty  FROM portfolios p, symbols s WHERE p.symbol = s.symbol AND p.userId=%i', $_SESSION['user']['id']);
 
     
-    $app->render("portfolio.html.twig", ["portfolios" => $getPortfolio]);
+    $app->render("portfolio.html.twig", array("portfolios" => $getPortfolio, "u"=> $userinuse) );
 });
 
 // PASSWOR RESET
