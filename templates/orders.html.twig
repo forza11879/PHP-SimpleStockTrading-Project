@@ -37,7 +37,8 @@
                                 <tbody>
                                     {% for t in transactions %}
                                         <tr>
-                                            <td >{{ t.symbol }}</td>
+                                            
+                                            <td ><strong><a href="/chart/{{t.symbol}}">{{t.symbol}}</strong></td>
                                             <td>{{ t.price }}</td>
                                             <td>{{ t.qty }}</td>
                                             <td>{{ t.type }}</td>

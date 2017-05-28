@@ -22,6 +22,7 @@
                                         <th>Bid</th>
                                         <th>Quantity</th>
                                         <th>Gain/Loss</th>
+                                        <th>Action</th>
 
                                     </tr>
                                 </thead>
@@ -32,6 +33,7 @@
                                         <th>Bid</th>
                                         <th>Quantity</th>
                                         <th>Gain/Loss</th>
+                                        <th>Action</th>
                                     </tr>
                                 </tfoot>
 
@@ -39,12 +41,14 @@
                                     {% for p in portfolios %}
 
                                         <tr>
-                                            <td >{{ p.symbol }}</td>
+                                            
+                                            <td ><strong><a href="/chart/{{p.symbol}}">{{p.symbol}}</strong></td>
                                             <td>{{ p.avgprice }}</td>
                                             <td>{{p.bid }}</td>
                                             <td>{{ p.qty }}</td>
                                             <td>$ {{(p.bid - p.avgprice) * p.qty}}</td>
-
+                                            <td><a href="/buysell/{{p.id}}">buy/sell </a></td>
+                                            
 
 
                                         </tr>

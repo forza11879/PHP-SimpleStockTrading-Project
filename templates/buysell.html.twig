@@ -19,7 +19,7 @@
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
                     <div class="caption">
-                        <h2>Ask: {{t.ask}}</h2>
+                        <h3><strong>Ask:</strong> {{t.ask}}</h3>
                         <br>
                         <form method="post">
                             Qty: <input type="number" min="1" max="{{maxbuy}}"  value="1" step="1" name="qty"><br>
@@ -30,9 +30,11 @@
 
                     </div>
                 </div>
+
+                <!--SELL Ticket-->
                 <div class="thumbnail">
                     <div class="caption">
-                        <h2>Bid: {{t.bid}}</h2>
+                        <h3><strong>Bid: </strong> {{t.bid}}</h3>
                         <br>
                         <form method="post">
                             Qty: <input type="number" min="0" max="{{maxsell}}"  value="100" step="1" name="qty"><br>
@@ -48,11 +50,11 @@
             </div>
 
 
-            <!--Sell Ticket-->
+            <!--Symbol Info-->
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
                     <div class="caption">
-                        <h1>{{t.name}}</h1>
+                        <h3><strong>{{t.name}}</strong></h3>
                         <h3>High: {{t.high}} </h3>
                         <h3>Low: {{t.low}}</h3>
                         <h3>High52wk: {{t.high52}}</h3>
@@ -67,7 +69,7 @@
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
                     <div class="caption">
-                        <h2>Account Holder: {{u.name}}</h2>
+                        <h3><strong>Account Holder:</strong> {{u.name}}</h3>
                         <br>
                         <h3>Cash: ${{u.cash}}</h3>
                         <br>
@@ -112,7 +114,7 @@
                 },
 
                 title: {
-                    text: '{{t.name}}'
+                    text: '<strong>{{t.name}}</strong>'
                 },
 
                 series: [{
