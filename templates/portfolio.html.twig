@@ -19,29 +19,36 @@
                                     <tr>
                                         <th>Symbol</th>
                                         <th>Average Price</th>
+                                        <th>Bid</th>
                                         <th>Quantity</th>
-                                        <th>Total</th>
-                                        
+                                        <th>Gain/Loss</th>
+
                                     </tr>
                                 </thead>
                                 <tfoot class="thead-inverse">
                                     <tr>
                                         <th>Symbol</th>
                                         <th>Average Price</th>
+                                        <th>Bid</th>
                                         <th>Quantity</th>
-                                        <th>Total</th>
+                                        <th>Gain/Loss</th>
                                     </tr>
                                 </tfoot>
 
                                 <tbody>
                                     {% for t in portfolios %}
+
                                         <tr>
                                             <td >{{ t.symbol }}</td>
                                             <td>{{ t.avgprice }}</td>
+                                            <td>{{s.bid }}</td>
                                             <td>{{ t.qty }}</td>
-                                            <td>$ {{t.avgprice * t.qty}}</td>
-                                            
+                                            <td>{{(t.avgprice - s.bid) * t.qty}}</td>
+
+
+
                                         </tr>
+
                                     {% endfor %}
                                 </tbody>
 
