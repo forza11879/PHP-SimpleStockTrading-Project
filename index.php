@@ -35,12 +35,14 @@ if (!isset($_SESSION['user'])) {
     $_SESSION['user'] = array();
 }
 
+
 $twig = $app->view()->getEnvironment();
-$twig->addGlobal('sessionUser', $_SESSION['user']);
+$twig->addGlobal('user', $_SESSION['user']);
 
 
 
 $app->get('/landing', function() use ($app) {
+        
     $app->render('landing.html.twig');
 });
 
@@ -107,21 +109,17 @@ $app->get('/ajax/emailused/:email', function($email) {
 
 
 //login
-
 $app->get('/login', function() use ($app) {
-    if (!$_SESSION['user']) {
-        $app->render('login.html.twig');
-        return;
-    }else{$app->render('portfolio.html.twig');}
-    
-    //$app->render('login.html.twig');
+    $app->render('login.html.twig');
 });
 
-
 $app->post('/login', function() use ($app) {
+
+    //print_r($_POST);
+
     $email = $app->request()->post('email');
     $pass = $app->request()->post('password');
-
+    // verification    
     $error = false;
     $user = DB::queryFirstRow("SELECT * FROM users WHERE email=%s", $email);
     if (!$user) {
@@ -131,17 +129,17 @@ $app->post('/login', function() use ($app) {
             $error = true;
         }
     }
-
-// decide what to render
-// generating
+    // decide what to render
     if ($error) {
         $app->render('login.html.twig', array("error" => true));
     } else {
         unset($user['password']);
         $_SESSION['user'] = $user;
-        $app->render('list.html.twig');
+        $app->render('login_success.html.twig');
     }
 });
+
+
 
 
 $app->get('/login_success', function() use ($app) {
@@ -150,29 +148,21 @@ $app->get('/login_success', function() use ($app) {
     print_r(_SESSION['user']);
 });
 
-$app->get('/master', function() use ($app) {
-    if (!$_SESSION['user']) {
-        $app->render('login.html.twig');
-        return;
-    }
-    
-    $app->render('master.html.twig');
-});
+
 
 //logout
 
-$app->get('/logout', function() use ($app, $log) {
-    $_SESSION['user'] = array();
-    $app->render('landing.html.twig');
+$app->get('/logout', function() use ($app) {
+    unset($_SESSION['user']);
+    $app->render("logout_success.html.twig");
 });
+
+
 
 //list
 $app->get('/list', function() use ($app) {
     
-    if (!$_SESSION['user']) {
-        $app->render('login.html.twig');
-        return;
-    }
+   
 
 // format for web api output
     $format = 'snbaopl1hgvkj';
@@ -210,6 +200,11 @@ $app->get('/list', function() use ($app) {
 });
 
 $app->post('/list', function() use ($app) {
+    
+    if (!$_SESSION['user']) {
+        $app->render('login.html.twig');
+        return;
+    }
 
 //inputing symbol from UI
     $stockList = $app->request()->post('symbol');

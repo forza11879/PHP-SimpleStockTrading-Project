@@ -59,8 +59,8 @@
                     
                     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
-             {% if sessionUser %}
-                    Welcome {{sessionUser.name}}!
+             {% if user %}
+                    Welcome {{user.name}}!
             {% endif %}
 
             <b class="caret"></b></a>
@@ -78,7 +78,7 @@
             <li class="divider"></li>
             <li>
                 <a href="#"><i class="fa fa-fw fa-power-off"></i>
-                    {% block logout %}{% if sessionUser %}
+                    {% block logout %}{% if user %}
                             <a href="/logout">Log Out</a>
                     {% endif %}{% endblock %}</a>
             </li>

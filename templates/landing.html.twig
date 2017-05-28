@@ -52,7 +52,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/login">Start Playing</a>
+                    <a class="navbar-brand" href="/portfolio">Start Playing</a>
                 </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -66,14 +66,14 @@
                         </li>
                        <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
-             {% if sessionUser %}
-                    Welcome {{sessionUser.name}}!
+             {% if user %}
+                    Welcome {{user.name}}!
             {% endif %}
 
             <b class="caret"></b></a>
         <ul class="dropdown-menu">
             <li>
-                <a href="/login"><i class="fa fa-fw fa-user"></i> Log-in</a>
+                <a href="/portfolio"><i class="fa fa-fw fa-user"></i> Log-in</a>
 
             </li>
             <li>
@@ -85,7 +85,7 @@
             <li class="divider"></li>
             <li>
                 <a href="#"><i class="fa fa-fw fa-power-off"></i>
-                    {% block logout %}{% if sessionUser %}
+                    {% block logout %}{% if user %}
                             <a href="/logout">Log Out</a>
                     {% endif %}{% endblock %}</a>
             </li>
