@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html class="full" lang="en">
     <!-- Make sure the <html> tag is set to the .full CSS class. Change the background image in the full.css file. -->
@@ -12,20 +11,6 @@
         <meta name="author" content="">
 
         <title>Simple trading</title>
-        
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        
-        <!-- Bootstrap Core CSS -->
-        <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/bootstrap/css/style.css" rel="stylesheet">
-        <!-- Custom CSS -->
-        <link href="/bootstrap/css/sb-admin.css" rel="stylesheet">
-        <!-- Morris Charts CSS -->
-        <link href="/bootstrap/css/plugins/morris.css" rel="stylesheet">
-        <!-- Custom Fonts!!!! -->
-        <link href="/bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-
 
         <!-- Bootstrap Core CSS -->
         <link href="css/full.css" rel="stylesheet">
@@ -52,43 +37,18 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/portfolio">Start Playing</a>
+                    <a class="navbar-brand fa fa-fw fa-user" href="/login">Log-In</a>
+                    
                 </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    
-                        <ul class="nav navbar-right top-nav">
+                    <ul class="nav navbar-nav">
                         <li>
                             <a href="/register">Register</a>
                         </li>
                         <li>
                             <a href="/contact">Contact</a>
                         </li>
-                       <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
-             {% if user %}
-                    Welcome {{user.name}}!
-            {% endif %}
-
-            <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-            <li>
-                <a href="/portfolio"><i class="fa fa-fw fa-user"></i> Log-in</a>
-
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-            </li>
-            <li class="divider"></li>
-            <li>
-                <a href="#"><i class="fa fa-fw fa-power-off"></i>
-                    {% block logout %}{% if user %}
-                            <a href="/logout">Log Out</a>
-                    {% endif %}{% endblock %}</a>
-            </li>
                     </ul>
                 </div>
 
@@ -98,10 +58,6 @@
 
        <div class="container-fluid" id="backgroundlanding">
         </div>
-            <!-- jQuery -->
-    <script src="/bootstrap/js/jquery.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="/bootstrap/js/bootstrap.min.js"></script>
 
     </body>
 
