@@ -20,6 +20,7 @@
                                         <th>Symbol</th>
                                         <th>Average Price</th>
                                         <th>Quantity</th>
+                                        <th>Total</th>
                                         
                                     </tr>
                                 </thead>
@@ -28,6 +29,7 @@
                                         <th>Symbol</th>
                                         <th>Average Price</th>
                                         <th>Quantity</th>
+                                        <th>Total</th>
                                     </tr>
                                 </tfoot>
 
@@ -37,6 +39,7 @@
                                             <td >{{ t.symbol }}</td>
                                             <td>{{ t.avgprice }}</td>
                                             <td>{{ t.qty }}</td>
+                                            <td>$ {{t.avgprice * t.qty}}</td>
                                             
                                         </tr>
                                     {% endfor %}

@@ -493,11 +493,7 @@ $app->get('/orders', function() use ($app) {
     //getting data from database
     $getOrderDetails = DB::query("SELECT * FROM transactions WHERE userId = %i GROUP BY date DESC", $_SESSION['user']['id']);
 // print_r($getquotes);
-    
-
-    
-    
-    
+  
     
     $app->render("orders.html.twig", ["transactions" => $getOrderDetails]);
 });
@@ -513,9 +509,7 @@ $app->get('/portfolio', function() use ($app) {
 
     //getting data from database
     $getPortfolio = DB::query("SELECT * FROM portfolios WHERE userId = %i GROUP BY symbol", $_SESSION['user']['id']);
-// print_r($getquotes);
-    //$todos = DB::query("SELECT * FROM todos where ownerId = %i", $_SESSION['todouser']['id']);
-    //$getOrderDetails = DB::query("SELECT * FROM transactions WHERE userId = %i GROUP BY date DESC", $_SESSION['user']['id']);
+
     
     $app->render("portfolio.html.twig", ["portfolios" => $getPortfolio]);
 });
