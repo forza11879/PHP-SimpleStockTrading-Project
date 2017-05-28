@@ -153,14 +153,35 @@ $app->post('/login', function() use ($app) {
 
 $app->get('/login_success', function() use ($app) {
 
-    $app->render('login_success.html.twig');
+    $userinuse = DB::queryFirstRow('SELECT * FROM users WHERE id=%i', $_SESSION['user']['id']);
+    
+    $app->render('login_success.html.twig', array('u'=>$userinuse 
+    ));
+    
+    //$app->render('login_success.html.twig');
    //print_r(_SESSION['user']);
 });
 
 
 
 
+
+
 $app->get('/master', function() use ($app) {
+    
+    //$userinuse = DB::queryFirstRow('SELECT * FROM users WHERE id=%i', $_SESSION['user']['id']);
+    
+    
+    if (!$_SESSION['user']) {
+        $app->render('login.html.twig');
+        return;
+    }
+    
+    $app->render('master.html.twig', array('u'=>$userinuse 
+    ));
+});
+
+$app->post('/master', function() use ($app) {
     
     $userinuse = DB::queryFirstRow('SELECT * FROM users WHERE id=%i', $_SESSION['user']['id']);
     
