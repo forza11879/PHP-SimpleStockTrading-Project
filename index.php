@@ -527,6 +527,8 @@ $app->post('/buysell/:id', function($id) use ($app) {
     $app->render('buysell_success.html.twig');
 });
 
+
+
 //Order Details
 
 $app->get('/orders', function() use ($app) {
