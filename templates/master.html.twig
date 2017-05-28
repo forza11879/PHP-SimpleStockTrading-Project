@@ -71,7 +71,7 @@
                                 <a href="/login"><i class="fa fa-fw fa-user"></i> Log-in</a>
 
                             </li>
-                            
+
                             <li class="divider"></li>
                             <li>
                                 <a href="#"><i class="fa fa-fw fa-power-off"></i>
@@ -101,13 +101,21 @@
                         </li>
 
                         <li>
-                            <div class="container" id="userinfo">
-                            <div class="panel panel-default">
-                            <div class="panel-heading">User Portfolio</div>
-                            <div class="panel-body">Cash: ${{u.cash}}</div>
-                            </div>
-                            </div>
-                        </li>
+
+                            <!--  <div class="panel panel-default" >
+                               <div class="panel-heading">User Portfolio</div>
+                               <div class="panel-body">Cash: ${{u.cash}}</div>
+                               </div>-->
+
+                            <h3 style="color:grey;
+                                padding-left:15px;">Cash: ${{u.cash}} </h3>
+                            <h3 style="color:grey;
+                                padding-left:15px;">Equity: ${{u.equity}} </h3>
+                            <h3 style="color:grey;
+                                padding-left:15px;">Balance: ${{u.equity-50000}} </h3>
+
+                        </li> 
+
 
 
                     </ul>
