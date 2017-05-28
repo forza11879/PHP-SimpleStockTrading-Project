@@ -482,7 +482,7 @@ $app->post('/buysell/:id', function($id) use ($app) {
             ), "id=%i", $_SESSION['user']['id']);
 //////////////////////end updating user cash//////////////
     
-    $app->render('buysell_success.html.twig');
+    $app->render('list.html.twig');
 });
 
 //Order Details
