@@ -162,12 +162,16 @@ $app->get('/login_success', function() use ($app) {
 
 $app->get('/master', function() use ($app) {
     
+    $userinuse = DB::queryFirstRow('SELECT * FROM users WHERE id=%i', $_SESSION['user']['id']);
+    
+    
     if (!$_SESSION['user']) {
         $app->render('login.html.twig');
         return;
     }
     
-    $app->render('master.html.twig');
+    $app->render('master.html.twig', array('u'=>$userinuse 
+    ));
 });
 
 //logout
@@ -179,6 +183,8 @@ $app->get('/logout', function() use ($app) {
 
 //list
 $app->get('/list', function() use ($app) {
+    
+    $userinuse = DB::queryFirstRow('SELECT * FROM users WHERE id=%i', $_SESSION['user']['id']);
    
      if (!$_SESSION['user']) {
         $app->render('login.html.twig');
@@ -220,7 +226,7 @@ $app->get('/list', function() use ($app) {
 //getting data from database
     $getquotes = DB::query("SELECT * FROM symbols GROUP BY id DESC");
 // print_r($getquotes);
-    $app->render("list.html.twig", ["symbols" => $getquotes]);
+    $app->render("list.html.twig", array("symbols" => $getquotes, "u"=> $userinuse));
 });
 
 $app->post('/list', function() use ($app) {
@@ -360,14 +366,12 @@ $app->get('/chart2/:symbol', function($symbol) use ($app) {
 $app->get('/buysell/:id', function($id) use ($app) {
     
     
-    
-    
     $stock = DB::queryFirstRow('SELECT * FROM symbols WHERE id=%i', $id);
 
-
+    $userinuse = DB::queryFirstRow('SELECT * FROM users WHERE id=%i', $_SESSION['user']['id']);
     $stcokownedbyuser = DB::queryFirstRow('SELECT * FROM portfolios WHERE userId=%i AND symbol=%s', $_SESSION['user']['id'], $stock['symbol']);
 
-    $userinuse = DB::queryFirstRow('SELECT * FROM users WHERE id=%i', $_SESSION['user']['id']);
+    
 
     if ($stock['ask'] != 0) {
         $maxbuy = floor($userinuse['cash'] / $stock['ask']);
