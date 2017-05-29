@@ -478,6 +478,17 @@ $app->post('/buysell/:id', function($id) use ($app) {
                 "qty" => $qty
             ));
         }
+            DB::insert('transactions', array(
+        "userId" => $_SESSION['user']['id'],
+        "symbol" => $stock['symbol'],
+        "price" => $stock['ask'],
+        "qty" => $qty,
+        "type" => $type,
+        "date" => $date
+    ));
+        
+        
+        
 ////// end cheking if user alreadybought elected stock/////
     } else {
 
@@ -486,20 +497,22 @@ $app->post('/buysell/:id', function($id) use ($app) {
         DB::update('portfolios', array(
             "qty" => $newqty
                 ), "userId=%i AND symbol=%s", $_SESSION['user']['id'], $stock['symbol']);
+        
+        DB::insert('transactions', array(
+        "userId" => $_SESSION['user']['id'],
+        "symbol" => $stock['symbol'],
+        "price" => $stock['bid'],
+        "qty" => $qty,
+        "type" => $type,
+        "date" => $date
+    ));
     }
 
 
 
 
 //////// //adding record to trasactions table/////
-    DB::insert('transactions', array(
-        "userId" => $_SESSION['user']['id'],
-        "symbol" => $stock['symbol'],
-        "price" => $stock['ask'],
-        "qty" => $qty,
-        "type" => $type,
-        "date" => $date
-    ));
+
 /////////////////////end adding record to transactions table///
 /////calculating equity////////////
     $listofstockstocalculateequity = DB::query('SELECT s.symbol, p.qty, s.bid FROM portfolios p, symbols s WHERE p.symbol = s.symbol AND p.userId=%i', $_SESSION['user']['id']);
