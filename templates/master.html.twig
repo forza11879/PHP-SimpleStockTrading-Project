@@ -14,169 +14,186 @@
 
         <!-- Bootstrap Core CSS -->
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
-
-        <!-- Bootstrap Core CSS -->
-        <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-        <link href="/bootstrap/css/style.css" rel="stylesheet">
-
-        <!-- Custom CSS -->
-        <link href="/bootstrap/css/sb-admin.css" rel="stylesheet">
-
-        <!-- Morris Charts CSS -->
-        <link href="/bootstrap/css/plugins/morris.css" rel="stylesheet">
-
-        <!-- Custom Fonts -->
-        <link href="/bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
-    </head>
-
-    <body>
-        <div id="wrapper">
-            <!-- Navigation -->
-            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="/landing"><strong>Trading Simulator</strong></a>
-                </div>
-                <!-- Top Menu Items -->
-                <ul class="nav navbar-right top-nav">
 
 
 
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
-                            {% block username %} {% if sessionUser %}
-                                    Welcome {{sessionUser.name}}!
-                            {% endif %}{% endblock %}
+ 
 
-                            <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="/login"><i class="fa fa-fw fa-user"></i> Log-in</a>
 
-                            </li>
+    <!-- Bootstrap Core CSS -->
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-                            <li class="divider"></li>
-                            <li>
-                                <a href="#"><i class="fa fa-fw fa-power-off"></i>
-                                    {% block logout %}{% if sessionUser %}
-                                            <a href="/logout">Log Out</a>
-                                    {% endif %}{% endblock %}</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-                <div class="collapse navbar-collapse navbar-ex1-collapse">
-                    <ul class="nav navbar-nav side-nav">
-                       <!--
-                        <li class="active">
-                            <a href="#"><i class="fa-fw glyphicon glyphicon-folder-open"></i> Account</a>
-                        </li>
-                       -->
+    <link href="/bootstrap/css/style.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/bootstrap/css/sb-admin.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="/bootstrap/css/plugins/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/landing"><strong>Trading Simulator</strong></a>
+            </div>
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav">
+
+
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
+                        {% block username %} {% if sessionUser %}
+                                Welcome {{sessionUser.name}}!
+                        {% endif %}{% endblock %}
+
+                        <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
                         <li>
-                            <a href="/portfolio"><i class="fa fa-fw fa-briefcase"></i> Portfolio</a>
-                        </li>
-                        <li>
-                            <a href="/list"><i class="fa fa-fw fa-binoculars"></i> Watch List</a>
+                            <a href="/login"><i class="fa fa-fw fa-user"></i> Log-in</a>
 
                         </li>
 
+                        <li class="divider"></li>
                         <li>
-                            <a href="/orders"><i class="fa fa-fw fa-table"></i> Order Details</a>
+                            <a href="#"><i class="fa fa-fw fa-power-off"></i>
+                                {% block logout %}{% if sessionUser %}
+                                        <a href="/logout">Log Out</a>
+                                {% endif %}{% endblock %}</a>
                         </li>
-
-                        <li>
-
-                            <!--  <div class="panel panel-default" >
-                               <div class="panel-heading">User Portfolio</div>
-                               <div class="panel-body">Cash: ${{u.cash}}</div>
-                               </div>-->
-
-                            <h3 style="color:grey;
-                                padding-left:15px;"><strong>Cash:</strong> ${{u.cash}} </h3>
-                            <h3 style="color:grey;
-                                padding-left:15px;"><strong>Equity:</strong> ${{u.equity}} </h3>
-                            <h3 style="color:grey;
-                                padding-left:15px;"><strong>Gain/Loss:</strong> ${{u.equity-50000}} </h3>
-
-                        </li> 
-
-
-
                     </ul>
-                </div>
-                <!-- /.navbar-collapse -->
-            </nav>
-            <div id="page-wrapper">
-                <div class="container-fluid">
-                    <!-- Page Heading -->
-                    {% block pageheader %}
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <!--
-                                <h1 class="page-header">
-                                    Dashboard <small>Statistics Overview</small>     
-                                </h1>
-                                -->
-                                <ol class="breadcrumb">
-                                    <li class="active">
-                                        <i class="fa fa-dashboard"></i> Trading Simulator
-                                    </li>
-                                </ol>
-                            </div>
-                        </div>
-                    {% endblock %}
-                    <!-- /.row -->
+                </li>
+            </ul>
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <!--
+                     <li class="active">
+                         <a href="#"><i class="fa-fw glyphicon glyphicon-folder-open"></i> Account</a>
+                     </li>
+                    -->
+                    <li>
+                        <a href="/portfolio"><i class="fa fa-fw fa-briefcase"></i> Portfolio</a>
+                    </li>
+                    <li>
+                        <a href="/list"><i class="fa fa-fw fa-binoculars"></i> Watch List</a>
+
+                    </li>
+
+                    <li>
+                        <a href="/orders"><i class="fa fa-fw fa-table"></i> Order Details</a>
+                    </li>
+
+                    <li>
+
+                        <!--  <div class="panel panel-default" >
+                           <div class="panel-heading">User Portfolio</div>
+                           <div class="panel-body">Cash: ${{u.cash}}</div>
+                           </div>-->
+
+                        <h3 style="color:grey;
+                            padding-left:15px;"><strong>Cash:</strong> ${{u.cash}} </h3>
+                        <h3 style="color:grey;
+                            padding-left:15px;"><strong>Equity:</strong> ${{u.equity}} </h3>
+                        <h3 style="color:grey;
+                            padding-left:15px;"><strong>Gain/Loss:</strong> ${{u.equity-50000}} </h3>
+
+                    </li> 
+
+
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <!-- Page Heading -->
+                {% block pageheader %}
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="panel panel-default">
-
-
-                            {% block content %}{% endblock %}
-
-
-
+                            <!--
+                            <h1 class="page-header">
+                                Dashboard <small>Statistics Overview</small>     
+                            </h1>
+                            -->
+                            <ol class="breadcrumb">
+                                <li class="active">
+                                    <i class="fa fa-dashboard"></i> Trading Simulator
+                                </li>
+                            </ol>
                         </div>
                     </div>
-                </div>
+                {% endblock %}
                 <!-- /.row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
 
+
+                        {% block content %}{% endblock %}
+
+
+
+                    </div>
+                </div>
             </div>
-            <!-- /.container-fluid -->
+            <!-- /.row -->
+
         </div>
-        <!-- /#page-wrapper -->
-
-
+        <!-- /.container-fluid -->
     </div>
+    <!-- /#page-wrapper -->
 
 
-    <!-- jQuery -->
-    <script src="/bootstrap/js/jquery.js"></script>
+</div>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="/bootstrap/js/bootstrap.min.js"></script>
 
-    <!-- Morris Charts JavaScript -->
-    <script src="/bootstrap/js/plugins/morris/raphael.min.js"></script>
-    <script src="/bootstrap/js/plugins/morris/morris.min.js"></script>
-    <script src="/bootstrap/js/plugins/morris/morris-data.js"></script>    
+
+<!-- jQuery -->
+<script src="/bootstrap/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Morris Charts JavaScript -->
+<script src="/bootstrap/js/plugins/morris/raphael.min.js"></script>
+<script src="/bootstrap/js/plugins/morris/morris.min.js"></script>
+<script src="/bootstrap/js/plugins/morris/morris-data.js"></script>    
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<link rel="stylesheet" 
+
+href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css"></style>
+<script type="text/javascript" 
+
+src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" 
+
+src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+
 </body>
 
 </html>

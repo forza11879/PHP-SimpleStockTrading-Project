@@ -452,12 +452,11 @@ $app->post('/buysell/:id', function($id) use ($app) {
     $stcokownedbyuser = DB::queryFirstRow('SELECT * FROM portfolios WHERE userId=%i AND symbol=%s', $_SESSION['user']['id'], $stock['symbol']);
 
     $type = $app->request()->post('type');
-    //print_r($type);
-
 
     if ($type == 'buy') {
 
-        $usernewcash = $userinuse['cash'] - $transactiontotalbuy;
+        
+        $stcokownedbyuser = DB::queryFirstRow('SELECT * FROM portfolios WHERE userId=%i AND symbol=%s', $_SESSION['user']['id'], $stock['symbol']);        $usernewcash = $userinuse['cash'] - $transactiontotalbuy;
 
 
 //////cheking if user already bought elected stock
@@ -497,7 +496,7 @@ $app->post('/buysell/:id', function($id) use ($app) {
         DB::update('portfolios', array(
             "qty" => $newqty
                 ), "userId=%i AND symbol=%s", $_SESSION['user']['id'], $stock['symbol']);
-        
+        //////// //adding record to trasactions table/////
         DB::insert('transactions', array(
         "userId" => $_SESSION['user']['id'],
         "symbol" => $stock['symbol'],
@@ -505,23 +504,23 @@ $app->post('/buysell/:id', function($id) use ($app) {
         "qty" => $qty,
         "type" => $type,
         "date" => $date
+        /////////////////////end adding record to transactions table///        
+                
     ));
     }
 
 
-
-
-//////// //adding record to trasactions table/////
-
-/////////////////////end adding record to transactions table///
 /////calculating equity////////////
-    $listofstockstocalculateequity = DB::query('SELECT s.symbol, p.qty, s.bid FROM portfolios p, symbols s WHERE p.symbol = s.symbol AND p.userId=%i', $_SESSION['user']['id']);
+    $listofstockstocalculateequity = DB::query('SELECT s.symbol, p.qty, s.bid FROM portfolios p, symbols s WHERE p.symbol = s.symbol '
+            . 'AND p.userId=%i', $_SESSION['user']['id']);
     //print_r($listofstockstocalculateequity);
     $total = 0;
     foreach ($listofstockstocalculateequity as $stockownedbyuser) {
         $total = $stockownedbyuser['qty'] * $stockownedbyuser['bid'] + $total;
     }
 
+    
+    
     $newequity = $total + $usernewcash;
 /////end calculating equity////////////////
 ///////////////////////updating user cash AND EQUITY///////////////
