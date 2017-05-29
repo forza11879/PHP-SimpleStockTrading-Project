@@ -22,10 +22,8 @@
 
     <script>
         $.getJSON('/fetch/{{symbol}}', function (data) {
-
             // create the chart
             Highcharts.stockChart('container', {
-
                 rangeSelector: {
                     selected: 1
                 },
@@ -52,7 +50,6 @@
                     }]
             });
         });
-
     </script>
 
 
