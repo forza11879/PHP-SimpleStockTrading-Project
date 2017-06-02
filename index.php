@@ -40,14 +40,14 @@ $twig->addGlobal('sessionUser', $_SESSION['user']);
 
 
 
-$app->get('/landing', function() use ($app) {
+$app->get('/', function() use ($app) {
    
    
     
     $app->render('landing.html.twig');
 });
 
-$app->post('/landing', function() use ($app) {
+$app->post('/', function() use ($app) {
    
     if (!$_SESSION['user']) {
         $app->render('login.html.twig');
