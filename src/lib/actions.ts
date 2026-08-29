@@ -9,8 +9,8 @@ import {
 } from "./session";
 import { hashPassword, verifyPassword, isValidPassword, generateRandomString } from "./password";
 import { sendMail } from "./mail";
-import { fetchAndStoreQuotes } from "./quotes";
-import { refreshEquity, getSymbolById } from "./trading";
+import { refreshQuotes } from "./quotes";
+import { refreshEquity, getSymbolById, getSymbols } from "./trading";
 import { executeOrder } from "./orders";
 
 export interface FormState {
@@ -88,12 +88,12 @@ export async function logoutAction(): Promise<void> {
 export async function getQuoteAction(formData: FormData): Promise<void> {
   const symbol = (formData.get("symbol") as string)?.trim() ?? "";
   if (!symbol) redirect("/list");
-  await fetchAndStoreQuotes(symbol);
+  await refreshQuotes([symbol]);
   redirect("/list");
 }
 
 export async function refreshListQuotesAction(): Promise<void> {
-  await fetchAndStoreQuotes("AAPL");
+  await refreshQuotes(getSymbols().map((s) => s.symbol));
   redirect("/list");
 }
 
