@@ -98,7 +98,7 @@ describe("getQuote", () => {
     expect(url).not.toContain("d/quotes.csv");
 
     const row = queryFirstRow("SELECT * FROM symbols WHERE symbol = 'AAPL'")!;
-    expect(row.lastTrade).toBe(155.5);
+    expect(row.price).toBe(155.5);
     expect(row.name).toBe("Apple Inc.");
     expect(row.previousClose).toBe(153.87);
   });
@@ -128,7 +128,7 @@ describe("getQuote", () => {
     stubYahoo(false);
     const quote = await getQuote("AAPL");
     expect(quote?.symbol).toBe("AAPL");
-    expect(quote?.price).toBe(153.61); // seeded lastTrade
+    expect(quote?.price).toBe(153.61); // seeded price
   });
 
   it("caches a fallback so a failing source is not re-fetched within the window", async () => {
@@ -153,7 +153,7 @@ describe("refreshQuotes", () => {
     const stored = await refreshQuotes(["AAPL", "TSLA"]);
 
     expect(stored).toBe(2);
-    expect(queryFirstRow("SELECT * FROM symbols WHERE symbol = 'AAPL'")!.lastTrade).toBe(155.5);
-    expect(queryFirstRow("SELECT * FROM symbols WHERE symbol = 'TSLA'")!.lastTrade).toBe(155.5);
+    expect(queryFirstRow("SELECT * FROM symbols WHERE symbol = 'AAPL'")!.price).toBe(155.5);
+    expect(queryFirstRow("SELECT * FROM symbols WHERE symbol = 'TSLA'")!.price).toBe(155.5);
   });
 });

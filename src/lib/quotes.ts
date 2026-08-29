@@ -109,7 +109,7 @@ function quoteFromRow(row: SymbolRow): Quote {
   return {
     symbol: row.symbol,
     name: row.name,
-    price: row.lastTrade,
+    price: row.price,
     open: row.open,
     previousClose: row.previousClose,
     high: row.high,
@@ -121,18 +121,14 @@ function quoteFromRow(row: SymbolRow): Quote {
 }
 
 function storeQuote(quote: Quote): void {
-  // bid/ask are legacy columns removed in a later ticket; until then the
-  // live last price stands in for both so fills price at the current Quote.
   upsert(
     "symbols",
     {
       symbol: quote.symbol,
       name: quote.name,
-      bid: quote.price,
-      ask: quote.price,
       open: quote.open,
       previousClose: quote.previousClose,
-      lastTrade: quote.price,
+      price: quote.price,
       high: quote.high,
       low: quote.low,
       volume: quote.volume,
@@ -164,7 +160,7 @@ export async function getQuote(symbol: string): Promise<Quote | null> {
   }
 
   const known = getSymbolBySymbol(key);
-  if (known && known.lastTrade > 0) {
+  if (known && known.price > 0) {
     const quote = quoteFromRow(known);
     cache.set(key, { quote, at: Date.now() });
     return quote;
@@ -174,9 +170,6 @@ export async function getQuote(symbol: string): Promise<Quote | null> {
 
 /** Fetches and stores a Quote for each symbol, returning how many were stored. */
 export async function refreshQuotes(symbols: string[]): Promise<number> {
-  let stored = 0;
-  for (const symbol of symbols) {
-    if (await getQuote(symbol)) stored++;
-  }
-  return stored;
+  const results = await Promise.all(symbols.map((symbol) => getQuote(symbol)));
+  return results.filter((quote) => quote !== null).length;
 }

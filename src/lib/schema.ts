@@ -20,11 +20,9 @@ export function initDb(): void {
       id            INTEGER PRIMARY KEY AUTOINCREMENT,
       symbol        TEXT UNIQUE NOT NULL,
       name          TEXT NOT NULL,
-      bid           REAL NOT NULL,
-      ask           REAL NOT NULL,
       open          REAL NOT NULL,
       previousClose REAL NOT NULL,
-      lastTrade     REAL NOT NULL,
+      price         REAL NOT NULL,
       high          REAL NOT NULL,
       low           REAL NOT NULL,
       volume        INTEGER NOT NULL,
@@ -62,16 +60,6 @@ export function initDb(): void {
       secretToken   TEXT NOT NULL,
       expiryDateTime TEXT NOT NULL
     );
-
-    CREATE TABLE IF NOT EXISTS history (
-      id         INTEGER PRIMARY KEY AUTOINCREMENT,
-      date       TEXT,
-      openPrice  REAL,
-      high       REAL,
-      low        REAL,
-      closePrice REAL,
-      volume     INTEGER
-    );
   `);
 
   // One-time migration: the legacy DB dump stored seed passwords in plain
@@ -106,22 +94,22 @@ export function initDb(): void {
 
   const insertSymbol = db.prepare(
     `INSERT INTO symbols
-     (id, symbol, name, bid, ask, open, previousClose, lastTrade, high, low, volume, high52, low52)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+     (id, symbol, name, open, previousClose, price, high, low, volume, high52, low52)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
   );
-  const symbols: Array<[number, string, string, number, number, number, number, number, number, number, number, number, number]> = [
-    [1, "AAPL", "Apple Inc.", 153.3, 153.5, 154.0, 153.87, 153.61, 154.24, 153.31, 21927637, 156.65, 91.5],
-    [5, "TSLA", "Tesla, Inc.", 325.33, 325.93, 317.28, 316.83, 325.14, 325.49, 316.31, 7802199, 327.66, 178.19],
-    [7, "F", "Ford Motor Company", 0, 0, 10.85, 10.86, 10.93, 10.94, 10.81, 28176454, 14.04, 10.67],
-    [8, "EBAY", "eBay Inc.", 34.72, 35.08, 35.26, 35.22, 34.9, 35.26, 34.66, 6622496, 35.3, 22.3],
-    [9, "JPM", "JP Morgan Chase & Co. Common St", 0, 0, 85.99, 85.71, 85.35, 86.08, 85.08, 12238543, 93.98, 57.05],
-    [19, "GOOG", "Alphabet Inc.", 963.2, 971.39, 969.7, 969.54, 971.47, 974.98, 965.03, 1252010, 974.98, 663.28],
-    [20, "FAS", "Direxion Financial Bull 3X Shar", 0, 0, 44.53, 44.86, 44.7, 44.93, 44.3, 1120326, 51.11, 21.14],
-    [219, "XLF", "SPDR Select Sector Fund - Finan", 0, 0, 23.56, 23.62, 23.61, 23.68, 23.56, 42601706, 25.3, 17.32],
-    [220, "ADSK", "Autodesk, Inc.", 110.5, 113.01, 114.24, 113.89, 113.03, 114.42, 112.87, 2109782, 114.68, 49.82],
-    [221, "QQQ", "PowerShares QQQ Trust, Series 1", 141.3, 141.33, 141.0, 140.97, 141.22, 141.28, 140.81, 13851582, 141.33, 101.75],
-    [1153, "WFC", "Wells Fargo & Company", 0, 0, 52.63, 52.78, 52.41, 52.81, 52.37, 14247740, 59.99, 43.55],
-    [1155, "GE", "General Electric Company", 0, 0, 27.46, 27.49, 27.45, 27.55, 27.29, 30624045, 33.0, 27.1],
+  const symbols: Array<[number, string, string, number, number, number, number, number, number, number, number]> = [
+    [1, "AAPL", "Apple Inc.", 154.0, 153.87, 153.61, 154.24, 153.31, 21927637, 156.65, 91.5],
+    [5, "TSLA", "Tesla, Inc.", 317.28, 316.83, 325.14, 325.49, 316.31, 7802199, 327.66, 178.19],
+    [7, "F", "Ford Motor Company", 10.85, 10.86, 10.93, 10.94, 10.81, 28176454, 14.04, 10.67],
+    [8, "EBAY", "eBay Inc.", 35.26, 35.22, 34.9, 35.26, 34.66, 6622496, 35.3, 22.3],
+    [9, "JPM", "JP Morgan Chase & Co. Common St", 85.99, 85.71, 85.35, 86.08, 85.08, 12238543, 93.98, 57.05],
+    [19, "GOOG", "Alphabet Inc.", 969.7, 969.54, 971.47, 974.98, 965.03, 1252010, 974.98, 663.28],
+    [20, "FAS", "Direxion Financial Bull 3X Shar", 44.53, 44.86, 44.7, 44.93, 44.3, 1120326, 51.11, 21.14],
+    [219, "XLF", "SPDR Select Sector Fund - Finan", 23.56, 23.62, 23.61, 23.68, 23.56, 42601706, 25.3, 17.32],
+    [220, "ADSK", "Autodesk, Inc.", 114.24, 113.89, 113.03, 114.42, 112.87, 2109782, 114.68, 49.82],
+    [221, "QQQ", "PowerShares QQQ Trust, Series 1", 141.0, 140.97, 141.22, 141.28, 140.81, 13851582, 141.33, 101.75],
+    [1153, "WFC", "Wells Fargo & Company", 52.63, 52.78, 52.41, 52.81, 52.37, 14247740, 59.99, 43.55],
+    [1155, "GE", "General Electric Company", 27.46, 27.49, 27.45, 27.55, 27.29, 30624045, 33.0, 27.1],
   ];
   for (const s of symbols) insertSymbol.run(...s);
 
@@ -163,7 +151,6 @@ export function initDb(): void {
 
 export function resetDb(): void {
   db.exec("DELETE FROM passresets");
-  db.exec("DELETE FROM history");
   db.exec("DELETE FROM transactions");
   db.exec("DELETE FROM portfolios");
   db.exec("DELETE FROM symbols");

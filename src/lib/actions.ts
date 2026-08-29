@@ -9,7 +9,7 @@ import {
 } from "./session";
 import { hashPassword, verifyPassword, isValidPassword, generateRandomString } from "./password";
 import { sendMail } from "./mail";
-import { refreshQuotes } from "./quotes";
+import { getQuote, refreshQuotes } from "./quotes";
 import { refreshEquity, getSymbolById, getSymbols } from "./trading";
 import { executeOrder } from "./orders";
 
@@ -123,14 +123,10 @@ export async function buySellAction(
   const stock = getSymbolById(id);
   if (!stock) return { error: "Symbol not found" };
 
-  const price = type === "buy" ? (stock.ask as number) : (stock.bid as number);
-  const result = executeOrder(
-    session.id,
-    stock.symbol as string,
-    qty,
-    type,
-    price,
-  );
+  const quote = await getQuote(stock.symbol);
+  if (!quote) return { error: "No price available for this symbol" };
+
+  const result = executeOrder(session.id, stock.symbol, qty, type, quote.price);
   if (result.error) return { error: result.error };
 
   redirect("/buysell/success");
