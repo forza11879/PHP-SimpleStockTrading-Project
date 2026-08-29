@@ -1,5 +1,11 @@
-/nbproject/private/
-/cache/
-/logs/
-/vendor/
-/local.php
+/node_modules/
+/.next/
+/out/
+/data/
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+logs/
+.env
+.env.local
+cache/
