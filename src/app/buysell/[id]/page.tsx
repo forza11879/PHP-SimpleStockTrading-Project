@@ -17,24 +17,24 @@ export default async function BuySellPage({
   const sessionUser = await getSessionUser();
   if (!sessionUser) redirect("/login");
 
-  const stock = getSymbolById(Number(id));
-  if (!stock) redirect("/list");
+  const symbol = getSymbolById(Number(id));
+  if (!symbol) redirect("/list");
 
-  const quote = await getQuote(stock.symbol);
-  const price = quote?.price ?? stock.price;
+  const quote = await getQuote(symbol.symbol);
+  const price = quote?.price ?? 0;
 
   const user = queryFirstRow("SELECT * FROM users WHERE id = ?", sessionUser.id);
-  const owned = queryFirstRow(
+  const position = queryFirstRow(
     "SELECT * FROM portfolios WHERE userId = ? AND symbol = ?",
     sessionUser.id,
-    stock.symbol,
+    symbol.symbol,
   );
 
   const userName = user?.name as string | undefined;
   const userCash = Number(user?.cash ?? 0);
   const userEquity = Number(user?.equity ?? 0);
   const maxbuy = price > 0 ? Math.floor(userCash / price) : 0;
-  const maxsell = owned ? Math.floor(owned.qty as number) : 0;
+  const maxsell = position ? Math.floor(position.qty as number) : 0;
 
   return (
     <MasterLayout title="Buy/Sell Ticket" user={sessionUser}>
@@ -49,20 +49,20 @@ export default async function BuySellPage({
             <div className="thumbnail">
               <div className="caption">
                 <h3>
-                  <strong>Price:</strong> {price > 0 ? price : "Unavailable"}
+                  <strong>Buy</strong>
                 </h3>
                 <br />
-                <BuySellForm id={stock.id} type="buy" max={maxbuy} />
+                <BuySellForm id={symbol.id} type="buy" max={maxbuy} price={price} />
               </div>
             </div>
 
             <div className="thumbnail">
               <div className="caption">
                 <h3>
-                  <strong>Sell at:</strong> {price > 0 ? price : "Unavailable"}
+                  <strong>Sell</strong>
                 </h3>
                 <br />
-                <BuySellForm id={stock.id} type="sell" max={maxsell} />
+                <BuySellForm id={symbol.id} type="sell" max={maxsell} price={price} />
               </div>
             </div>
           </div>
@@ -71,14 +71,14 @@ export default async function BuySellPage({
             <div className="thumbnail">
               <div className="caption">
                 <h3>
-                  <strong>{stock.name}</strong>
+                  <strong>{symbol.name}</strong>
                 </h3>
-                <h3>High: {stock.high}</h3>
-                <h3>Low: {stock.low}</h3>
-                <h3>High52wk: {stock.high52}</h3>
-                <h3>Low52wk: {stock.low52}</h3>
-                <h3>Open: {stock.open}</h3>
-                <h3>Close: {stock.previousClose}</h3>
+                <h3>High: {symbol.high}</h3>
+                <h3>Low: {symbol.low}</h3>
+                <h3>High52wk: {symbol.high52}</h3>
+                <h3>Low52wk: {symbol.low52}</h3>
+                <h3>Open: {symbol.open}</h3>
+                <h3>Close: {symbol.previousClose}</h3>
               </div>
             </div>
           </div>
