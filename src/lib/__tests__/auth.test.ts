@@ -41,7 +41,7 @@ describe("auth flows (bcrypt-only seeds)", () => {
   it("logs in a seed account with the correct password and sets a session cookie", async () => {
     await expect(
       loginAction({}, form({ email: "grish@gmail.com", password: "gG560526" })),
-    ).rejects.toThrow("REDIRECT:/login/success");
+    ).rejects.toThrow("REDIRECT:/dashboard");
     // Session cookie payload is "<userId>.<hmac>".
     expect(h.setCookie).toContain("1.");
   });

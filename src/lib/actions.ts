@@ -77,7 +77,7 @@ export async function loginAction(
   }
 
   await createSession(user!.id as number);
-  redirect("/login/success");
+  redirect("/dashboard");
 }
 
 export async function logoutAction(): Promise<void> {
