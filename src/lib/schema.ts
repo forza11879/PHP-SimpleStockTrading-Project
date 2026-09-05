@@ -62,6 +62,19 @@ export function initDb(): void {
     );
   `);
 
+  // Google social-login migration: link a verified Google identity (`sub`)
+  // to an existing user row. SQLite cannot ADD a UNIQUE column, so the
+  // column is added plain and uniqueness is enforced with a UNIQUE INDEX
+  // (which, like a UNIQUE column, permits multiple NULLs — password-only
+  // rows are unaffected and each Google account maps to at most one user).
+  const userColumns = query("PRAGMA table_info(users)");
+  if (!userColumns.some((c) => c.name === "google_sub")) {
+    db.exec("ALTER TABLE users ADD COLUMN google_sub TEXT");
+  }
+  db.exec(
+    "CREATE UNIQUE INDEX IF NOT EXISTS idx_users_google_sub ON users(google_sub)",
+  );
+
   // One-time migration: the legacy DB dump stored seed passwords in plain
   // text. Hash any such row in place (its stored value is the real password),
   // so a pre-existing database keeps working now that plain-text support is

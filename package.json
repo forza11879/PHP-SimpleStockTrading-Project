@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "google-auth-library": "^11.0.2",
     "highcharts": "^11.4.8",
     "next": "^15.1.6",
     "nodemailer": "^6.9.16",
