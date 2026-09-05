@@ -28,13 +28,20 @@ export default function BuySellForm({
   type,
   max,
   price,
+  cash,
+  ownedQty,
+  avgPrice,
 }: {
   id: number;
   type: "buy" | "sell";
   max: number;
   price: number;
+  cash: number;
+  ownedQty: number;
+  avgPrice: number;
 }) {
   const [qty, setQty] = useState("1");
+  const [infoOpen, setInfoOpen] = useState(false);
   const [state, formAction, pending] = useActionState<OrderResult, FormData>(
     buySellAction.bind(null, id),
     {},
@@ -75,8 +82,34 @@ export default function BuySellForm({
         name="qty"
         value={qty}
         onChange={(e) => setQty(e.target.value)}
+        onFocus={() => setInfoOpen(true)}
+        onBlur={() => setInfoOpen(false)}
+        onKeyDown={(e) => {
+          if (e.key === "Escape") (e.target as HTMLInputElement).blur();
+        }}
+        aria-expanded={infoOpen}
+        aria-describedby={infoOpen ? `qty-info-${type}` : undefined}
         className="mt-1 w-full border border-line bg-surface px-3 py-1.5 text-sm tabular-nums"
       />
+      {infoOpen && (
+        <div
+          id={`qty-info-${type}`}
+          className="mt-1 border border-line bg-canvas px-3 py-2 text-xs"
+        >
+          <div className="flex justify-between py-0.5">
+            <span className="text-muted">Cash balance</span>
+            <span className="tabular-nums">${formatPrice(cash)}</span>
+          </div>
+          <div className="flex justify-between py-0.5">
+            <span className="text-muted">Position</span>
+            <span className="tabular-nums">
+              {ownedQty > 0
+                ? `${ownedQty} @ $${formatPrice(avgPrice)}`
+                : "None"}
+            </span>
+          </div>
+        </div>
+      )}
       <div className="mt-2 flex items-baseline justify-between text-sm">
         <span className="text-xs text-muted">{c.estLabel}</span>
         <span className="font-semibold tabular-nums">{estimate}</span>

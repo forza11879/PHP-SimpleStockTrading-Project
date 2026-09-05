@@ -35,6 +35,7 @@ export default async function BuySellPage({
   const userCash = Number(user?.cash ?? 0);
   const userEquity = Number(user?.equity ?? 0);
   const owned = position ? Math.floor(position.qty as number) : 0;
+  const avgPrice = position ? Number(position.avgprice ?? 0) : 0;
   const maxbuy = maxBuyQty(userCash, price);
   const maxsell = owned;
 
@@ -63,6 +64,9 @@ export default async function BuySellPage({
               type="buy"
               max={maxbuy}
               price={price}
+              cash={userCash}
+              ownedQty={owned}
+              avgPrice={avgPrice}
             />
           </section>
           <section className="border border-line bg-surface p-4">
@@ -75,6 +79,9 @@ export default async function BuySellPage({
               type="sell"
               max={maxsell}
               price={price}
+              cash={userCash}
+              ownedQty={owned}
+              avgPrice={avgPrice}
             />
           </section>
         </div>
