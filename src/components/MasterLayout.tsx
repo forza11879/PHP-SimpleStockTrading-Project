@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { getSessionUser, type SessionUser } from "@/src/lib/session";
 import { refreshEquity } from "@/src/lib/trading";
+import { formatPrice } from "@/src/lib/money";
 import { queryFirstRow } from "@/src/lib/db";
 
 interface MasterLayoutProps {
@@ -97,13 +98,13 @@ export default async function MasterLayout({
               </li>
               <li>
                 <h3 style={{ color: "grey", paddingLeft: 15 }}>
-                  <strong>Cash:</strong> ${cash}
+                  <strong>Cash:</strong> ${formatPrice(cash)}
                 </h3>
                 <h3 style={{ color: "grey", paddingLeft: 15 }}>
-                  <strong>Equity:</strong> ${equity}
+                  <strong>Equity:</strong> ${formatPrice(equity)}
                 </h3>
                 <h3 style={{ color: "grey", paddingLeft: 15 }}>
-                  <strong>Gain/Loss:</strong> ${equity - 50000}
+                  <strong>Gain/Loss:</strong> ${formatPrice(equity - 50000)}
                 </h3>
               </li>
             </ul>

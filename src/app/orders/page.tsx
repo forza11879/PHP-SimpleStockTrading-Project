@@ -2,6 +2,7 @@ import MasterLayout from "@/src/components/MasterLayout";
 import { getSessionUser } from "@/src/lib/session";
 import { redirect } from "next/navigation";
 import { query } from "@/src/lib/db";
+import { formatPrice } from "@/src/lib/money";
 
 export const dynamic = "force-dynamic";
 
@@ -58,7 +59,7 @@ export default async function OrdersPage() {
                             <a href={`/chart/${t.symbol}`}>{t.symbol as string}</a>
                           </strong>
                         </td>
-                        <td>{String(t.price)}</td>
+                        <td>{formatPrice(t.price as number)}</td>
                         <td>{String(t.qty)}</td>
                         <td>{t.type as string}</td>
                         <td>{t.date as string}</td>

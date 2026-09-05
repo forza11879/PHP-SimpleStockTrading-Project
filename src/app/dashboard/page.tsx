@@ -2,6 +2,7 @@ import MasterLayout from "@/src/components/MasterLayout";
 import { getSessionUser } from "@/src/lib/session";
 import { redirect } from "next/navigation";
 import { refreshEquity, getSymbols } from "@/src/lib/trading";
+import { formatPrice } from "@/src/lib/money";
 import { refreshQuotes } from "@/src/lib/quotes";
 import { queryFirstRow } from "@/src/lib/db";
 
@@ -35,19 +36,19 @@ export default async function DashboardPage() {
           <div className="col-sm-4">
             <div className="well text-center">
               <h4>Cash</h4>
-              <h2>${cash}</h2>
+              <h2>${formatPrice(cash)}</h2>
             </div>
           </div>
           <div className="col-sm-4">
             <div className="well text-center">
               <h4>Equity</h4>
-              <h2>${equity}</h2>
+              <h2>${formatPrice(equity)}</h2>
             </div>
           </div>
           <div className="col-sm-4">
             <div className="well text-center">
               <h4>Gain/Loss</h4>
-              <h2>${gain}</h2>
+              <h2>${formatPrice(gain)}</h2>
             </div>
           </div>
         </div>
@@ -72,7 +73,7 @@ export default async function DashboardPage() {
                     </strong>
                   </td>
                   <td>{row.name}</td>
-                  <td>{row.price > 0 ? row.price : "—"}</td>
+                  <td>{row.price > 0 ? formatPrice(row.price) : "—"}</td>
                   <td>
                     <a href={`/buysell/${row.id}`}>buy/sell</a>
                   </td>

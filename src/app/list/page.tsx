@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { getSymbols } from "@/src/lib/trading";
 import { refreshQuotes } from "@/src/lib/quotes";
 import { getQuoteAction } from "@/src/lib/actions";
+import { formatPrice } from "@/src/lib/money";
 
 export const dynamic = "force-dynamic";
 
@@ -91,14 +92,14 @@ export default async function ListPage() {
                           </strong>
                         </td>
                         <td>{row.name}</td>
-                        <td>{row.price > 0 ? row.price : "—"}</td>
-                        <td>{row.open}</td>
-                        <td>{row.previousClose}</td>
-                        <td>{row.high}</td>
-                        <td>{row.low}</td>
+                        <td>{row.price > 0 ? formatPrice(row.price) : "—"}</td>
+                        <td>{formatPrice(row.open)}</td>
+                        <td>{formatPrice(row.previousClose)}</td>
+                        <td>{formatPrice(row.high)}</td>
+                        <td>{formatPrice(row.low)}</td>
                         <td>{row.volume}</td>
-                        <td>{row.high52}</td>
-                        <td>{row.low52}</td>
+                        <td>{formatPrice(row.high52)}</td>
+                        <td>{formatPrice(row.low52)}</td>
                         <td>
                           <a href={`/buysell/${row.id}`}>buy/sell </a>
                         </td>

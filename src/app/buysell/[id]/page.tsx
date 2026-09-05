@@ -3,6 +3,7 @@ import { getSessionUser } from "@/src/lib/session";
 import { redirect } from "next/navigation";
 import { getSymbolById } from "@/src/lib/trading";
 import { getQuote } from "@/src/lib/quotes";
+import { formatPrice } from "@/src/lib/money";
 import { queryFirstRow } from "@/src/lib/db";
 import BuySellForm from "./BuySellForm";
 
@@ -73,12 +74,12 @@ export default async function BuySellPage({
                 <h3>
                   <strong>{symbol.name}</strong>
                 </h3>
-                <h3>High: {symbol.high}</h3>
-                <h3>Low: {symbol.low}</h3>
-                <h3>High52wk: {symbol.high52}</h3>
-                <h3>Low52wk: {symbol.low52}</h3>
-                <h3>Open: {symbol.open}</h3>
-                <h3>Close: {symbol.previousClose}</h3>
+                <h3>High: {formatPrice(symbol.high)}</h3>
+                <h3>Low: {formatPrice(symbol.low)}</h3>
+                <h3>High52wk: {formatPrice(symbol.high52)}</h3>
+                <h3>Low52wk: {formatPrice(symbol.low52)}</h3>
+                <h3>Open: {formatPrice(symbol.open)}</h3>
+                <h3>Close: {formatPrice(symbol.previousClose)}</h3>
               </div>
             </div>
           </div>
@@ -90,11 +91,11 @@ export default async function BuySellPage({
                   <strong>Account Holder:</strong> {userName}
                 </h3>
                 <br />
-                <h3>Cash: ${userCash}</h3>
+                <h3>Cash: ${formatPrice(userCash)}</h3>
                 <br />
-                <h3>Equity: ${userEquity}</h3>
+                <h3>Equity: ${formatPrice(userEquity)}</h3>
                 <br />
-                <h3>Gain/Loss: ${userEquity - 50000}</h3>
+                <h3>Gain/Loss: ${formatPrice(userEquity - 50000)}</h3>
                 <br />
                 <a href="/portfolio">
                   <button type="button" className="btn btn-primary btn-md">

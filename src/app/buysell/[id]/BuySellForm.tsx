@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useActionState } from "react";
 import { buySellAction } from "@/src/lib/actions";
+import { formatPrice } from "@/src/lib/money";
 import type { OrderResult } from "@/src/lib/orders";
 
 const copy = {
@@ -45,7 +46,7 @@ export default function BuySellForm({
     <form action={formAction}>
       {state.error && <p className="errorList">{state.error}</p>}
       <p>
-        Current price: <strong>${price > 0 ? price : "Unavailable"}</strong>
+        Current price: <strong>${price > 0 ? formatPrice(price) : "Unavailable"}</strong>
       </p>
       <label>
         Quantity:

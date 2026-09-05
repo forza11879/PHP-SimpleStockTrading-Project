@@ -3,6 +3,7 @@ import { getSessionUser } from "@/src/lib/session";
 import { redirect } from "next/navigation";
 import { query } from "@/src/lib/db";
 import { refreshQuotes } from "@/src/lib/quotes";
+import { formatPrice } from "@/src/lib/money";
 import { getPositions } from "@/src/lib/trading";
 
 export const dynamic = "force-dynamic";
@@ -69,10 +70,10 @@ export default async function PortfolioPage() {
                               <a href={`/chart/${p.symbol}`}>{p.symbol}</a>
                             </strong>
                           </td>
-                          <td>{String(p.avgprice)}</td>
-                          <td>{p.price > 0 ? p.price : "—"}</td>
+                          <td>{formatPrice(p.avgprice)}</td>
+                          <td>{p.price > 0 ? formatPrice(p.price) : "—"}</td>
                           <td>{String(p.qty)}</td>
-                          <td>{gain === null ? "—" : `$ ${gain}`}</td>
+                          <td>{gain === null ? "—" : `$ ${formatPrice(gain)}`}</td>
                           <td>
                             <a href={`/buysell/${p.id}`}>buy/sell </a>
                           </td>
