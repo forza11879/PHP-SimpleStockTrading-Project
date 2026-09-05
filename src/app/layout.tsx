@@ -1,3 +1,5 @@
+import "./globals.css";
+
 export const metadata = {
   title: "Trading Simulator",
   description: "A simple stock trading simulator",

@@ -1,0 +1,34 @@
+/*
+ * Brokerage design tokens (R1) — the single source of truth for the redesign.
+ *
+ * - Palette: restrained neutrals (canvas / surface / ink / muted / line),
+ *   green and red reserved for financial direction and status (use
+ *   Tailwind's default green and red scales), one accent for primary
+ *   actions.
+ * - Type: system font stack (no webfont dependency); use the `tabular-nums`
+ *   utility on every financial figure so columns align.
+ * - Preflight is intentionally NOT loaded: Bootstrap still owns page styling
+ *   until the final migration ticket, and preflight resets would shift it.
+ *   Coexistence is safe while both are loaded: Tailwind emits into cascade
+ *   layers, and Bootstrap's unlayered rules win any same-name ties (e.g.
+ *   `.collapse`, `.sr-only`), so Bootstrap pages render unchanged.
+ *   Global element/base styling lands with the shell (R2). This file only
+ *   contributes CSS variables (via `@theme`) and utilities.
+ */
+@import "tailwindcss/theme.css";
+
+@theme {
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+
+  --color-canvas: #f4f6f8;
+  --color-surface: #ffffff;
+  --color-ink: #1a2332;
+  --color-muted: #5b6b7f;
+  --color-line: #e2e8f0;
+  --color-accent: #0b5cc0;
+  --color-accent-ink: #ffffff;
+}
+
+@import "tailwindcss/utilities.css";
