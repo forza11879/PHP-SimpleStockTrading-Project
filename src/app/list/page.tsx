@@ -20,7 +20,7 @@ export default async function ListPage() {
   return (
     <MasterLayout title="Watch List" user={sessionUser}>
       <div className="p-4 lg:p-6">
-        <form method="post" action={getQuoteAction} className="mb-4 flex gap-2">
+        <form action={getQuoteAction} className="mb-4 flex gap-2">
           <label htmlFor="symbol-input" className="sr-only">
             Symbol
           </label>
