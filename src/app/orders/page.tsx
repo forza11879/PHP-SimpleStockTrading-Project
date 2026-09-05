@@ -16,61 +16,53 @@ export default async function OrdersPage() {
   );
 
   return (
-    <MasterLayout title="Order Details" user={sessionUser}>
-      <div className="panel-heading">
-        <h3 className="panel-title">
-          <i className="fa fa-table fa-fw"></i> Order Details
-        </h3>
-      </div>
-      <div className="panel-body">
-        <div className="card mb-3">
-          <div className="list-task">
-            <div className="card-block">
-              <div className="table-responsive">
-                <table
-                  className="table table-striped"
-                  width="100%"
-                  id="dataTable"
-                  cellSpacing="0"
-                >
-                  <thead className="thead-inverse">
-                    <tr>
-                      <th>Symbol</th>
-                      <th>Price</th>
-                      <th>Quantity</th>
-                      <th>Buy/Sell</th>
-                      <th>Time Placed</th>
-                    </tr>
-                  </thead>
-                  <tfoot className="thead-inverse">
-                    <tr>
-                      <th>Symbol</th>
-                      <th>Price</th>
-                      <th>Quantity</th>
-                      <th>Buy/Sell</th>
-                      <th>Time Placed</th>
-                    </tr>
-                  </tfoot>
-                  <tbody>
-                    {transactions.map((t) => (
-                      <tr key={t.id as number}>
-                        <td>
-                          <strong>
-                            <a href={`/chart/${t.symbol}`}>{t.symbol as string}</a>
-                          </strong>
-                        </td>
-                        <td>{formatPrice(t.price as number)}</td>
-                        <td>{String(t.qty)}</td>
-                        <td>{t.type as string}</td>
-                        <td>{t.date as string}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+    <MasterLayout title="Orders" user={sessionUser}>
+      <div className="p-4 lg:p-6">
+        {transactions.length === 0 ? (
+          <p className="border border-line bg-surface px-3 py-4 text-sm text-muted">
+            No orders yet.
+          </p>
+        ) : (
+          <div className="overflow-x-auto border border-line bg-surface">
+            <table className="w-full text-sm">
+              <thead className="sticky top-0 bg-surface">
+                <tr className="border-b border-line text-left text-xs text-muted">
+                  <th className="px-3 py-2 font-semibold">Symbol</th>
+                  <th className="px-3 py-2 text-right font-semibold">Price</th>
+                  <th className="px-3 py-2 text-right font-semibold">
+                    Quantity
+                  </th>
+                  <th className="px-3 py-2 font-semibold">Buy/Sell</th>
+                  <th className="px-3 py-2 font-semibold">Time Placed</th>
+                </tr>
+              </thead>
+              <tbody className="tabular-nums">
+                {transactions.map((t) => (
+                  <tr
+                    key={t.id as number}
+                    className="border-b border-line last:border-0 hover:bg-canvas"
+                  >
+                    <td className="px-3 py-2 font-semibold">
+                      <a href={`/chart/${t.symbol}`}>{t.symbol as string}</a>
+                    </td>
+                    <td className="px-3 py-2 text-right">
+                      ${formatPrice(t.price as number)}
+                    </td>
+                    <td className="px-3 py-2 text-right">
+                      {t.qty as number}
+                    </td>
+                    <td className="px-3 py-2 capitalize">
+                      {t.type as string}
+                    </td>
+                    <td className="px-3 py-2 text-muted">
+                      {t.date as string}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        </div>
+        )}
       </div>
     </MasterLayout>
   );
