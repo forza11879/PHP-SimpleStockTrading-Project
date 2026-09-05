@@ -40,7 +40,7 @@ export default function BuySellForm({
   ownedQty: number;
   avgPrice: number;
 }) {
-  const [qty, setQty] = useState("1");
+  const [qty, setQty] = useState(type === "sell" ? String(max) : "1");
   const [infoOpen, setInfoOpen] = useState(false);
   const [state, formAction, pending] = useActionState<OrderResult, FormData>(
     buySellAction.bind(null, id),
@@ -116,7 +116,25 @@ export default function BuySellForm({
       </div>
       {max > 0 && (
         <p className="mt-1 text-xs text-muted">
-          {c.maxLabel}: {max}
+          {type === "sell" ? (
+            <>
+              Available:{" "}
+              <strong className="tabular-nums text-ink">
+                {max} shares
+              </strong>
+            </>
+          ) : (
+            <>
+              {c.maxLabel}: {max}
+            </>
+          )}{" "}
+          <button
+            type="button"
+            onClick={() => setQty(String(max))}
+            className="text-accent underline"
+          >
+            Use Max
+          </button>
         </p>
       )}
       {max > 0 && overMax && (
