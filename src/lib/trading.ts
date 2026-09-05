@@ -50,15 +50,25 @@ export interface PositionRow extends Row {
   symbol: string;
   avgprice: number;
   price: number;
+  previousClose: number;
   qty: number;
 }
 
 /** A user's holdings with the current price attached, for display and valuation. */
 export function getPositions(userId: number): PositionRow[] {
   return query(
-    `SELECT s.id, s.symbol, p.avgprice, s.price, p.qty
+    `SELECT s.id, s.symbol, p.avgprice, s.price, s.previousClose, p.qty
      FROM portfolios p, symbols s
      WHERE p.symbol = s.symbol AND p.userId = ?`,
     userId,
   ) as PositionRow[];
+}
+
+/** Today's profit/loss: sum of qty × (price − previousClose) over positions. */
+export function dailyPL(userId: number): number {
+  const positions = getPositions(userId);
+  return positions.reduce(
+    (total, p) => total + p.qty * (p.price - p.previousClose),
+    0,
+  );
 }
