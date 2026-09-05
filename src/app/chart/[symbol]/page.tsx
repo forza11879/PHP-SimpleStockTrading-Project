@@ -12,13 +12,13 @@ export default async function ChartPage({
 
   return (
     <MasterLayout title={`Chart - ${symbol}`}>
-      <div className="panel-heading">
-        <h3 className="panel-title">
-          <i className="fa fa-bar-chart-o fa-fw"></i> Charts
-        </h3>
-      </div>
-      <div className="panel-body">
-        <ChartClient symbol={symbol} />
+      <div className="p-4 lg:p-6">
+        <div className="mb-2 flex items-baseline justify-between">
+          <h2 className="text-sm font-semibold">{symbol} — 1Y Daily</h2>
+        </div>
+        <div className="border border-line bg-surface p-2">
+          <ChartClient symbol={symbol} />
+        </div>
       </div>
     </MasterLayout>
   );
