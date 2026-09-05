@@ -31,81 +31,98 @@ export default async function BuySellPage({
     symbol.symbol,
   );
 
-  const userName = user?.name as string | undefined;
   const userCash = Number(user?.cash ?? 0);
   const userEquity = Number(user?.equity ?? 0);
+  const owned = position ? Math.floor(position.qty as number) : 0;
   const maxbuy = price > 0 ? Math.floor(userCash / price) : 0;
-  const maxsell = position ? Math.floor(position.qty as number) : 0;
+  const maxsell = owned;
+
+  const stats: Array<[string, string]> = [
+    ["High", `$${formatPrice(symbol.high)}`],
+    ["Low", `$${formatPrice(symbol.low)}`],
+    ["High 52wk", `$${formatPrice(symbol.high52)}`],
+    ["Low 52wk", `$${formatPrice(symbol.low52)}`],
+    ["Open", `$${formatPrice(symbol.open)}`],
+    ["Prev Close", `$${formatPrice(symbol.previousClose)}`],
+  ];
 
   return (
-    <MasterLayout title="Buy/Sell Ticket" user={sessionUser}>
-      <div className="panel-heading">
-        <h3 className="panel-title">
-          <i className="fa fa-table fa-fw"></i> Buy/Sell Ticket
-        </h3>
-      </div>
-      <div className="panel-body">
-        <div className="row">
-          <div className="col-sm-6 col-md-4">
-            <div className="thumbnail">
-              <div className="caption">
-                <h3>
-                  <strong>Buy</strong>
-                </h3>
-                <br />
-                <BuySellForm id={symbol.id} type="buy" max={maxbuy} price={price} />
-              </div>
-            </div>
-
-            <div className="thumbnail">
-              <div className="caption">
-                <h3>
-                  <strong>Sell</strong>
-                </h3>
-                <br />
-                <BuySellForm id={symbol.id} type="sell" max={maxsell} price={price} />
-              </div>
-            </div>
-          </div>
-
-          <div className="col-sm-6 col-md-4">
-            <div className="thumbnail">
-              <div className="caption">
-                <h3>
-                  <strong>{symbol.name}</strong>
-                </h3>
-                <h3>High: {formatPrice(symbol.high)}</h3>
-                <h3>Low: {formatPrice(symbol.low)}</h3>
-                <h3>High52wk: {formatPrice(symbol.high52)}</h3>
-                <h3>Low52wk: {formatPrice(symbol.low52)}</h3>
-                <h3>Open: {formatPrice(symbol.open)}</h3>
-                <h3>Close: {formatPrice(symbol.previousClose)}</h3>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-sm-6 col-md-4">
-            <div className="thumbnail">
-              <div className="caption">
-                <h3>
-                  <strong>Account Holder:</strong> {userName}
-                </h3>
-                <br />
-                <h3>Cash: ${formatPrice(userCash)}</h3>
-                <br />
-                <h3>Equity: ${formatPrice(userEquity)}</h3>
-                <br />
-                <h3>Gain/Loss: ${formatPrice(userEquity - 50000)}</h3>
-                <br />
-                <a href="/portfolio">
-                  <button type="button" className="btn btn-primary btn-md">
-                    Portfolio
-                  </button>
-                </a>
-              </div>
-            </div>
-          </div>
+    <MasterLayout title={`${symbol.symbol} — Order Ticket`} user={sessionUser}>
+      <div className="grid gap-4 p-4 lg:grid-cols-3 lg:p-6">
+        <div className="space-y-4">
+          <section className="border border-line bg-surface p-4">
+            <h2 className="text-sm font-semibold text-green-700">
+              Buy {symbol.symbol}
+            </h2>
+            <p className="mt-1 text-xs text-muted">
+              Buying power: ${formatPrice(userCash)}
+            </p>
+            <BuySellForm
+              id={symbol.id}
+              type="buy"
+              max={maxbuy}
+              price={price}
+            />
+          </section>
+          <section className="border border-line bg-surface p-4">
+            <h2 className="text-sm font-semibold text-red-700">
+              Sell {symbol.symbol}
+            </h2>
+            <p className="mt-1 text-xs text-muted">Shares owned: {owned}</p>
+            <BuySellForm
+              id={symbol.id}
+              type="sell"
+              max={maxsell}
+              price={price}
+            />
+          </section>
         </div>
+
+        <section className="h-fit border border-line bg-surface p-4">
+          <h2 className="text-sm font-semibold">{symbol.name}</h2>
+          <dl className="mt-3 space-y-2 text-sm tabular-nums">
+            {stats.map(([label, value]) => (
+              <div key={label} className="flex justify-between border-b border-line pb-2 last:border-0 last:pb-0">
+                <dt className="text-muted">{label}</dt>
+                <dd>{value}</dd>
+              </div>
+            ))}
+          </dl>
+          <a
+            href={`/chart/${symbol.symbol}`}
+            className="mt-3 inline-block text-xs text-accent"
+          >
+            View chart →
+          </a>
+        </section>
+
+        <section className="h-fit border border-line bg-surface p-4 tabular-nums">
+          <h2 className="text-sm font-semibold">Account</h2>
+          <dl className="mt-3 space-y-2 text-sm">
+            <div className="flex justify-between border-b border-line pb-2">
+              <dt className="text-muted">Holder</dt>
+              <dd>{(user?.name as string | undefined) ?? ""}</dd>
+            </div>
+            <div className="flex justify-between border-b border-line pb-2">
+              <dt className="text-muted">Cash</dt>
+              <dd>${formatPrice(userCash)}</dd>
+            </div>
+            <div className="flex justify-between border-b border-line pb-2">
+              <dt className="text-muted">Equity</dt>
+              <dd>${formatPrice(userEquity)}</dd>
+            </div>
+            <div className="flex justify-between">
+              <dt className="text-muted">Gain/Loss</dt>
+              <dd>${formatPrice(userEquity - 50000)}</dd>
+            </div>
+          </dl>
+          <a
+            href="/portfolio"
+            className="mt-3 inline-block rounded border border-line px-3 py-1.5 text-sm"
+          >
+            Portfolio
+          </a>
+        </section>
       </div>
     </MasterLayout>
   );

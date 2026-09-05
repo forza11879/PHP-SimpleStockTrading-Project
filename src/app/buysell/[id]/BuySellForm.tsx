@@ -11,11 +11,15 @@ const copy = {
     action: "Buy",
     maxLabel: "Maximum affordable",
     overMessage: (max: number) => `You can afford at most ${max} shares.`,
+    estLabel: "Estimated cost",
+    submitClass: "bg-green-600 text-white hover:bg-green-700",
   },
   sell: {
     action: "Sell",
     maxLabel: "Maximum sellable",
     overMessage: (max: number) => `You own at most ${max} shares.`,
+    estLabel: "Estimated proceeds",
+    submitClass: "bg-red-600 text-white hover:bg-red-700",
   },
 } as const;
 
@@ -33,7 +37,7 @@ export default function BuySellForm({
   const [qty, setQty] = useState("1");
   const [state, formAction, pending] = useActionState<OrderResult, FormData>(
     buySellAction.bind(null, id),
-    { error: undefined },
+    {},
   );
 
   const qtyNum = Number(qty);
@@ -41,39 +45,60 @@ export default function BuySellForm({
   const invalidQty = !Number.isInteger(qtyNum) || qtyNum < 1;
   const invalid = overMax || invalidQty || max <= 0;
   const c = copy[type];
+  const estimate =
+    !invalidQty && !overMax && price > 0
+      ? `$${formatPrice(qtyNum * price)}`
+      : "—";
 
   return (
-    <form action={formAction}>
-      {state.error && <p className="errorList">{state.error}</p>}
-      <p>
-        Current price: <strong>${price > 0 ? formatPrice(price) : "Unavailable"}</strong>
-      </p>
-      <label>
-        Quantity:
-        <input
-          type="number"
-          min="1"
-          max={max}
-          step="1"
-          name="qty"
-          value={qty}
-          onChange={(e) => setQty(e.target.value)}
-        />
+    <form action={formAction} className="mt-3">
+      {state.error && (
+        <p className="mb-2 border border-line bg-canvas px-3 py-2 text-sm text-red-600">
+          {state.error}
+        </p>
+      )}
+      <div className="flex items-baseline justify-between">
+        <span className="text-xs text-muted">Current price</span>
+        <span className="text-lg font-semibold tabular-nums">
+          {price > 0 ? `$${formatPrice(price)}` : "Unavailable"}
+        </span>
+      </div>
+      <label className="mt-3 block text-xs text-muted" htmlFor={`qty-${type}`}>
+        Quantity
       </label>
-      <br />
-      {max > 0 && <small>{c.maxLabel}: {max}</small>}
+      <input
+        type="number"
+        min="1"
+        max={max}
+        step="1"
+        id={`qty-${type}`}
+        name="qty"
+        value={qty}
+        onChange={(e) => setQty(e.target.value)}
+        className="mt-1 w-full border border-line bg-surface px-3 py-1.5 text-sm tabular-nums"
+      />
+      <div className="mt-2 flex items-baseline justify-between text-sm">
+        <span className="text-xs text-muted">{c.estLabel}</span>
+        <span className="font-semibold tabular-nums">{estimate}</span>
+      </div>
+      {max > 0 && (
+        <p className="mt-1 text-xs text-muted">
+          {c.maxLabel}: {max}
+        </p>
+      )}
       {max > 0 && overMax && (
-        <p className="errorList">{c.overMessage(max)}</p>
+        <p className="mt-1 text-xs text-red-600">{c.overMessage(max)}</p>
       )}
       {max > 0 && !overMax && invalidQty && (
-        <p className="errorList">Quantity must be a whole number of at least 1.</p>
+        <p className="mt-1 text-xs text-red-600">
+          Quantity must be a whole number of at least 1.
+        </p>
       )}
       <input type="hidden" name="type" value={type} />
-      <br />
       <button
         type="submit"
-        className="btn btn-primary btn-md"
         disabled={pending || invalid}
+        className={`mt-3 w-full rounded px-3 py-2 text-sm font-semibold disabled:opacity-40 ${c.submitClass}`}
       >
         {c.action}
       </button>

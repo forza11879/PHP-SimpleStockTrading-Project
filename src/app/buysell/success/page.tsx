@@ -10,24 +10,35 @@ export default async function BuySellSuccessPage() {
 
   return (
     <MasterLayout title="Order Confirmation" user={sessionUser}>
-      <div className="panel-heading">
-        <h3 className="panel-title">
-          <i className="fa fa-fw fa-check-circle"></i> Order Confirmation
-        </h3>
-      </div>
-      <div className="panel-body">
-        <p>Your order was placed successfully.</p>
-        <p>
-          <a href="/portfolio" className="btn btn-primary">
-            View Portfolio
-          </a>{" "}
-          <a href="/orders" className="btn btn-default">
-            View Orders
-          </a>{" "}
-          <a href="/dashboard" className="btn btn-default">
-            Dashboard
-          </a>
-        </p>
+      <div className="p-4 lg:p-6">
+        <div className="border border-line bg-surface p-6 text-center">
+          <h2 className="text-base font-semibold text-green-700">
+            Order filled
+          </h2>
+          <p className="mt-2 text-sm text-muted">
+            Your order was placed successfully.
+          </p>
+          <p className="mt-4 flex justify-center gap-2">
+            <a
+              href="/portfolio"
+              className="rounded bg-accent px-3 py-1.5 text-sm font-semibold text-accent-ink"
+            >
+              View Portfolio
+            </a>
+            <a
+              href="/orders"
+              className="rounded border border-line px-3 py-1.5 text-sm"
+            >
+              View Orders
+            </a>
+            <a
+              href="/dashboard"
+              className="rounded border border-line px-3 py-1.5 text-sm"
+            >
+              Dashboard
+            </a>
+          </p>
+        </div>
       </div>
     </MasterLayout>
   );
