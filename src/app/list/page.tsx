@@ -1,7 +1,7 @@
 import MasterLayout from "@/src/components/MasterLayout";
 import { getSessionUser } from "@/src/lib/session";
 import { redirect } from "next/navigation";
-import { refreshEquity, getSymbols } from "@/src/lib/trading";
+import { getSymbols } from "@/src/lib/trading";
 import { refreshQuotes } from "@/src/lib/quotes";
 import { getQuoteAction } from "@/src/lib/actions";
 
@@ -11,9 +11,8 @@ export default async function ListPage() {
   const sessionUser = await getSessionUser();
   if (!sessionUser) redirect("/login");
 
-  // Recompute equity from current portfolio prices and pull fresh quotes so
-  // the watchlist shows live prices.
-  refreshEquity(sessionUser.id);
+  // Pull fresh quotes so the watchlist shows live prices. (The shell keeps
+  // equity fresh; this page reads no equity itself.)
   await refreshQuotes(getSymbols().map((s) => s.symbol));
   const symbols = getSymbols();
 

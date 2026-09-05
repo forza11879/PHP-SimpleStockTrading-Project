@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useActionState } from "react";
-import { buySellAction, type BuySellState } from "@/src/lib/actions";
+import { buySellAction } from "@/src/lib/actions";
+import type { OrderResult } from "@/src/lib/orders";
 
 const copy = {
   buy: {
@@ -29,7 +30,7 @@ export default function BuySellForm({
   price: number;
 }) {
   const [qty, setQty] = useState("1");
-  const [state, formAction, pending] = useActionState<BuySellState, FormData>(
+  const [state, formAction, pending] = useActionState<OrderResult, FormData>(
     buySellAction.bind(null, id),
     { error: undefined },
   );

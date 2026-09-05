@@ -91,9 +91,6 @@ export default async function DashboardPage() {
           </a>{" "}
           <a href="/orders" className="btn btn-default">
             Orders
-          </a>{" "}
-          <a href="/history" className="btn btn-default">
-            History
           </a>
         </p>
       </div>

@@ -3,6 +3,7 @@ import { getSessionUser } from "@/src/lib/session";
 import { redirect } from "next/navigation";
 import { query } from "@/src/lib/db";
 import { refreshQuotes } from "@/src/lib/quotes";
+import { getPositions } from "@/src/lib/trading";
 
 export const dynamic = "force-dynamic";
 
@@ -17,12 +18,7 @@ export default async function PortfolioPage() {
   );
   await refreshQuotes(held.map((r) => r.symbol as string));
 
-  const portfolios = query(
-    `SELECT s.id, s.symbol, p.avgprice, s.price, p.qty
-     FROM portfolios p, symbols s
-     WHERE p.symbol = s.symbol AND p.userId = ?`,
-    sessionUser.id,
-  );
+  const portfolios = getPositions(sessionUser.id);
 
   return (
     <MasterLayout title="Portfolio" user={sessionUser}>
@@ -64,19 +60,17 @@ export default async function PortfolioPage() {
                   </tfoot>
                   <tbody>
                     {portfolios.map((p) => {
-                      const price = p.price as number;
-                      const gain = price > 0
-                        ? (price - (p.avgprice as number)) * (p.qty as number)
-                        : null;
+                      const gain =
+                        p.price > 0 ? (p.price - p.avgprice) * p.qty : null;
                       return (
-                        <tr key={p.id as number}>
+                        <tr key={p.id}>
                           <td>
                             <strong>
-                              <a href={`/chart/${p.symbol}`}>{p.symbol as string}</a>
+                              <a href={`/chart/${p.symbol}`}>{p.symbol}</a>
                             </strong>
                           </td>
                           <td>{String(p.avgprice)}</td>
-                          <td>{price > 0 ? price : "—"}</td>
+                          <td>{p.price > 0 ? p.price : "—"}</td>
                           <td>{String(p.qty)}</td>
                           <td>{gain === null ? "—" : `$ ${gain}`}</td>
                           <td>

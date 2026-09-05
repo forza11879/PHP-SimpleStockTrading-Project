@@ -10,8 +10,8 @@ import {
 import { hashPassword, verifyPassword, isValidPassword, generateRandomString } from "./password";
 import { sendMail } from "./mail";
 import { getQuote, refreshQuotes } from "./quotes";
-import { refreshEquity, getSymbolById, getSymbols } from "./trading";
-import { executeOrder } from "./orders";
+import { getSymbolById } from "./trading";
+import { executeOrder, type OrderResult } from "./orders";
 
 export interface FormState {
   errors?: string[];
@@ -92,28 +92,11 @@ export async function getQuoteAction(formData: FormData): Promise<void> {
   redirect("/list");
 }
 
-export async function refreshListQuotesAction(): Promise<void> {
-  await refreshQuotes(getSymbols().map((s) => s.symbol));
-  redirect("/list");
-}
-
-export async function historyAction(formData: FormData): Promise<void> {
-  const symbol = (formData.get("symbol") as string)?.trim() ?? "";
-  if (!symbol) redirect("/history");
-  // Original fetched from Google Finance; quote history is now fetched live
-  // by the chart client instead of being persisted here.
-  redirect("/chart/" + encodeURIComponent(symbol));
-}
-
-export interface BuySellState {
-  error?: string;
-}
-
 export async function buySellAction(
   id: number,
-  prevState: BuySellState,
+  prevState: OrderResult,
   formData: FormData,
-): Promise<BuySellState> {
+): Promise<OrderResult> {
   const session = await getSessionUser();
   if (!session) redirect("/login");
 
@@ -206,5 +189,3 @@ export async function dailySchedulerAction(): Promise<void> {
   del("passresets", "expiryDateTime < datetime('now')");
   redirect("/");
 }
-
-export { refreshEquity };

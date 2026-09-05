@@ -2,13 +2,8 @@ import { query, queryFirstRow, update, type Row } from "./db";
 
 /** Total value of the user's held stocks (qty * current price). */
 export function stockValue(userId: number): number {
-  const rows = query(
-    `SELECT s.symbol, p.qty, s.price
-     FROM portfolios p, symbols s
-     WHERE p.symbol = s.symbol AND p.userId = ?`,
-    userId,
-  );
-  return rows.reduce((total, r) => total + (r.qty as number) * (r.price as number), 0);
+  const positions = getPositions(userId);
+  return positions.reduce((total, p) => total + p.qty * p.price, 0);
 }
 
 /** Recompute and persist the user's equity based on current prices. */
@@ -48,4 +43,22 @@ export function getSymbolById(id: number): SymbolRow | null {
   return queryFirstRow("SELECT * FROM symbols WHERE id = ?", id) as
     | SymbolRow
     | null;
+}
+
+export interface PositionRow extends Row {
+  id: number;
+  symbol: string;
+  avgprice: number;
+  price: number;
+  qty: number;
+}
+
+/** A user's holdings with the current price attached, for display and valuation. */
+export function getPositions(userId: number): PositionRow[] {
+  return query(
+    `SELECT s.id, s.symbol, p.avgprice, s.price, p.qty
+     FROM portfolios p, symbols s
+     WHERE p.symbol = s.symbol AND p.userId = ?`,
+    userId,
+  ) as PositionRow[];
 }
