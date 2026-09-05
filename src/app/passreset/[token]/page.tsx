@@ -12,8 +12,12 @@ export default async function PassResetTokenPage({
 
   return (
     <MasterLayout title="Password reset">
-      <h1>Password reset</h1>
-      <PassResetForm token={token} />
+      <div className="mx-auto max-w-sm p-4 lg:p-6">
+        <h1 className="text-base font-semibold">Choose a new password</h1>
+        <div className="mt-4 border border-line bg-surface p-4">
+          <PassResetForm token={token} />
+        </div>
+      </div>
     </MasterLayout>
   );
 }

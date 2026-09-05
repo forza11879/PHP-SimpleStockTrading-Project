@@ -3,6 +3,10 @@
 import { useActionState, useState } from "react";
 import { registerAction, type FormState } from "@/src/lib/actions";
 
+const inputClass =
+  "mb-3 mt-1 w-full border border-line bg-surface px-3 py-1.5 text-sm";
+const labelClass = "text-xs text-muted";
+
 export default function RegisterForm() {
   const [state, formAction, pending] = useActionState<FormState, FormData>(
     registerAction,
@@ -29,70 +33,74 @@ export default function RegisterForm() {
   return (
     <>
       {state.errors && state.errors.length > 0 && (
-        <ul className="errorList">
+        <ul className="mb-3 text-sm text-red-600">
           {state.errors.map((error, i) => (
             <li key={i}>{error}</li>
           ))}
         </ul>
       )}
       <form action={formAction}>
-        <div className="form-group">
-          <label htmlFor="email">Email:</label>{" "}
-          <span style={{ color: "red" }} id="emailInUse">
-            {emailInUse ? "Email already registered" : ""}
-          </span>
-          <input
-            type="email"
-            className="form-control"
-            id="email"
-            placeholder="Enter email"
-            name="email"
-            defaultValue={values.email ?? ""}
-            onChange={(e) => checkEmail(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="name">Name:</label>
-          <input
-            type="text"
-            className="form-control"
-            id="name"
-            placeholder="Enter name"
-            name="name"
-            defaultValue={values.name ?? ""}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="pass1">Password:</label>
-          <input
-            type="password"
-            className="form-control"
-            id="pwd"
-            placeholder="Enter password"
-            name="pass1"
-            defaultValue={values.pass1 ?? ""}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="pass2">Password:</label>
-          <input
-            type="password"
-            className="form-control"
-            id="pwd2"
-            placeholder="Re-Enter password"
-            name="pass2"
-            defaultValue={values.pass2 ?? ""}
-          />
-        </div>
-        <div className="checkbox">
-          <label>
-            <a href="/login">Login</a>
-          </label>
-        </div>
-        <button type="submit" className="btn btn-default" disabled={pending}>
-          Submit
+        <label htmlFor="email" className={labelClass}>
+          Email
+        </label>{" "}
+        <span id="emailInUse" className="text-xs text-red-600">
+          {emailInUse ? "Email already registered" : ""}
+        </span>
+        <input
+          type="email"
+          id="email"
+          placeholder="Enter email"
+          name="email"
+          defaultValue={values.email ?? ""}
+          onChange={(e) => checkEmail(e.target.value)}
+          className={inputClass}
+        />
+        <label htmlFor="name" className={labelClass}>
+          Name
+        </label>
+        <input
+          type="text"
+          id="name"
+          placeholder="Enter name"
+          name="name"
+          defaultValue={values.name ?? ""}
+          className={inputClass}
+        />
+        <label htmlFor="pwd" className={labelClass}>
+          Password
+        </label>
+        <input
+          type="password"
+          id="pwd"
+          placeholder="Enter password"
+          name="pass1"
+          defaultValue={values.pass1 ?? ""}
+          className={inputClass}
+        />
+        <label htmlFor="pwd2" className={labelClass}>
+          Confirm password
+        </label>
+        <input
+          type="password"
+          id="pwd2"
+          placeholder="Re-enter password"
+          name="pass2"
+          defaultValue={values.pass2 ?? ""}
+          className={inputClass}
+        />
+        <button
+          type="submit"
+          disabled={pending}
+          className="w-full rounded bg-accent px-3 py-2 text-sm font-semibold text-accent-ink disabled:opacity-40"
+        >
+          Register
         </button>
       </form>
+      <p className="mt-3 text-xs">
+        <a href="/login" className="text-accent">
+          Back to Log In
+        </a>
+      </p>
     </>
   );
 }
