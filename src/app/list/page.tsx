@@ -19,97 +19,102 @@ export default async function ListPage() {
 
   return (
     <MasterLayout title="Watch List" user={sessionUser}>
-      <div className="panel-heading">
-        <h3 className="panel-title">
-          <i className="fa fa-fw fa-binoculars"></i> Watch List
-        </h3>
-      </div>
-      <div className="panel-body">
-        <form method="post" id="searchBox" className="form-inline">
-          <div className="form-group mx-sm-3">
-            <label className="sr-only" htmlFor="ex1">
-              Symbol:
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="ex1"
-              name="symbol"
-              placeholder="Symbol"
-            />
-          </div>
-          <button type="submit" className="btn btn-primary" formAction={getQuoteAction}>
+      <div className="p-4 lg:p-6">
+        <form method="post" action={getQuoteAction} className="mb-4 flex gap-2">
+          <label htmlFor="symbol-input" className="sr-only">
+            Symbol
+          </label>
+          <input
+            type="text"
+            id="symbol-input"
+            name="symbol"
+            placeholder="Symbol"
+            className="border border-line bg-surface px-3 py-1.5 text-sm uppercase placeholder:normal-case placeholder:text-muted"
+          />
+          <button
+            type="submit"
+            className="rounded bg-accent px-3 py-1.5 text-sm font-semibold text-accent-ink"
+          >
             Get Quote
           </button>
         </form>
 
-        <div className="card mb-3">
-          <div className="list-task">
-            <div className="card-block">
-              <div className="table-responsive">
-                <table
-                  className="table table-striped"
-                  width="100%"
-                  id="myTable"
-                  cellSpacing="0"
-                >
-                  <thead className="thead-inverse">
-                    <tr>
-                      <th>Symbol</th>
-                      <th>Name</th>
-                      <th>Price</th>
-                      <th>Open</th>
-                      <th>Prev Close</th>
-                      <th>High</th>
-                      <th>Low</th>
-                      <th>Volume</th>
-                      <th>High 52</th>
-                      <th>Low 52</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tfoot className="thead-inverse">
-                    <tr>
-                      <th>Symbol</th>
-                      <th>Name</th>
-                      <th>Price</th>
-                      <th>Open</th>
-                      <th>Prev Close</th>
-                      <th>High</th>
-                      <th>Low</th>
-                      <th>Volume</th>
-                      <th>High 52</th>
-                      <th>Low 52</th>
-                      <th>Action</th>
-                    </tr>
-                  </tfoot>
-                  <tbody>
-                    {symbols.map((row) => (
-                      <tr key={row.id}>
-                        <td>
-                          <strong>
-                            <a href={`/chart/${row.symbol}`}>{row.symbol}</a>
-                          </strong>
-                        </td>
-                        <td>{row.name}</td>
-                        <td>{row.price > 0 ? formatPrice(row.price) : "—"}</td>
-                        <td>{formatPrice(row.open)}</td>
-                        <td>{formatPrice(row.previousClose)}</td>
-                        <td>{formatPrice(row.high)}</td>
-                        <td>{formatPrice(row.low)}</td>
-                        <td>{row.volume}</td>
-                        <td>{formatPrice(row.high52)}</td>
-                        <td>{formatPrice(row.low52)}</td>
-                        <td>
-                          <a href={`/buysell/${row.id}`}>buy/sell </a>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+        <div className="overflow-x-auto border border-line bg-surface">
+          <table className="w-full text-sm">
+            <thead className="sticky top-0 bg-surface">
+              <tr className="border-b border-line text-left text-xs text-muted">
+                <th className="px-3 py-2 font-semibold">Symbol</th>
+                <th className="px-3 py-2 font-semibold">Name</th>
+                <th className="px-3 py-2 text-right font-semibold">Price</th>
+                <th className="px-3 py-2 text-right font-semibold">Open</th>
+                <th className="px-3 py-2 text-right font-semibold">
+                  Prev Close
+                </th>
+                <th className="px-3 py-2 text-right font-semibold">High</th>
+                <th className="px-3 py-2 text-right font-semibold">Low</th>
+                <th className="px-3 py-2 text-right font-semibold">Volume</th>
+                <th className="px-3 py-2 text-right font-semibold">High 52</th>
+                <th className="px-3 py-2 text-right font-semibold">Low 52</th>
+                <th className="px-3 py-2 font-semibold">
+                  <span className="sr-only">Action</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody className="tabular-nums">
+              {symbols.map((row) => {
+                const up = row.price >= row.previousClose;
+                return (
+                  <tr
+                    key={row.id}
+                    className="border-b border-line last:border-0 hover:bg-canvas"
+                  >
+                    <td className="px-3 py-2 font-semibold">
+                      <a href={`/chart/${row.symbol}`}>{row.symbol}</a>
+                    </td>
+                    <td className="px-3 py-2 text-muted">{row.name}</td>
+                    <td
+                      className={`px-3 py-2 text-right font-semibold ${
+                        row.price > 0
+                          ? up
+                            ? "text-green-600"
+                            : "text-red-600"
+                          : ""
+                      }`}
+                    >
+                      {row.price > 0 ? `$${formatPrice(row.price)}` : "—"}
+                    </td>
+                    <td className="px-3 py-2 text-right">
+                      ${formatPrice(row.open)}
+                    </td>
+                    <td className="px-3 py-2 text-right">
+                      ${formatPrice(row.previousClose)}
+                    </td>
+                    <td className="px-3 py-2 text-right">
+                      ${formatPrice(row.high)}
+                    </td>
+                    <td className="px-3 py-2 text-right">
+                      ${formatPrice(row.low)}
+                    </td>
+                    <td className="px-3 py-2 text-right">{row.volume}</td>
+                    <td className="px-3 py-2 text-right">
+                      ${formatPrice(row.high52)}
+                    </td>
+                    <td className="px-3 py-2 text-right">
+                      ${formatPrice(row.low52)}
+                    </td>
+                    <td className="px-3 py-2">
+                      <a
+                        href={`/buysell/${row.id}`}
+                        className="text-xs text-accent"
+                      >
+                        buy/sell
+                      </a>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </div>
     </MasterLayout>
