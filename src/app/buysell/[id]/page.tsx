@@ -3,6 +3,7 @@ import { getSessionUser } from "@/src/lib/session";
 import { redirect } from "next/navigation";
 import { getSymbolById } from "@/src/lib/trading";
 import { getQuote } from "@/src/lib/quotes";
+import { maxBuyQty } from "@/src/lib/orders";
 import { formatPrice } from "@/src/lib/money";
 import { queryFirstRow } from "@/src/lib/db";
 import BuySellForm from "./BuySellForm";
@@ -34,7 +35,7 @@ export default async function BuySellPage({
   const userCash = Number(user?.cash ?? 0);
   const userEquity = Number(user?.equity ?? 0);
   const owned = position ? Math.floor(position.qty as number) : 0;
-  const maxbuy = price > 0 ? Math.floor(userCash / price) : 0;
+  const maxbuy = maxBuyQty(userCash, price);
   const maxsell = owned;
 
   const stats: Array<[string, string]> = [

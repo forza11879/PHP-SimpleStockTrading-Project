@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { count, insert, queryFirstRow } from "@/src/lib/db";
-import { executeOrder } from "@/src/lib/orders";
+import { executeOrder, maxBuyQty } from "@/src/lib/orders";
 import { freshDb } from "@/src/test/db";
 
 beforeEach(() => freshDb());
@@ -48,6 +48,57 @@ describe("executeOrder validation", () => {
     const user = queryFirstRow("SELECT * FROM users WHERE id = 3")!;
     expect(user.cash).toBe(50000);
     expect(count("transactions")).toBe(txBefore);
+  });
+});
+
+describe("95% purchasing-power rule", () => {
+  it("fills a buy within 95% of cash", () => {
+    // Cash 50000, price 100 → cap floor(47500 / 100) = 475.
+    const res = executeOrder(3, "AAPL", 475, "buy", 100);
+    expect(res.error).toBeUndefined();
+    const user = queryFirstRow("SELECT * FROM users WHERE id = 3")!;
+    expect(user.cash as number).toBeCloseTo(50000 - 47500, 2);
+  });
+
+  it("rejects a buy above 95% of cash even when cash would cover it", () => {
+    const txBefore = count("transactions");
+    // 476 × 100 = 47600 ≤ 50000 cash, but above the 47500 cap.
+    const res = executeOrder(3, "AAPL", 476, "buy", 100);
+    expect(res.error).toBeDefined();
+    const user = queryFirstRow("SELECT * FROM users WHERE id = 3")!;
+    expect(user.cash).toBe(50000);
+    expect(position(3, "AAPL")).toBeNull();
+    expect(count("transactions")).toBe(txBefore);
+  });
+
+  it("rejects extremely large quantities", () => {
+    const res = executeOrder(3, "AAPL", Number.MAX_SAFE_INTEGER, "buy", 100);
+    expect(res.error).toBeDefined();
+  });
+
+  it("makes a second order see the first order's cash", () => {
+    expect(executeOrder(3, "AAPL", 400, "buy", 100).error).toBeUndefined();
+    // Cash is now 10000 → cap floor(9500 / 100) = 95.
+    const res = executeOrder(3, "AAPL", 100, "buy", 100);
+    expect(res.error).toBeDefined();
+    const user = queryFirstRow("SELECT * FROM users WHERE id = 3")!;
+    expect(user.cash as number).toBeCloseTo(10000, 2);
+  });
+});
+
+describe("maxBuyQty", () => {
+  it("computes floor(cash × 0.95 / price)", () => {
+    expect(maxBuyQty(50000, 100)).toBe(475);
+    expect(maxBuyQty(50000, 153.61)).toBe(
+      Math.floor((50000 * 0.95) / 153.61),
+    );
+  });
+
+  it("is zero when there is nothing to spend or no price", () => {
+    expect(maxBuyQty(0, 100)).toBe(0);
+    expect(maxBuyQty(-10, 100)).toBe(0);
+    expect(maxBuyQty(50000, 0)).toBe(0);
+    expect(maxBuyQty(50000, -5)).toBe(0);
   });
 });
 
