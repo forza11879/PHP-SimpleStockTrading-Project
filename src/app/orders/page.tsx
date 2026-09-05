@@ -40,7 +40,7 @@ export default async function OrdersPage() {
                 {transactions.map((t) => (
                   <tr
                     key={t.id as number}
-                    className="border-b border-line last:border-0 hover:bg-canvas"
+                    className="border-b border-line last:border-0 even:bg-canvas hover:bg-line"
                   >
                     <td className="px-3 py-2 font-semibold">
                       <a href={`/chart/${t.symbol}`}>{t.symbol as string}</a>

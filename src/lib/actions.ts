@@ -9,8 +9,8 @@ import {
 } from "./session";
 import { hashPassword, verifyPassword, isValidPassword, generateRandomString } from "./password";
 import { sendMail } from "./mail";
-import { getQuote, refreshQuotes } from "./quotes";
-import { getSymbolById } from "./trading";
+import { getQuote } from "./quotes";
+import { addWatchlistSymbol, getSymbolById, removeWatchlistSymbol, seedWatchlistForUser, validateQuoteRequest } from "./trading";
 import { executeOrder, type OrderResult } from "./orders";
 
 export interface FormState {
@@ -47,13 +47,14 @@ export async function registerAction(
     return { errors: errorList, values };
   }
 
-  insert("users", {
+  const userId = insert("users", {
     email,
     name,
     password: hashPassword(pass1),
     cash: 50000,
     equity: 50000,
   });
+  seedWatchlistForUser(userId);
   redirect("/register/success");
 }
 
@@ -85,11 +86,103 @@ export async function logoutAction(): Promise<void> {
   redirect("/logout/success");
 }
 
-export async function getQuoteAction(formData: FormData): Promise<void> {
-  const symbol = (formData.get("symbol") as string)?.trim() ?? "";
-  if (!symbol) redirect("/list");
-  await refreshQuotes([symbol]);
-  redirect("/list");
+export interface QuoteState {
+  status:
+    | "idle"
+    | "added"
+    | "exists"
+    | "invalid"
+    | "fetch-failed"
+    | "unauthenticated";
+  symbol: string | null;
+  message: string | null;
+}
+
+/**
+ * Get Quote → Watchlist flow. Validates/normalizes the symbol, fetches the
+ * quote (which stores it in `symbols` on success), and only then links it
+ * to the session user's watch list. Returns a status for inline display —
+ * no redirect, so the page updates without a reload.
+ */
+export async function requestQuoteAction(
+  prevState: QuoteState,
+  formData: FormData,
+): Promise<QuoteState> {
+  const session = await getSessionUser();
+  const validated = validateQuoteRequest(
+    session ? session.id : null,
+    formData.get("symbol"),
+  );
+  if (!validated.ok) {
+    return validated.status === "unauthenticated"
+      ? {
+          status: "unauthenticated",
+          symbol: null,
+          message: "You need to log in to edit your watch list.",
+        }
+      : {
+          status: "invalid",
+          symbol: null,
+          message: "Enter a valid stock symbol, for example AAPL.",
+        };
+  }
+
+  const quote = await getQuote(validated.key);
+  if (!quote) {
+    return {
+      status: "fetch-failed",
+      symbol: validated.key,
+      message: `Couldn't find a quote for ${validated.key}. Check the symbol and try again.`,
+    };
+  }
+
+  const outcome = addWatchlistSymbol(validated.userId, validated.key);
+  if (outcome === "exists") {
+    return {
+      status: "exists",
+      symbol: validated.key,
+      message: `${validated.key} is already in your watch list.`,
+    };
+  }
+  if (outcome === "invalid") {
+    return {
+      status: "invalid",
+      symbol: validated.key,
+      message: `Couldn't add ${validated.key} to your watch list. Please try again.`,
+    };
+  }
+  return {
+    status: "added",
+    symbol: validated.key,
+    message: `Added ${validated.key} to your watch list.`,
+  };
+}
+
+export interface WatchlistResult {
+  ok: boolean;
+  error?: string;
+}
+
+/**
+ * Removes a symbol from the calling user's watch list. Ownership comes
+ * solely from the session — the frontend supplies only the symbol, never a
+ * user id, and the delete is scoped to the session user id.
+ */
+export async function removeWatchlistAction(
+  symbol: string,
+): Promise<WatchlistResult> {
+  const session = await getSessionUser();
+  if (!session) {
+    return { ok: false, error: "You need to log in to edit your watch list." };
+  }
+  const removed = removeWatchlistSymbol(session.id, symbol);
+  if (!removed) {
+    return {
+      ok: false,
+      error: "Couldn't remove this symbol. Please try again.",
+    };
+  }
+  return { ok: true };
 }
 
 export async function buySellAction(

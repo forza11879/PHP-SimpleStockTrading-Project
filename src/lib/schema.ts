@@ -60,7 +60,28 @@ export function initDb(): void {
       secretToken   TEXT NOT NULL,
       expiryDateTime TEXT NOT NULL
     );
+
+    CREATE TABLE IF NOT EXISTS watchlist (
+      id       INTEGER PRIMARY KEY AUTOINCREMENT,
+      userId   INTEGER NOT NULL,
+      symbol   TEXT NOT NULL,
+      UNIQUE (userId, symbol),
+      FOREIGN KEY (symbol) REFERENCES symbols (symbol),
+      FOREIGN KEY (userId) REFERENCES users (id)
+    );
   `);
+
+  // Per-user watchlist backfill for databases created before this table
+  // existed: every user starts with the full symbol list, matching what the
+  // global watch list page always showed. Runs only while the table is
+  // empty, so symbols a user deliberately removed are never re-added.
+  // (New users are seeded at creation in `registerAction`/`resolveGoogleUser`.)
+  if (count("watchlist") === 0) {
+    db.exec(`
+      INSERT OR IGNORE INTO watchlist (userId, symbol)
+      SELECT users.id, symbols.symbol FROM users, symbols
+    `);
+  }
 
   // Google social-login migration: link a verified Google identity (`sub`)
   // to an existing user row. SQLite cannot ADD a UNIQUE column, so the
@@ -154,6 +175,12 @@ export function initDb(): void {
   ];
   for (const t of transactions) insertTransaction.run(...t);
 
+  // Fresh databases: every seeded user starts with the full symbol list.
+  db.exec(`
+    INSERT OR IGNORE INTO watchlist (userId, symbol)
+    SELECT users.id, symbols.symbol FROM users, symbols
+  `);
+
   // sync sequences
   db.exec("DELETE FROM sqlite_sequence WHERE name IN ('users','symbols','portfolios','transactions')");
   for (const t of ["users", "symbols", "portfolios", "transactions"]) {
@@ -163,6 +190,7 @@ export function initDb(): void {
 }
 
 export function resetDb(): void {
+  db.exec("DELETE FROM watchlist");
   db.exec("DELETE FROM passresets");
   db.exec("DELETE FROM transactions");
   db.exec("DELETE FROM portfolios");

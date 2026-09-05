@@ -60,7 +60,7 @@ export default async function PortfolioPage() {
                   return (
                     <tr
                       key={p.id}
-                      className="border-b border-line last:border-0 hover:bg-canvas"
+                      className="border-b border-line last:border-0 even:bg-canvas hover:bg-line"
                     >
                       <td className="px-3 py-2 font-semibold">
                         <a href={`/chart/${p.symbol}`}>{p.symbol}</a>

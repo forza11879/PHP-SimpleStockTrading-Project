@@ -119,7 +119,7 @@ export default async function DashboardPage() {
                       return (
                         <tr
                           key={p.symbol}
-                          className="border-b border-line last:border-0 hover:bg-canvas"
+                          className="border-b border-line last:border-0 even:bg-canvas hover:bg-line"
                         >
                           <td className="px-3 py-2 font-semibold">
                             <a href={`/chart/${p.symbol}`}>{p.symbol}</a>
@@ -167,7 +167,7 @@ export default async function DashboardPage() {
                   {movers.map((s) => (
                     <tr
                       key={s.symbol}
-                      className="border-b border-line last:border-0 hover:bg-canvas"
+                      className="border-b border-line last:border-0 even:bg-canvas hover:bg-line"
                     >
                       <td className="px-3 py-2 font-semibold">
                         <a href={`/chart/${s.symbol}`}>{s.symbol}</a>
@@ -215,7 +215,7 @@ export default async function DashboardPage() {
                   {activity.map((t) => (
                     <tr
                       key={t.id as number}
-                      className="border-b border-line last:border-0 hover:bg-canvas"
+                      className="border-b border-line last:border-0 even:bg-canvas hover:bg-line"
                     >
                       <td className="px-3 py-2 font-semibold">
                         {t.symbol as string}

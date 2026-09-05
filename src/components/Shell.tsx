@@ -16,8 +16,14 @@ interface ShellProps {
   userName: string | null;
   cash: number;
   equity: number;
+  /** Sidebar state for first paint, read server-side from the preference cookie. */
+  initialCollapsed: boolean;
   children: ReactNode;
 }
+
+// UI-preference cookie (not auth): readable server-side so first paint is
+// correct, writable from the browser toggle. Must match MasterLayout's read.
+const SIDEBAR_COOKIE = "sidebar-collapsed";
 
 function isActive(pathname: string | null, href: string): boolean {
   if (!pathname) return false;
@@ -35,9 +41,24 @@ export default function Shell({
   userName,
   cash,
   equity,
+  initialCollapsed,
   children,
 }: ShellProps) {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(initialCollapsed);
+
+  function toggleCollapsed(): void {
+    setCollapsed((current) => {
+      const next = !current;
+      const secure =
+        typeof window !== "undefined" &&
+        window.location.protocol === "https:"
+          ? "; Secure"
+          : "";
+      document.cookie =
+        `${SIDEBAR_COOKIE}=${next ? "1" : "0"}; path=/; max-age=31536000; SameSite=Lax${secure}`;
+      return next;
+    });
+  }
   const pathname = usePathname();
   const gain = equity - 50000;
   const gainClass = gain >= 0 ? "text-green-600" : "text-red-600";
@@ -46,7 +67,7 @@ export default function Shell({
     <div className="min-h-screen bg-canvas font-sans text-sm text-ink">
       <div className="flex min-h-screen">
         <aside
-          className={`hidden border-r border-line bg-surface lg:flex lg:flex-col ${
+          className={`hidden border-r border-line bg-surface lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:shrink-0 lg:overflow-y-auto ${
             collapsed ? "lg:w-16" : "lg:w-60"
           }`}
         >
@@ -58,7 +79,7 @@ export default function Shell({
             )}
             <button
               type="button"
-              onClick={() => setCollapsed((c) => !c)}
+              onClick={toggleCollapsed}
               aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
               className="rounded border border-line px-2 py-1 text-xs text-muted hover:text-ink"
             >

@@ -1,6 +1,7 @@
 import crypto from "node:crypto";
 import { insert, queryFirstRow, update } from "./db";
 import { hashPassword } from "./password";
+import { seedWatchlistForUser } from "./trading";
 
 /**
  * Google social login (OAuth 2.0 / OpenID Connect) helpers.
@@ -267,5 +268,6 @@ export function resolveGoogleUser(
     equity: 50000,
     google_sub: identity.sub,
   });
+  seedWatchlistForUser(userId);
   return { ok: true, userId };
 }

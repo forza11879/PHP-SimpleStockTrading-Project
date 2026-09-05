@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { cookies } from "next/headers";
 import { getSessionUser, type SessionUser } from "@/src/lib/session";
 import { refreshEquity } from "@/src/lib/trading";
 import { queryFirstRow } from "@/src/lib/db";
@@ -30,9 +31,20 @@ export default async function MasterLayout({
   const userName = sessionUser
     ? ((account?.name as string | undefined) ?? sessionUser.name)
     : null;
+  // Sidebar preference cookie (written by the Shell toggle). Read here so
+  // the server renders the correct state on first paint — no flash, no
+  // hydration mismatch. Must match Shell's cookie name.
+  const initialCollapsed =
+    (await cookies()).get("sidebar-collapsed")?.value === "1";
 
   return (
-    <Shell title={title} userName={userName} cash={cash} equity={equity}>
+    <Shell
+      title={title}
+      userName={userName}
+      cash={cash}
+      equity={equity}
+      initialCollapsed={initialCollapsed}
+    >
       {children}
     </Shell>
   );
