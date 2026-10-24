@@ -1,0 +1,10 @@
+#!/bin/sh
+# Blocks a commit that fails typecheck or the test suite.
+# Wire up once per clone: git config core.hooksPath .githooks
+set -e
+
+echo "pre-commit: tsc --noEmit"
+npx tsc --noEmit
+
+echo "pre-commit: vitest run"
+npx vitest run --reporter=dot
